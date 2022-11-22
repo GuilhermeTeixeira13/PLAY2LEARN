@@ -12,6 +12,7 @@
     <string name="BaseActivity">Play2learn</string>
     <string name="MainActivity">Play2learn - Iniciar sessão</string>
     <string name="RegisterActivity">Play2learn - Registo</string>
+    <string name="GameFragment">Play2learn - Jogo</string>
     <string name="ProfileFragment">Play2learn - Perfil</string>
     <string name="SettingsFragment">Play2learn - Definições</string>
     <string name="MyGroupFragment">Play2learn - Meu grupo</string>
@@ -27,4 +28,6 @@
     <string name="Username">Nome de utilizador</string>
     <string name="Email">Email</string>
     <string name="Password">Palavra-chave</string>
+    <string name="PLAY">JOGAR</string>
+    <string name="GameDescription">O jogo que o fará dominar qualquer tema.</string>
 </resources>

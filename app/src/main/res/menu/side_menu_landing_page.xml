@@ -5,26 +5,33 @@
 
     <group android:id="@+id/grp1"
         android:checkableBehavior="single">
-        <item android:id="@+id/nav_mainpage"
+        <item android:id="@+id/nav_game"
+            android:icon="@drawable/game_icon"
+            android:title="@string/app_name"/>
+    </group>
+
+    <group android:id="@+id/grp2"
+        android:checkableBehavior="single">
+        <item android:id="@+id/nav_profile"
             android:icon="@drawable/person_icon"
             android:title="@string/MyProfile"/>
     </group>
 
-    <group android:id="@+id/grp2"
+    <group android:id="@+id/grp3"
         android:checkableBehavior="single">
         <item android:id="@+id/nav_settings"
             android:icon="@drawable/settings_icon"
             android:title="@string/Settings"/>
     </group>
 
-    <group android:id="@+id/grp3"
+    <group android:id="@+id/grp4"
         android:checkableBehavior="single">
         <item android:id="@+id/nav_mygroup"
             android:icon="@drawable/group_icon"
             android:title="@string/MyGroup"/>
     </group>
 
-    <group android:id="@+id/grp4"
+    <group android:id="@+id/grp5"
         android:checkableBehavior="single">
         <item android:id="@+id/nav_logout"
             android:icon="@drawable/logout_icon"

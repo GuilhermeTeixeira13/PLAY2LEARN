@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BaseActivity">
+
+    <ImageView
+        android:id="@+id/brainImage"
+        android:layout_width="169dp"
+        android:layout_height="173dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/brain"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/app_name"
+        android:textAlignment="center"
+        android:fontFamily="@font/roboto_black"
+        android:textSize="32dp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/brainImage" />
+
+    <TextView
+        android:id="@+id/reallyBright"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:text="@string/ReallyBright"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/BtnLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="50dp"
+        android:textSize="17dp"
+        android:text="@string/PLAY"
+        android:textColor="@color/white"
+        android:background="@drawable/rounded_corners_black_buttons"
+        android:drawableStart="@drawable/play_icon"
+        android:drawablePadding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reallyBright"
+        android:onClick="Login"/>
+
+    <TextView
+        android:id="@+id/gameDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:text="@string/GameDescription"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:fontFamily="@font/roboto_black"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/BtnLogin" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

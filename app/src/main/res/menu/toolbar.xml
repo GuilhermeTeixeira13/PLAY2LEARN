@@ -7,10 +7,4 @@
         android:icon="@drawable/share_icon"
         android:title="SHARE"
         app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/homeButton"
-        android:icon="@drawable/home_icon"
-        android:title="HOME"
-        app:showAsAction="ifRoom" />
 </menu>

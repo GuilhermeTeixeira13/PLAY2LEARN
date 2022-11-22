@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     // Inflating the toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_landingpage, menu);
+        getMenuInflater().inflate(R.menu.toolbar, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
