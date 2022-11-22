@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Play2learn-Mobile</string>
+    <string name="MyProfile">Meu perfil</string>
+    <string name="Settings">Definições</string>
+    <string name="MyGroup">Meu grupo</string>
+    <string name="Logout">Terminar sessão</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="Share1">Link para a PlayStore:</string>
+    <string name="Share2">Partilhar por:</string>
+    <string name="BaseActivity">Play2learn</string>
+    <string name="MainActivity">Play2learn-Login</string>
+    <string name="ProfileFragment">Play2learn - Perfil</string>
+    <string name="SettingsFragment">Play2learn - Definições</string>
+    <string name="MyGroupFragment">Play2learn - Meu grupo</string>
+    <string name="LogoutFragment">Play2learn - Terminar sessão</string>
+</resources>

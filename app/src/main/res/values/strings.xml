@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Play2learn-Mobile</string>
+    <string name="MyProfile">My Profile</string>
+    <string name="Settings">Settings</string>
+    <string name="MyGroup">My Group</string>
+    <string name="Logout">Logout</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="Share1">Link to PlayStore:</string>
+    <string name="Share2">Share using:</string>
+    <string name="BaseActivity">Play2learn</string>
+    <string name="MainActivity">Play2learn - Login</string>
+    <string name="ProfileFragment">Play2learn - Profile</string>
+    <string name="SettingsFragment">Play2learn - Settings</string>
+    <string name="MyGroupFragment">Play2learn - My group</string>
+    <string name="LogoutFragment">Play2learn - Logout</string>
 </resources>
