@@ -32,4 +32,6 @@
     <string name="Name">Name</string>
     <string name="Bibiography">Bibiography</string>
     <string name="Save">SAVE</string>
+    <string name="AppLanguage">App Language</string>
+    <string name="ClickToChoose">Click to choose</string>
 </resources>
