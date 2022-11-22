@@ -29,4 +29,7 @@
     <string name="Password">Password</string>
     <string name="PLAY">PLAY</string>
     <string name="GameDescription">The game that will make you master any subject.</string>
+    <string name="Name">Name</string>
+    <string name="Bibiography">Bibiography</string>
+    <string name="Save">SAVE</string>
 </resources>

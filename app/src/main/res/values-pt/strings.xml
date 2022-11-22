@@ -30,4 +30,7 @@
     <string name="Password">Palavra-chave</string>
     <string name="PLAY">JOGAR</string>
     <string name="GameDescription">O jogo que o fará dominar qualquer tema.</string>
+    <string name="Name">Nome</string>
+    <string name="Bibiography">Bibiografia</string>
+    <string name="Save">GUARDAR</string>
 </resources>

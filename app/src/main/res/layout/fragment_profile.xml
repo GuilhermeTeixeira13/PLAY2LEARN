@@ -6,12 +6,116 @@
     android:layout_height="match_parent"
     tools:context=".BaseActivity">
 
-    <TextView
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profilePic"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="50dp"
+        android:padding="10dp"
+        app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+        android:background="@mipmap/ic_launcher"
+        app:strokeColor="@color/gray"
+        app:strokeWidth="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+    />
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Profile"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:background="@drawable/camera_icon"
+        app:layout_constraintEnd_toEndOf="@+id/profilePic"
+        app:layout_constraintBottom_toBottomOf="@+id/profilePic">
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/personIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/person_icon"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/name"
+        app:layout_constraintTop_toBottomOf="@+id/name">
+    </ImageView>
+
+    <EditText
+        android:id="@+id/edTextName"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toEndOf="@+id/personIcon"
+        app:layout_constraintTop_toBottomOf="@+id/name">
+    </EditText>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Name"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="20dp"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/roboto_black"
+        app:layout_constraintStart_toEndOf="@+id/personIcon"
+        app:layout_constraintTop_toBottomOf="@+id/profilePic">
     </TextView>
+
+    <ImageView
+        android:id="@+id/infoIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="60dp"
+        android:background="@drawable/info_icon"
+        app:layout_constraintEnd_toStartOf="@+id/name"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bibio"></ImageView>
+
+    <EditText
+        android:id="@+id/edTextNameBibio"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toEndOf="@+id/infoIcon"
+        app:layout_constraintTop_toBottomOf="@+id/bibio">
+    </EditText>
+
+    <TextView
+        android:id="@+id/bibio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Bibiography"
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="20dp"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/roboto_black"
+        app:layout_constraintStart_toEndOf="@+id/personIcon"
+        app:layout_constraintTop_toBottomOf="@+id/edTextName">
+    </TextView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/BtnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:paddingStart="50dp"
+        android:paddingEnd="50dp"
+        android:textSize="17dp"
+        android:text="@string/Save"
+        android:textColor="@color/white"
+        android:background="@drawable/rounded_corners_black_buttons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edTextNameBibio"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
