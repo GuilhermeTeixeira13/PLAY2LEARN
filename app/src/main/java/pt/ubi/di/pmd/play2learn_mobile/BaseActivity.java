@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -53,6 +54,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    public void GoToSubjectsPage(View v){
+        Intent myIntent = new Intent(this, SubjectsActivity.class);
+        startActivity(myIntent);
+    }
+
     // Inflating the toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -78,7 +84,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    // Toolbar button clicked
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {

@@ -12,6 +12,7 @@
     <string name="BaseActivity">Play2learn</string>
     <string name="MainActivity">Play2learn - Iniciar sessão</string>
     <string name="RegisterActivity">Play2learn - Registo</string>
+    <string name="SubjectsActivity">Play2learn - Temas</string>
     <string name="GameFragment">Play2learn - Jogo</string>
     <string name="ProfileFragment">Play2learn - Perfil</string>
     <string name="SettingsFragment">Play2learn - Definições</string>
@@ -38,4 +39,5 @@
     <string name="MyGroupTitle">O meu grupo</string>
     <string name="LongClickDelete">CLique longo para excuir um membro.</string>
     <string name="NewMember">Novo membro</string>
+    <string name="AvailableSubjects">Temas disponíveis:</string>
 </resources>
