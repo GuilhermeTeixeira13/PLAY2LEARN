@@ -62,11 +62,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:textSize="10dp"
-        android:text="(provisório) ir para a base"
+        android:text="(provisório) ir para o game"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:onClick="GoToBasePage"/>
+        android:onClick="GoToGamePage"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

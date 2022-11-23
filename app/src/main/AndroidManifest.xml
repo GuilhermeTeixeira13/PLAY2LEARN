@@ -37,6 +37,10 @@
             android:name=".SubjectsActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
+        <activity
+            android:name=".GameActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
     </application>
 
 </manifest>

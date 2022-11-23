@@ -12,6 +12,7 @@
     <string name="MainActivity">Play2learn - Login</string>
     <string name="RegisterActivity">Play2learn - Register</string>
     <string name="SubjectsActivity">Play2learn - Subjects</string>
+    <string name="GameActivity">Play2learn - Game</string>
     <string name="GameFragment">Play2learn - Game</string>
     <string name="ProfileFragment">Play2learn - Profile</string>
     <string name="SettingsFragment">Play2learn - Settings</string>
@@ -39,4 +40,6 @@
     <string name="LongClickDelete">Long click to delete a member.</string>
     <string name="NewMember">New member</string>
     <string name="AvailableSubjects">Available subjects:</string>
+    <string name="Submit">SUBMIT</string>
+    <string name="NextQuestion">NEXT QUESTION</string>
 </resources>

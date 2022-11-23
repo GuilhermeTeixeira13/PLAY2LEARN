@@ -5,38 +5,31 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
 import androidx.core.view.MenuCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.google.android.material.navigation.NavigationView;
-
-public class SubjectsActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_subjects);
+        setContentView(R.layout.activity_game);
 
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Change toolbar title
-        setTitle(getResources().getString(R.string.GameActivity));
+        setTitle(getResources().getString(R.string.SubjectsActivity));
     }
 
-    public void GoToGamePage(View v){
-        Intent myIntent = new Intent(this, GameActivity.class);
-        startActivity(myIntent);
+    public void GoToResultsPage(View v){
+
     }
 
     public void GoToBasePage(View v){
