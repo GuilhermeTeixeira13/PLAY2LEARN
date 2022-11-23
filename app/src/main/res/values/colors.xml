@@ -10,4 +10,5 @@
     <color name="gray">#808080</color>
     <color name="black_toolbar">#121212</color>
     <color name="blue_link">#3366CC</color>
+    <color name="gray_edText">#747d87</color>
 </resources>

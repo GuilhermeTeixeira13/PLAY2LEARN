@@ -34,4 +34,7 @@
     <string name="Save">SAVE</string>
     <string name="AppLanguage">App Language</string>
     <string name="ClickToChoose">Click to choose</string>
+    <string name="MyGroupTitle">My group</string>
+    <string name="LongClickDelete">Long click to delete a member.</string>
+    <string name="NewMember">New member</string>
 </resources>

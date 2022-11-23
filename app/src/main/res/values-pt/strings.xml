@@ -35,4 +35,7 @@
     <string name="Save">GUARDAR</string>
     <string name="AppLanguage">Idioma da aplicação</string>
     <string name="ClickToChoose">Clique para escolher</string>
+    <string name="MyGroupTitle">O meu grupo</string>
+    <string name="LongClickDelete">CLique longo para excuir um membro.</string>
+    <string name="NewMember">Novo membro</string>
 </resources>
