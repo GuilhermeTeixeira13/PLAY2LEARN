@@ -12,25 +12,20 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuCompat;
 
-public class GameActivity extends AppCompatActivity {
+public class ResultsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
+        setContentView(R.layout.activity_results);
 
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Change toolbar title
-        setTitle(getResources().getString(R.string.SubjectsActivity));
-    }
-
-    public void GoToResultsPage(View v){
-        Intent myIntent = new Intent(this, ResultsActivity.class);
-        startActivity(myIntent);
+        setTitle(getResources().getString(R.string.ResultsActivity));
     }
 
     public void GoToBasePage(View v){

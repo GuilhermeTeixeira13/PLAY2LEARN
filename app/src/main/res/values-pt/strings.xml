@@ -14,6 +14,7 @@
     <string name="RegisterActivity">Play2learn - Registo</string>
     <string name="SubjectsActivity">Play2learn - Temas</string>
     <string name="GameActivity">Play2learn - Jogo</string>
+    <string name="ResultsActivity">Play2learn - Resultados</string>
     <string name="GameFragment">Play2learn - Jogo</string>
     <string name="ProfileFragment">Play2learn - Perfil</string>
     <string name="SettingsFragment">Play2learn - Definições</string>
@@ -43,4 +44,8 @@
     <string name="AvailableSubjects">Temas disponíveis:</string>
     <string name="Submit">SUBMETER</string>
     <string name="NextQuestion">PRÓXIMA PERGUNTA</string>
+    <string name="YourScore">A sua pontuação:</string>
+    <string name="CorrectAnswers">Respostas corretas: </string>
+    <string name="CompareWith">Comparar com:</string>
+    <string name="PlayAgain">JOGAR OUTRA VEZ</string>
 </resources>

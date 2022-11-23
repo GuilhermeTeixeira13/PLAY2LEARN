@@ -13,6 +13,7 @@
     <string name="RegisterActivity">Play2learn - Register</string>
     <string name="SubjectsActivity">Play2learn - Subjects</string>
     <string name="GameActivity">Play2learn - Game</string>
+    <string name="ResultsActivity">Play2learn - Results</string>
     <string name="GameFragment">Play2learn - Game</string>
     <string name="ProfileFragment">Play2learn - Profile</string>
     <string name="SettingsFragment">Play2learn - Settings</string>
@@ -42,4 +43,8 @@
     <string name="AvailableSubjects">Available subjects:</string>
     <string name="Submit">SUBMIT</string>
     <string name="NextQuestion">NEXT QUESTION</string>
+    <string name="YourScore">Your score:</string>
+    <string name="CorrectAnswers">Correct answers:</string>
+    <string name="CompareWith">Compare with:</string>
+    <string name="PlayAgain">PLAY AGAIN</string>
 </resources>
