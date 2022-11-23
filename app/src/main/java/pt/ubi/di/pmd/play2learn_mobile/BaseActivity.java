@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -44,6 +45,18 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
         // Set user profile Image
         ProfileImage = navigationView.getHeaderView(0).findViewById(R.id.ProfileImage);
+
+        // The main activity will start on the MainPageFragment
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new GameFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_game);
+        }
+    }
+
+    public void GoToSubjectsPage(View v){
+        Intent myIntent = new Intent(this, SubjectsActivity.class);
+        startActivity(myIntent);
     }
 
     // Inflating the toolbar
@@ -67,19 +80,18 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareSubject);
                 startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.Share2)));
                 break;
-            case R.id.homeButton:
-                Intent myIntent = new Intent(this, BaseActivity.class);
-                startActivity(myIntent);
-                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    // Toolbar button clicked
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.nav_mainpage:
+            case R.id.nav_game:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new GameFragment()).commit();
+                break;
+            case R.id.nav_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ProfileFragment()).commit();
                 break;

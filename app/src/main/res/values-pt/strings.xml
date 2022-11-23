@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Play2learn-Mobile</string>
+    <string name="app_name">Play2learn</string>
     <string name="MyProfile">Meu perfil</string>
     <string name="Settings">Definições</string>
     <string name="MyGroup">Meu grupo</string>
@@ -10,9 +10,42 @@
     <string name="Share1">Link para a PlayStore:</string>
     <string name="Share2">Partilhar por:</string>
     <string name="BaseActivity">Play2learn</string>
-    <string name="MainActivity">Play2learn-Login</string>
+    <string name="MainActivity">Play2learn - Iniciar sessão</string>
+    <string name="RegisterActivity">Play2learn - Registo</string>
+    <string name="SubjectsActivity">Play2learn - Temas</string>
+    <string name="GameActivity">Play2learn - Jogo</string>
+    <string name="ResultsActivity">Play2learn - Resultados</string>
+    <string name="GameFragment">Play2learn - Jogo</string>
     <string name="ProfileFragment">Play2learn - Perfil</string>
     <string name="SettingsFragment">Play2learn - Definições</string>
     <string name="MyGroupFragment">Play2learn - Meu grupo</string>
     <string name="LogoutFragment">Play2learn - Terminar sessão</string>
+    <string name="ReallyBright">Eu não sou básico.</string>
+    <string name="LoginButton">INICIAR SESSÃO</string>
+    <string name="RegisterButton">REGISTAR</string>
+    <string name="AccountRegister">Ainda não tem conta?</string>
+    <string name="AccountLogin">Já tem uma conta?</string>
+    <string name="RegisterLink">Registar</string>
+    <string name="LoginLink">Iniciar sessão</string>
+    <string name="UsernameEmail">Nome de utilizador / Email</string>
+    <string name="Username">Nome de utilizador</string>
+    <string name="Email">Email</string>
+    <string name="Password">Palavra-chave</string>
+    <string name="PLAY">JOGAR</string>
+    <string name="GameDescription">O jogo que o fará dominar qualquer tema.</string>
+    <string name="Name">Nome</string>
+    <string name="Bibiography">Bibiografia</string>
+    <string name="Save">GUARDAR</string>
+    <string name="AppLanguage">Idioma da aplicação</string>
+    <string name="ClickToChoose">Clique para escolher</string>
+    <string name="MyGroupTitle">O meu grupo</string>
+    <string name="LongClickDelete">CLique longo para excuir um membro.</string>
+    <string name="NewMember">Novo membro</string>
+    <string name="AvailableSubjects">Temas disponíveis:</string>
+    <string name="Submit">SUBMETER</string>
+    <string name="NextQuestion">PRÓXIMA PERGUNTA</string>
+    <string name="YourScore">A sua pontuação:</string>
+    <string name="CorrectAnswers">Respostas corretas: </string>
+    <string name="CompareWith">Comparar com:</string>
+    <string name="PlayAgain">JOGAR OUTRA VEZ</string>
 </resources>

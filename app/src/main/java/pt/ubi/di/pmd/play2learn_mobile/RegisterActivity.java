@@ -11,29 +11,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
-public class MainActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_register);
 
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Change toolbar title
-        setTitle(getResources().getString(R.string.MainActivity));
+        setTitle(getResources().getString(R.string.RegisterActivity));
+    }
+
+    public void GoToLoginPage(View v){
+        Intent myIntent = new Intent(this, MainActivity.class);
+        startActivity(myIntent);
     }
 
     public void GoToBasePage(View v){
         Intent myIntent = new Intent(this, BaseActivity.class);
-        startActivity(myIntent);
-    }
-
-    public void GoToRegisterPage(View v){
-        Intent myIntent = new Intent(this, RegisterActivity.class);
         startActivity(myIntent);
     }
 

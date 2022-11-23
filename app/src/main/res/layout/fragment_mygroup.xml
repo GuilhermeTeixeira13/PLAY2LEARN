@@ -7,11 +7,86 @@
     tools:context=".BaseActivity">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/myGroup"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="MyGroup"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_marginTop="40dp"
+        android:text="@string/MyGroupTitle"
+        android:textAlignment="center"
+        android:fontFamily="@font/roboto_black"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
     </TextView>
 
+    <TextView
+        android:id="@+id/longClick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/LongClickDelete"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myGroup">
+    </TextView>
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="300dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/listview_border"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/longClick">
+    </ListView>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        app:layout_constraintTop_toBottomOf="@+id/listview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <EditText
+            android:id="@+id/add_player_name"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/edittext_border"
+            android:inputType="textPersonName"
+            android:paddingLeft="20dp"
+            android:paddingEnd="20dp"
+            android:paddingRight="20dp"
+            android:hint="@string/NewMember"
+            android:textColorHint="@color/gray"
+            android:textAlignment="viewStart"
+            android:textColor="@color/white"
+            android:textSize="17dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+        </EditText>
+
+        <ImageButton
+            android:id="@+id/btn_add_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/add_player_name"
+            android:layout_alignRight="@id/add_player_name"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/add_icon"
+            android:onClick="addToList"
+            android:text="Button" />
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

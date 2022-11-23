@@ -10,21 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuCompat;
 
-public class MainActivity extends AppCompatActivity {
+public class ResultsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_results);
 
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Change toolbar title
-        setTitle(getResources().getString(R.string.MainActivity));
+        setTitle(getResources().getString(R.string.ResultsActivity));
     }
 
     public void GoToBasePage(View v){
@@ -32,15 +33,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(myIntent);
     }
 
-    public void GoToRegisterPage(View v){
-        Intent myIntent = new Intent(this, RegisterActivity.class);
-        startActivity(myIntent);
-    }
-
     // Inflating the toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
+        getMenuInflater().inflate(R.menu.toolbar_game, menu);
+        MenuCompat.setGroupDividerEnabled(menu, true);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -56,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
                 sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
                 sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareSubject);
                 startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.Share2)));
+                break;
+            case R.id.homeButton:
+                // Mostrar aviso
+
+                GoToBasePage(getWindow().getDecorView());
                 break;
         }
         return super.onOptionsItemSelected(item);

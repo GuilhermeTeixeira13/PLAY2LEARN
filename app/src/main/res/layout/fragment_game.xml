@@ -4,19 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
-
-    <include
-        android:id="@+id/include_toolbar"
-        layout="@layout/tool_bar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="7dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+    tools:context=".BaseActivity">
 
     <ImageView
         android:id="@+id/brainImage"
@@ -51,83 +39,52 @@
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    <EditText
-        android:id="@+id/LoginEdTextUserName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:hint="@string/UsernameEmail"
-        android:background="@drawable/edittext_border"
-        app:layout_constraintTop_toBottomOf="@+id/reallyBright">
-    </EditText>
-
-    <EditText
-        android:id="@+id/LoginEdTextPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:hint="@string/Password"
-        android:inputType="textPassword"
-        android:background="@drawable/edittext_border"
-        app:layout_constraintTop_toBottomOf="@+id/LoginEdTextUserName">
-    </EditText>
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:paddingStart="50dp"
+        android:layout_marginTop="80dp"
+        android:paddingStart="40dp"
         android:paddingEnd="50dp"
         android:textSize="17dp"
-        android:text="@string/LoginButton"
+        android:text="@string/PLAY"
         android:textColor="@color/white"
         android:background="@drawable/rounded_corners_black_buttons"
+        android:drawableStart="@drawable/play_icon"
+        android:drawablePadding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LoginEdTextPassword"
+        app:layout_constraintTop_toBottomOf="@+id/reallyBright"
         android:onClick="Login"/>
 
     <TextView
-        android:id="@+id/account"
+        android:id="@+id/gameDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:text="@string/AccountRegister"
+        android:layout_marginTop="80dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:text="@string/GameDescription"
         android:textAlignment="center"
-        android:textSize="15dp"
+        android:textSize="20dp"
+        android:fontFamily="@font/roboto_black"
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/BtnLogin" />
-
-    <TextView
-        android:id="@+id/register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="@string/RegisterLink"
-        android:textAlignment="center"
-        android:textSize="15dp"
-        android:fontFamily="@font/roboto_black"
-        android:textColor="@color/blue_link"
-        app:layout_constraintTop_toBottomOf="@+id/account"
-        android:onClick="GoToRegisterPage"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/GoToBasePage"
         android:layout_width="181dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:layout_marginStart="210dp"
         android:textSize="10dp"
-        android:text="(provisório) ir para a base"
+        android:text="(provisório) ir para subjects"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:onClick="GoToBasePage"/>
+        android:onClick="GoToSubjectsPage"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
