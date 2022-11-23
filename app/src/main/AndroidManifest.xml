@@ -33,6 +33,10 @@
             android:name=".RegisterActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
+        <activity
+            android:name=".SubjectsActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
     </application>
 
 </manifest>

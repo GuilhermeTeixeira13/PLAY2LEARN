@@ -38,6 +38,11 @@ public class SubjectsActivity extends AppCompatActivity {
 
     }
 
+    public void GoToBasePage(View v){
+        Intent myIntent = new Intent(this, BaseActivity.class);
+        startActivity(myIntent);
+    }
+
     // Inflating the toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
