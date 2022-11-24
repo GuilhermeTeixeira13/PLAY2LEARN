@@ -42,7 +42,15 @@ public class DifficultyAdapter extends BaseAdapter {
 
         TextView txtName = rootView.findViewById(R.id.name);
 
-        txtName.setText(difList.get(i).getNomeDif());
+        if(difList.get(i).getNomeDif().equals("Easy")) {
+            txtName.setText(view.getResources().getString(R.string.difEasy));
+        }
+        if(difList.get(i).getNomeDif().equals("Medium")) {
+            txtName.setText(view.getResources().getString(R.string.difMedium));
+        }
+        if(difList.get(i).getNomeDif().equals("Hard")) {
+            txtName.setText(view.getResources().getString(R.string.difHard));
+        }
 
         return rootView;
     }
