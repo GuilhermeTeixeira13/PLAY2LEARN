@@ -44,12 +44,13 @@
         app:layout_constraintTop_toBottomOf="@+id/title">
     </ListView>
 
-    <Spinner
+    <pt.ubi.di.pmd.play2learn_mobile.CustomSpinnerDif
         android:id="@+id/spinnerDifficulty"
         android:layout_width="170dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
+        android:dropDownVerticalOffset="45dp"
         android:layout_marginTop="70dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

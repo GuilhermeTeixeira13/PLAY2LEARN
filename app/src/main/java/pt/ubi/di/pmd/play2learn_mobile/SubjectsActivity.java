@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -18,7 +19,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class SubjectsActivity extends AppCompatActivity {
+public class SubjectsActivity extends AppCompatActivity implements CustomSpinnerDif.OnSpinnerEventsListener{
+
+    // Spinner Variables
+    private CustomSpinnerDif spinner_dif;
+    private DifficultyAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,14 @@ public class SubjectsActivity extends AppCompatActivity {
 
         // Change toolbar title
         setTitle(getResources().getString(R.string.GameActivity));
+
+        // Spinner
+        spinner_dif = findViewById(R.id.spinnerDifficulty);
+        spinner_dif.setSpinnerEventsListener(this);
+        adapter = new DifficultyAdapter(    SubjectsActivity.this, DataDifficulty.getDifficultyList());
+        spinner_dif.setAdapter(adapter);
+
+
     }
 
     public void GoToGamePage(View v){
@@ -72,5 +86,16 @@ public class SubjectsActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // Spinner Methods
+    @Override
+    public void onPopupWindowOpened(Spinner spinner) {
+
+    }
+
+    @Override
+    public void onPopupWindowClosed(Spinner spinner) {
+
     }
 }
