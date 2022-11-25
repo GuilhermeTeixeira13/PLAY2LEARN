@@ -22,7 +22,7 @@ public class P2L_DbHelper {
     String classs = "com.mysql.jdbc.Driver";
 
     String dBName = "play2learndb";
-    String url = "jdbc:mysql://localhost/"+dBName;
+    String url = "jdbc:mysql://localhost/play2learndb";
     String dBun = "root";
     String dBpass = "";
 
