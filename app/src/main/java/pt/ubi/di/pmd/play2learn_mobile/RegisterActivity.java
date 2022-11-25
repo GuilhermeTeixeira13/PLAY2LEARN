@@ -5,13 +5,23 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
+import java.sql.Connection;
+import java.sql.Statement;
+
 public class RegisterActivity extends AppCompatActivity {
+
+    EditText usr;
+    EditText eml;
+    EditText pass;
+    P2L_DbHelper connectionhelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +35,42 @@ public class RegisterActivity extends AppCompatActivity {
 
         // Change toolbar title
         setTitle(getResources().getString(R.string.RegisterActivity));
+
+        // Register
+        usr = findViewById(R.id.LoginEdTextUserName);
+        eml = findViewById(R.id.LoginEdTextEmail);
+        pass = findViewById(R.id.LoginEdTextPassword);
+
+        connectionhelper = new P2L_DbHelper();
+    }
+
+    public void Register(){
+        String user = usr.getText().toString();
+        String email = eml.getText().toString();
+        String password = pass.getText().toString();
+
+        if (user.isEmpty() || email.isEmpty() || password.isEmpty()){
+            Toast.makeText(this, "All fields Required", Toast.LENGTH_SHORT).show();
+        }else {
+            try {
+                Connection connection = connectionhelper.con();
+                if (connection == null){
+                    Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                }else {
+                    String query = "INSERT INTO users values ('"+user+"','"+email+"','"+password+"')";
+
+                    Statement statement = connection.createStatement();
+                    statement.executeUpdate(query);
+
+                    Toast.makeText(this, "Register successfull", Toast.LENGTH_SHORT).show();
+                    Intent myIntent = new Intent(this, BaseActivity.class);
+                    myIntent.putExtra("name", user);
+                    startActivity(myIntent);
+                }
+            } catch (Exception e) {
+                Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public void GoToLoginPage(View v){

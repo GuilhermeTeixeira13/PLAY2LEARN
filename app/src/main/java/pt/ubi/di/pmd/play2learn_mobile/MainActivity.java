@@ -5,13 +5,23 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class MainActivity extends AppCompatActivity {
+
+    EditText usr, password;
+    P2L_DbHelper connectionhelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +35,44 @@ public class MainActivity extends AppCompatActivity {
 
         // Change toolbar title
         setTitle(getResources().getString(R.string.MainActivity));
+
+        //login
+        usr = findViewById(R.id.LoginEdTextUserName);
+        password = findViewById(R.id.LoginEdTextPassword);
+
+        connectionhelper = new P2L_DbHelper();
+    }
+
+    public void Login(View v) throws SQLException {
+
+        String nm,pss;
+        String user = usr.getText().toString();
+        String pass = password.getText().toString();
+        Connection connection = connectionhelper.con();
+
+        if (user.isEmpty() || pass.isEmpty()){
+            Toast.makeText(this, "All fields Required", Toast.LENGTH_SHORT).show();
+        }else {
+            String query = "select * from users where Name='"+user+"' and Password='"+pass+"'";
+
+            Statement statement = connection.createStatement();
+
+            ResultSet rs = statement.executeQuery(query);
+
+            while (rs.next()){
+                nm = rs.getString(1);
+                pss = rs.getString(3);
+
+                if(nm.equals(user) && pss.equals(pass)){
+                    Toast.makeText(this, "Login successfull", Toast.LENGTH_SHORT).show();
+                    Intent myIntent = new Intent(this, BaseActivity.class);
+                    myIntent.putExtra("name", user);
+                    startActivity(myIntent);
+                }else {
+                    Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
     public void GoToBasePage(View v){
