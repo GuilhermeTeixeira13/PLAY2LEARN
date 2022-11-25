@@ -1,6 +1,7 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,33 +45,65 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Login(View v) throws SQLException {
+        Dologin dologin = new Dologin();
+        dologin.execute();
 
+    }
+
+    private class Dologin extends AsyncTask<String,String,String>{
         String nm,pss;
         String user = usr.getText().toString();
         String pass = password.getText().toString();
-        Connection connection = connectionhelper.con();
+        String z = "";
+        boolean isSuccess = false;
 
-        if (user.isEmpty() || pass.isEmpty()){
-            Toast.makeText(this, "All fields Required", Toast.LENGTH_SHORT).show();
-        }else {
-            String query = "select * from users where Name='"+user+"' and Password='"+pass+"'";
+        @Override
+        protected String doInBackground(String... strings) {
+            if (user.isEmpty() || pass.isEmpty()){
+                z= "All fields Required";
+            }else {
+                try {
+                    Connection connection = connectionhelper.con();
+                    if (connection == null){
+                        z = "Please check your internet connection";
+                    }else {
+                        String query = "select * from users where Name='"+user+"' and Password='"+pass+"'";
 
-            Statement statement = connection.createStatement();
+                        Statement statement = connection.createStatement();
 
-            ResultSet rs = statement.executeQuery(query);
+                        ResultSet rs = statement.executeQuery(query);
 
-            while (rs.next()){
-                nm = rs.getString(1);
-                pss = rs.getString(3);
+                        while (rs.next()){
+                            nm = rs.getString(1);
+                            pss = rs.getString(3);
 
-                if(nm.equals(user) && pss.equals(pass)){
-                    Toast.makeText(this, "Login successfull", Toast.LENGTH_SHORT).show();
-                    Intent myIntent = new Intent(this, BaseActivity.class);
-                    myIntent.putExtra("name", user);
-                    startActivity(myIntent);
-                }else {
-                    Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show();
+                            if(nm.equals(user) && pss.equals(pass)){
+                                isSuccess = true;
+                                z = "Login successfull";
+                            }else {
+                                isSuccess = false;
+                            }
+                        }
+
+                    }
+
+                } catch (SQLException e) {
+                    isSuccess = false;
+                    z = "Exceptions"+e;
                 }
+
+            }
+            return z;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Toast.makeText(getBaseContext(),""+z,Toast.LENGTH_LONG).show();
+
+            if (isSuccess){
+                Intent intent = new Intent(MainActivity.this, BaseActivity.class);
+                intent.putExtra("name", user);
+                startActivity(intent);
             }
         }
     }

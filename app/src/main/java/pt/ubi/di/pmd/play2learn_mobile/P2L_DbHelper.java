@@ -30,13 +30,13 @@ public class P2L_DbHelper {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Connection conn = null;
-        String ConnURL = null;
+        //String ConnURL = null;
         try {
             Class.forName(classs);
 
             conn = DriverManager.getConnection(url, dBun, dBpass);
 
-            conn = DriverManager.getConnection(ConnURL);
+            //conn = DriverManager.getConnection(ConnURL);
         } catch (ClassNotFoundException e) {
             Log.e("Error", e.getMessage());
         } catch (SQLException e) {
