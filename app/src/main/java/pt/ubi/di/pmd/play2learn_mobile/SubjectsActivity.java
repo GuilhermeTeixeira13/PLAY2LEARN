@@ -24,6 +24,7 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
     // Spinner Variables
     private CustomSpinnerDif spinner_dif;
     private DifficultyAdapter adapter;
+    private String escolhaDifUser;
 
 
     @Override
@@ -44,6 +45,8 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
         spinner_dif.setSpinnerEventsListener(this);
         adapter = new DifficultyAdapter(    SubjectsActivity.this, DataDifficulty.getDifficultyList());
         spinner_dif.setAdapter(adapter);
+        escolhaDifUser = spinner_dif.getSelectedItem().toString();
+
 
 
     }
