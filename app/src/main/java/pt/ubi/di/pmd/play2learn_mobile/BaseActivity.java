@@ -47,7 +47,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
         // Set user profile Image and user name
         ProfileImage = navigationView.getHeaderView(0).findViewById(R.id.ProfileImage);
-        ProfileName = navigationView.getHeaderView(1).findViewById(R.id.NavUserName);
+        ProfileName = navigationView.getHeaderView(0).findViewById(R.id.NavUserName);
 
         // The main activity will start on the MainPageFragment
         if (savedInstanceState == null) {

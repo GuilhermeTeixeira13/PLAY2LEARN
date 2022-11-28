@@ -53,13 +53,15 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, "All fields Required", Toast.LENGTH_SHORT).show();
         }else {
             try {
-                Connection connection = connectionhelper.con();
-                if (connection == null){
+                P2L_DbHelper connectNow = new P2L_DbHelper();
+                Connection connectDB = connectNow.getConnection();
+
+                if (connectDB == null){
                     Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
                 }else {
                     String query = "INSERT INTO users values ('"+user+"','"+email+"','"+password+"')";
 
-                    Statement statement = connection.createStatement();
+                    Statement statement = connectDB.createStatement();
                     statement.executeUpdate(query);
 
                     Toast.makeText(this, "Register successfull", Toast.LENGTH_SHORT).show();

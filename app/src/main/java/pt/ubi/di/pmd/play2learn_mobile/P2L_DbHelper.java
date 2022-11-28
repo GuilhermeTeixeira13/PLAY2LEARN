@@ -1,22 +1,11 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+/*
 import android.os.StrictMode;
 import android.util.Log;
-import android.widget.Toast;
-
-import java.io.ByteArrayOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class P2L_DbHelper {
     String classs = "com.mysql.jdbc.Driver";
@@ -45,5 +34,30 @@ public class P2L_DbHelper {
             Log.e("Error", e.getMessage());
         }
         return conn;
+    }
+}*/
+
+import android.os.AsyncTask;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+public class P2L_DbHelper {
+    public Connection databaseLink;
+
+    public Connection getConnection(){
+        String dataBaseName = "play2learndb";
+        String dataBaseUser = "gui";
+        String dataBasePassword = "";
+        String url= "jdbc:mysql://192.168.1.8/"+dataBaseName; // Mudar para o IP DO PC
+
+        try{
+            databaseLink = DriverManager.getConnection(url, dataBaseUser, dataBasePassword);
+        }catch(Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
+
+        return databaseLink;
     }
 }

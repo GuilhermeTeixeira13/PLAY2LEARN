@@ -63,25 +63,32 @@ public class MainActivity extends AppCompatActivity {
                 z= "All fields Required";
             }else {
                 try {
-                    Connection connection = connectionhelper.con();
-                    if (connection == null){
+                    P2L_DbHelper connectNow = new P2L_DbHelper();
+                    Connection connectDB = connectNow.getConnection();
+                    System.out.println(connectDB);
+
+                    if (connectDB== null){
                         z = "Please check your internet connection";
                     }else {
                         String query = "select * from users where Name='"+user+"' and Password='"+pass+"'";
 
-                        Statement statement = connection.createStatement();
+                        Statement statement = connectDB.createStatement();
 
                         ResultSet rs = statement.executeQuery(query);
 
                         while (rs.next()){
-                            nm = rs.getString(1);
-                            pss = rs.getString(3);
+                            nm = rs.getString(2);
+                            System.out.println(nm);
+                            pss = rs.getString(4);
+                            System.out.println(pss);
 
                             if(nm.equals(user) && pss.equals(pass)){
                                 isSuccess = true;
                                 z = "Login successfull";
+                                System.out.println("Login successfull");
                             }else {
                                 isSuccess = false;
+                                System.out.println("Login NOT successfull");
                             }
                         }
 
