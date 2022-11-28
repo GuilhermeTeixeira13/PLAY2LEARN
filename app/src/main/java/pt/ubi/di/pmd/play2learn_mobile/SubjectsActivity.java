@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -70,12 +71,8 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 temaEscolhido = list.get(i);
-                System.out.println("CLICQUEI " + list.get(i));
             }
         });
-
-
-
     }
 
     public void GoToGamePage(View v){

@@ -42,7 +42,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"></ListView>
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        android:drawSelectorOnTop="false"
+        android:listSelector="@android:color/holo_blue_dark">
+    </ListView>
 
     <pt.ubi.di.pmd.play2learn_mobile.CustomSpinnerDif
         android:id="@+id/spinnerDifficulty"

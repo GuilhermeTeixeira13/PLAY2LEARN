@@ -14,13 +14,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
     ImageView ProfileImage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +59,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                     new GameFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_game);
         }
+
     }
 
     public void GoToSubjectsPage(View v){
@@ -111,5 +119,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void addToList(View view) {
+
     }
 }
