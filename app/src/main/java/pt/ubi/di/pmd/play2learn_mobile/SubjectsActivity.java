@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -19,13 +22,19 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SubjectsActivity extends AppCompatActivity implements CustomSpinnerDif.OnSpinnerEventsListener{
 
     // Spinner Variables
     private CustomSpinnerDif spinner_dif;
-    private DifficultyAdapter adapter;
-    private String escolhaDifUser;
+    private ListView listView;
 
+    private DifficultyAdapter adapter;
+
+    private String escolhaDifUser;
+    private String temaEscolhido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +55,24 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
         adapter = new DifficultyAdapter(    SubjectsActivity.this, DataDifficulty.getDifficultyList());
         spinner_dif.setAdapter(adapter);
         escolhaDifUser = spinner_dif.getSelectedItem().toString();
+
+        // ListView
+        listView = findViewById(R.id.listview);
+        List<String> list = new ArrayList<>();
+        list.add("Elementos Básicos do Meio Físico");
+        list.add("Elementos do Meio Social");
+        list.add("Elementos relativos à História e à Geografia de Portugal.");
+        list.add("Tratamento de Dados Simples");
+        ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, list);
+        listView.setAdapter(arrayAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                temaEscolhido = list.get(i);
+                System.out.println("CLICQUEI " + list.get(i));
+            }
+        });
 
 
 
