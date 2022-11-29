@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="User name"
+        android:id="@+id/NavUserName"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
