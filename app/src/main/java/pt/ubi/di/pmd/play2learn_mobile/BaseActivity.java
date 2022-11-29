@@ -15,12 +15,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
     ImageView ProfileImage;
+    TextView ProfileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +45,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Set user profile Image
+        // Set user profile Image and user name
         ProfileImage = navigationView.getHeaderView(0).findViewById(R.id.ProfileImage);
+        ProfileName = navigationView.getHeaderView(0).findViewById(R.id.NavUserName);
 
         // The main activity will start on the MainPageFragment
         if (savedInstanceState == null) {
