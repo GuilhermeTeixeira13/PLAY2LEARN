@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -23,6 +24,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,10 +65,27 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
         // ListView
         listView = findViewById(R.id.listview);
         List<String> list = new ArrayList<>();
-        list.add("Elementos Básicos do Meio Físico");
-        list.add("Elementos do Meio Social");
-        list.add("Elementos relativos à História e à Geografia de Portugal.");
-        list.add("Tratamento de Dados Simples");
+        // BD
+        try {
+            P2L_DbHelper connectNow = new P2L_DbHelper();
+            Connection connectDB = connectNow.getConnection();
+
+            if (connectDB== null){
+                Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+            }else {
+                String query = "select Name from subjects";
+
+                Statement statement = connectDB.createStatement();
+
+                ResultSet rs = statement.executeQuery(query);
+                while (rs.next()){
+                    list.add(rs.getString(1));
+                }
+            }
+        } catch (SQLException e) {
+            Toast.makeText(this, e.getCause().toString(), Toast.LENGTH_SHORT).show();
+        }
+
         ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, list);
         listView.setAdapter(arrayAdapter);
 
