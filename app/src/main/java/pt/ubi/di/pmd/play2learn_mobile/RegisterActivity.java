@@ -1,6 +1,7 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,8 +14,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.Statement;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -22,6 +30,8 @@ public class RegisterActivity extends AppCompatActivity {
     EditText eml;
     EditText pass;
     P2L_DbHelper connectionhelper;
+
+    String AES = "AES";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,38 +52,64 @@ public class RegisterActivity extends AppCompatActivity {
         pass = findViewById(R.id.LoginEdTextPassword);
 
         connectionhelper = new P2L_DbHelper();
+
     }
 
     public void Register(){
+        Doregister doregister = new Doregister();
+        doregister.execute();
+    }
+
+    public class Doregister extends AsyncTask<String,String,String>{
         String user = usr.getText().toString();
         String email = eml.getText().toString();
         String password = pass.getText().toString();
+        String encryptPass;
 
-        if (user.isEmpty() || email.isEmpty() || password.isEmpty()){
-            Toast.makeText(this, "All fields Required", Toast.LENGTH_SHORT).show();
-        }else {
-            try {
-                P2L_DbHelper connectNow = new P2L_DbHelper();
-                Connection connectDB = connectNow.getConnection();
+        String z = "";
+        boolean isSuccess = false;
 
-                if (connectDB == null){
-                    Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
-                }else {
-                    String query = "INSERT INTO users values ('"+user+"','"+email+"','"+password+"')";
 
-                    Statement statement = connectDB.createStatement();
-                    statement.executeUpdate(query);
+        @Override
+        protected String doInBackground(String... strings) {
+            if (user.isEmpty() || email.isEmpty() || password.isEmpty()){
+                z= "All fields Required";
+            }else {
+                try {
+                    P2L_DbHelper connectNow = new P2L_DbHelper();
+                    Connection connectDB = connectNow.getConnection();
 
-                    Toast.makeText(this, "Register successfull", Toast.LENGTH_SHORT).show();
-                    Intent myIntent = new Intent(this, BaseActivity.class);
-                    myIntent.putExtra("name", user);
-                    startActivity(myIntent);
+                    if (connectDB == null){
+                        z = "Please check your internet connection";
+                    }else {
+                        String query = "INSERT INTO users values ('"+user+"','"+email+"','"+password+"')";
+
+                        Statement statement = connectDB.createStatement();
+                        statement.executeUpdate(query);
+
+                        z = "Register successfull";
+                        isSuccess = true;
+                    }
+                } catch (Exception e) {
+                    isSuccess = false;
+                    z = "Exceptions"+e;
                 }
-            } catch (Exception e) {
-                Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
+            }
+            return z;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Toast.makeText(getBaseContext(),""+z,Toast.LENGTH_LONG).show();
+            if (isSuccess){
+                Intent intent = new Intent(RegisterActivity.this, BaseActivity.class);
+                intent.putExtra("name", user);
+                startActivity(intent);
             }
         }
     }
+
+
 
     public void GoToLoginPage(View v){
         Intent myIntent = new Intent(this, MainActivity.class);
@@ -108,4 +144,5 @@ public class RegisterActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
