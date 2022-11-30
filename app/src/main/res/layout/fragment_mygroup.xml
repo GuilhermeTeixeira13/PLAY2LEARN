@@ -82,7 +82,7 @@
         android:paddingEnd="20dp"
         android:paddingRight="20dp"
         android:textAlignment="viewStart"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textColorHint="@color/gray"
         android:textSize="17dp"
         app:layout_constraintBottom_toBottomOf="parent"
