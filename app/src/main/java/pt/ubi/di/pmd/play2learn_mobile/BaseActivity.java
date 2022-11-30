@@ -10,6 +10,7 @@ import androidx.core.view.MenuCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,9 +20,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +35,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     ImageView ProfileImage;
     TextView ProfileName;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,4 +132,5 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     public void addToList(View view) {
 
     }
+
 }

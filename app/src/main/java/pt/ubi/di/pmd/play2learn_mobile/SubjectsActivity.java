@@ -1,6 +1,7 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,6 +43,8 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
     private String escolhaDifUser;
     private String temaEscolhido;
 
+    private List<String> list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -64,28 +67,11 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
 
         // ListView
         listView = findViewById(R.id.listview);
-        List<String> list = new ArrayList<>();
-        // BD
-        try {
-            P2L_DbHelper connectNow = new P2L_DbHelper();
-            Connection connectDB = connectNow.getConnection();
+        list = new ArrayList<>();
 
-            if (connectDB== null){
-                Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
-            }else {
-                String query = "select Name from subjects";
-
-                Statement statement = connectDB.createStatement();
-
-                ResultSet rs = statement.executeQuery(query);
-                while (rs.next()){
-                    list.add(rs.getString(1));
-                }
-            }
-        } catch (SQLException e) {
-            Toast.makeText(this, e.getCause().toString(), Toast.LENGTH_SHORT).show();
-        }
-
+        // BD - Subjects
+        acessSubjects accSubj = new acessSubjects();
+        accSubj.execute();
         ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, list);
         listView.setAdapter(arrayAdapter);
 
@@ -93,8 +79,47 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 temaEscolhido = list.get(i);
+                System.out.println(temaEscolhido);
             }
         });
+    }
+
+
+    // BD LIGAÇÃO TEMAS SUBJECTS
+    private class acessSubjects extends AsyncTask<String,String,String> {
+        boolean isSuccess = false;
+        String z = "";
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                P2L_DbHelper connectNow = new P2L_DbHelper();
+                Connection connectDB = connectNow.getConnection();
+
+                if (connectDB == null) {
+                    Toast.makeText(SubjectsActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                } else {
+                    String query = "select Name from subjects";
+
+                    Statement statement = connectDB.createStatement();
+
+                    ResultSet rs = statement.executeQuery(query);
+                    while (rs.next()) {
+                        list.add(rs.getString(1));
+                    }
+                }
+                System.out.println(list);
+            } catch (SQLException e) {
+                isSuccess = false;
+                z = "Exceptions" + e;
+            }
+            return z;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Toast.makeText(getBaseContext(),""+z,Toast.LENGTH_LONG).show();
+
+        }
     }
 
     public void GoToGamePage(View v){
