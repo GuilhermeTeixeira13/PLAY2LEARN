@@ -55,7 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    public void Register(){
+    public void Register(View v){
         Doregister doregister = new Doregister();
         doregister.execute();
     }
@@ -66,13 +66,21 @@ public class RegisterActivity extends AppCompatActivity {
         String password = pass.getText().toString();
         String encryptPass;
 
+        {
+            try {
+                encryptPass = Security.encrypt(password);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         String z = "";
         boolean isSuccess = false;
 
 
         @Override
         protected String doInBackground(String... strings) {
-            if (user.isEmpty() || email.isEmpty() || password.isEmpty()){
+            if (user.isEmpty() || email.isEmpty() || encryptPass.isEmpty()){
                 z= "All fields Required";
             }else {
                 try {
@@ -82,7 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
                     if (connectDB == null){
                         z = "Please check your internet connection";
                     }else {
-                        String query = "INSERT INTO users values ('"+user+"','"+email+"','"+password+"')";
+                        String query = "INSERT INTO users values (NULL,'"+user+"','"+email+"','"+encryptPass+"',NULL,NULL)";
 
                         Statement statement = connectDB.createStatement();
                         statement.executeUpdate(query);

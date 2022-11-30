@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class Dologin extends AsyncTask<String,String,String>{
-        String nm,pss;
+        String nm,pss, dpss;
         String user = usr.getText().toString();
         String pass = password.getText().toString();
         String z = "";
@@ -80,9 +80,10 @@ public class MainActivity extends AppCompatActivity {
                             nm = rs.getString(2);
                             System.out.println(nm);
                             pss = rs.getString(4);
-                            System.out.println(pss);
+                            dpss = Security.decrypt(pss);
+                            System.out.println(dpss);
 
-                            if(nm.equals(user) && pss.equals(pass)){
+                            if(nm.equals(user) && dpss.equals(pass)){
                                 isSuccess = true;
                                 z = "Login successfull";
                                 System.out.println("Login successfull");
@@ -97,6 +98,9 @@ public class MainActivity extends AppCompatActivity {
                 } catch (SQLException e) {
                     isSuccess = false;
                     z = "Exceptions"+e;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    z = "entrei aqui";
                 }
 
             }
