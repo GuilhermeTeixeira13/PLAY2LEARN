@@ -80,7 +80,12 @@ public class MainActivity extends AppCompatActivity {
                             nm = rs.getString(2);
                             System.out.println(nm);
                             pss = rs.getString(4);
-                            dpss = Security.decrypt(pss);
+                            try {
+                                dpss = Security.decrypt(pss);
+                            }catch (Exception e) {
+                                e.printStackTrace();
+                                z = "entrei aqui";
+                            }
                             System.out.println(dpss);
 
                             if(nm.equals(user) && dpss.equals(pass)){
@@ -98,9 +103,6 @@ public class MainActivity extends AppCompatActivity {
                 } catch (SQLException e) {
                     isSuccess = false;
                     z = "Exceptions"+e;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    z = "entrei aqui";
                 }
 
             }
