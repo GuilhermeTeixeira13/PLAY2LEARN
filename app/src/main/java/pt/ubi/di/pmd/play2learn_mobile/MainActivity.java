@@ -75,17 +75,15 @@ public class MainActivity extends AppCompatActivity {
                         Statement statement = connectDB.createStatement();
 
                         ResultSet rs = statement.executeQuery(query);
+                        System.out.println(rs);
 
                         while (rs.next()){
+                            System.out.println("entrei aqui");
                             nm = rs.getString(2);
                             System.out.println(nm);
                             pss = rs.getString(4);
-                            try {
-                                dpss = Security.decrypt(pss);
-                            }catch (Exception e) {
-                                e.printStackTrace();
-                                z = "entrei aqui";
-                            }
+                            dpss = Security.decrypt(pss);
+
                             System.out.println(dpss);
 
                             if(nm.equals(user) && dpss.equals(pass)){
@@ -103,6 +101,10 @@ public class MainActivity extends AppCompatActivity {
                 } catch (SQLException e) {
                     isSuccess = false;
                     z = "Exceptions"+e;
+                }catch (Exception e) {
+                    isSuccess = false;
+                    e.printStackTrace();
+                    z = "entrei aqui";
                 }
 
             }
@@ -112,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             Toast.makeText(getBaseContext(),""+z,Toast.LENGTH_LONG).show();
+            System.out.println("cheguei aqui");
 
             if (isSuccess){
                 Intent intent = new Intent(MainActivity.this, BaseActivity.class);
