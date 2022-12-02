@@ -19,6 +19,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class MyGroupFragment extends Fragment {
     ImageButton btnAddFriend;
@@ -39,7 +40,7 @@ public class MyGroupFragment extends Fragment {
                 BaseActivity BaseActivity = (BaseActivity) getActivity();
                 userLogged = BaseActivity.getUserLogged();
                 System.out.println("USER LOGGED: " + userLogged);
-                MyGroupFragment.addFriendToGroup addingFriends = new MyGroupFragment.addFriendToGroup();
+                MyGroupFragment.AddFriendToGroup addingFriends = new MyGroupFragment.AddFriendToGroup();
                 addingFriends.execute();
             }
         });
@@ -52,14 +53,18 @@ public class MyGroupFragment extends Fragment {
         return view;
     }
 
-    private class addFriendToGroup extends AsyncTask<String,String,String> {
+    private class AddFriendToGroup extends AsyncTask<String,String,String> {
+        ArrayList<String> friendsID;
+        ArrayList<String> friendsName;
         String idUserLogged;
         String nomefriend = edittxtNameFriend.getText().toString();
+        String idUserAdicionar = "";
         String z = "";
         boolean isSuccess = false;
 
         @Override
         protected String doInBackground(String... strings) {
+            System.out.println("BOAS ENTREI");
             if (nomefriend.isEmpty()){
                 z= "You need to specify our name's friend";
             }else {
@@ -70,7 +75,9 @@ public class MyGroupFragment extends Fragment {
                     if (connectDB== null){
                         z = "Please check your internet connection";
                     }else {
-                        String query = "SELECT id From users where users.Name='"+userLogged;
+
+                        // Obter lista (Name) de amigos do user logado
+                        String query = "SELECT id From users where users.Name='"+userLogged+"'";
 
                         Statement statement = connectDB.createStatement();
 
@@ -79,17 +86,41 @@ public class MyGroupFragment extends Fragment {
                         while (rs.next()){
                             idUserLogged = rs.getString(1);
                             break;
+                        }
 
-                            if(nameuserlogged.equals(nameuserlogged) && nameuserlogged.equals(nameuserlogged)){
-                                isSuccess = true;
-                                z = "Login successfull";
-                                System.out.println("Login successfull");
-                            }else {
-                                isSuccess = false;
-                                System.out.println("Login NOT successfull");
+                        String query2 = "SELECT IDFriend FROM userfriends WHERE IDUser ='" + idUserLogged + "'";;
+                        ResultSet rs2 = statement.executeQuery(query2);
+
+                        while (rs2.next()){
+                            friendsID.add(rs.getString(1));
+                        }
+
+                        for(int i = 0; i < friendsID.size(); i++) {
+                            String query3 = "SELECT Name FROM users WHERE id ='" + friendsID.get(i) + "'";
+                            ResultSet rs3 = statement.executeQuery(query2);
+
+                            while (rs3.next()){
+                                friendsName.add(rs.getString(1));
                             }
                         }
 
+                        // Saber se o nome introduzido pelo cliente pertence à BD e se esse não pertence à lista de amigos
+
+
+                        if(friendsID.size() != 0 && !friendsName.contains(edittxtNameFriend.getText().toString()) ){
+                            isSuccess = true;
+                            z = "Login successfull";
+                            System.out.println("Login successfull");
+                        }else {
+                            String query4 = "SELECT id From users where users.Name='"+nomefriend+"'";
+
+                            ResultSet rs4 = statement.executeQuery(query);
+
+                            while (rs.next()){
+                                idUserAdicionar = rs.getString(1);
+                            }
+
+                        }
                     }
 
                 } catch (SQLException e) {
@@ -103,12 +134,9 @@ public class MyGroupFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
-            Toast.makeText(getMyGR(),""+z,Toast.LENGTH_LONG).show();
-
+            System.out.println(z);
             if (isSuccess){
-                Intent intent = new Intent(BaseActivity.this, BaseActivity.class);
-                intent.putExtra("name", nameuserlogged);
-                startActivity(intent);
+                System.out.println("ID FO FRIEND A ADICIONAR: " + idUserAdicionar);
             }
         }
     }
