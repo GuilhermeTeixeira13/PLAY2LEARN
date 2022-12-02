@@ -40,6 +40,9 @@ public class MyGroupFragment extends Fragment {
                 BaseActivity BaseActivity = (BaseActivity) getActivity();
                 userLogged = BaseActivity.getUserLogged();
                 System.out.println("USER LOGGED: " + userLogged);
+                if (edittxtNameFriend.getText().toString().isEmpty()) {
+                    Toast.makeText(getActivity(), "You need to specify your friend's name", Toast.LENGTH_SHORT).show();
+                }
                 MyGroupFragment.AddFriendToGroup addingFriends = new MyGroupFragment.AddFriendToGroup();
                 addingFriends.execute();
             }
@@ -64,7 +67,6 @@ public class MyGroupFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... strings) {
-            System.out.println("BOAS ENTREI");
             if (nomefriend.isEmpty()){
                 z= "You need to specify our name's friend";
             }else {
