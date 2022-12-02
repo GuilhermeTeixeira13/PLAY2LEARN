@@ -49,7 +49,7 @@ public class P2L_DbHelper {
         String dataBaseName = "play2learndb";
         String dataBaseUser = "joao1";
         String dataBasePassword = "";
-        String url= "jdbc:mysql://192.168.1.75/"+dataBaseName; // Mudar para o IP DO PC
+        String url= "jdbc:mysql://192.168.1.82/"+dataBaseName; // Mudar para o IP DO PC
 
         try{
             databaseLink = DriverManager.getConnection(url, dataBaseUser, dataBasePassword);

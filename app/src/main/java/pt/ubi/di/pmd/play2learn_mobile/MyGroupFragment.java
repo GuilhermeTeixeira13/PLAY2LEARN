@@ -43,8 +43,10 @@ public class MyGroupFragment extends Fragment {
                 if (edittxtNameFriend.getText().toString().isEmpty()) {
                     Toast.makeText(getActivity(), "You need to specify your friend's name", Toast.LENGTH_SHORT).show();
                 }
-                MyGroupFragment.AddFriendToGroup addingFriends = new MyGroupFragment.AddFriendToGroup();
-                addingFriends.execute();
+                else {
+                    MyGroupFragment.AddFriendToGroup addingFriends = new MyGroupFragment.AddFriendToGroup();
+                    addingFriends.execute();
+                }
             }
         });
 
@@ -57,9 +59,10 @@ public class MyGroupFragment extends Fragment {
     }
 
     private class AddFriendToGroup extends AsyncTask<String,String,String> {
-        ArrayList<String> friendsID;
-        ArrayList<String> friendsName;
+        ArrayList<String> friendsID = new ArrayList<>();
+        ArrayList<String> friendsName = new ArrayList<>();
         String idUserLogged;
+        String idUserAmigo;
         String nomefriend = edittxtNameFriend.getText().toString();
         String idUserAdicionar = "";
         String z = "";
@@ -67,78 +70,81 @@ public class MyGroupFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... strings) {
-            if (nomefriend.isEmpty()){
-                z= "You need to specify our name's friend";
-            }else {
-                try {
-                    P2L_DbHelper connectNow = new P2L_DbHelper();
-                    Connection connectDB = connectNow.getConnection();
+            try {
+                P2L_DbHelper connectNow = new P2L_DbHelper();
+                Connection connectDB = connectNow.getConnection();
 
-                    if (connectDB== null){
-                        z = "Please check your internet connection";
-                    }else {
+                if (connectDB == null) {
+                    z = "Please check your internet connection";
+                } else {
 
-                        // Obter lista (Name) de amigos do user logado
-                        String query = "SELECT id From users where users.Name='"+userLogged+"'";
+                    // Obter lista (Name) de amigos do user logado
+                    String query = "SELECT id From users where users.Name='" + userLogged + "'";
 
-                        Statement statement = connectDB.createStatement();
+                    Statement statement = connectDB.createStatement();
 
-                        ResultSet rs = statement.executeQuery(query);
+                    ResultSet rs = statement.executeQuery(query);
 
-                        while (rs.next()){
-                            idUserLogged = rs.getString(1);
-                            break;
-                        }
+                    while (rs.next()) {
+                        idUserLogged = rs.getString(1);
+                        break;
+                    }
 
-                        String query2 = "SELECT IDFriend FROM userfriends WHERE IDUser ='" + idUserLogged + "'";;
-                        ResultSet rs2 = statement.executeQuery(query2);
+                    System.out.println("ID DO USER LOGGED: " + idUserLogged);
 
-                        while (rs2.next()){
-                            friendsID.add(rs.getString(1));
-                        }
+                    String query2 = "SELECT IDFriend FROM userfriends WHERE IDUser = " + idUserLogged;
+                    ResultSet rs2 = statement.executeQuery(query2);
 
-                        for(int i = 0; i < friendsID.size(); i++) {
-                            String query3 = "SELECT Name FROM users WHERE id ='" + friendsID.get(i) + "'";
-                            ResultSet rs3 = statement.executeQuery(query2);
+                    while (rs2.next()) {
+                        friendsID.add(rs2.getString(1));
+                    }
 
-                            while (rs3.next()){
-                                friendsName.add(rs.getString(1));
-                            }
-                        }
+                    System.out.println("FRIENDS ID: " + friendsID);
 
-                        // Saber se o nome introduzido pelo cliente pertence à BD e se esse não pertence à lista de amigos
+                    for (int i = 0; i < friendsID.size(); i++) {
+                        String query3 = "SELECT Name FROM users WHERE id ='" + friendsID.get(i) + "'";
+                        ResultSet rs3 = statement.executeQuery(query3);
 
-
-                        if(friendsID.size() != 0 && !friendsName.contains(edittxtNameFriend.getText().toString()) ){
-                            isSuccess = true;
-                            z = "Login successfull";
-                            System.out.println("Login successfull");
-                        }else {
-                            String query4 = "SELECT id From users where users.Name='"+nomefriend+"'";
-
-                            ResultSet rs4 = statement.executeQuery(query);
-
-                            while (rs.next()){
-                                idUserAdicionar = rs.getString(1);
-                            }
-
+                        while (rs3.next()) {
+                            friendsName.add(rs3.getString(1));
                         }
                     }
 
-                } catch (SQLException e) {
-                    isSuccess = false;
-                    z = "Exceptions"+e;
+                    System.out.println("FRIENDS Name: " + friendsName);
+
+
+                    // Verifica se o nome do amigo em questão já pertence à sua lista de amigos
+                    if (friendsName.contains(nomefriend)) {
+                        z = "Ocorreu um erro, verifique se o amigo já está na sua lista de amigos!";
+                        task.c
+                    } else {
+                        // ID do amigo a adicionar
+                        isSuccess = true;
+                        String query4 = "SELECT id From users where users.Name='" + nomefriend + "'";
+                        ResultSet rs4 = statement.executeQuery(query4);
+
+                        while (rs4.next()) {
+                            idUserAmigo= rs4.getString(1);
+                        }
+
+                        // Inserir na BD
+                        String query5 = "INSERT INTO userfriends values ('"+idUserLogged+"','"+idUserAmigo+"')";
+                        statement.executeUpdate(query5);
+                    }
                 }
 
+            } catch (SQLException e) {
+                isSuccess = false;
+                z = "Exceptions" + e;
             }
             return z;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            System.out.println(z);
+            Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT);
             if (isSuccess){
-                System.out.println("ID FO FRIEND A ADICIONAR: " + idUserAdicionar);
+                System.out.println("ADICIONADO AMIGO COM ID: " + idUserAmigo + " COM O NOME: " + nomefriend);
             }
         }
     }
