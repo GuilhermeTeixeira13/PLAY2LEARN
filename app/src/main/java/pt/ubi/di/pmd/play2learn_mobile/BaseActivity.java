@@ -74,10 +74,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         // MyGroup
         Intent iCameFromMainNameUser = getIntent();
         nameuserlogged = iCameFromMainNameUser.getStringExtra("name");
-        System.out.println("NOME: " + nameuserlogged);
-        editTextNomeFriend = (EditText) findViewById(R.id.add_player_name);
-        editTextNomeFriend.setText("teste");
-
+        System.out.println("ON CREATE DA ATIVIDADE BASE, NOME USER: " + nameuserlogged);
     }
 
     public void GoToSubjectsPage(View v){
@@ -139,12 +136,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    public void addToList(View view) {
-        System.out.println("AQUI VAI O TEXTO: " + editTextNomeFriend.getText());
-        BaseActivity.addFriendToGroup addFriend = new BaseActivity.addFriendToGroup();
-        addFriend.execute();
-    }
-
     private class addFriendToGroup extends AsyncTask<String,String,String>{
         String nomeuser = "";
         String z = "";
@@ -204,5 +195,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
             }
         }
+    }
+
+    public String getUserLogged(){
+        return this.nameuserlogged;
     }
 }
