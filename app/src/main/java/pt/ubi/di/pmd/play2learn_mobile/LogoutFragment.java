@@ -34,6 +34,9 @@ public class LogoutFragment extends Fragment {
             editor.remove("uname");
             editor.apply();
 
+            Intent intent = new Intent(view.getContext(), MainActivity.class);
+            startActivity(intent);
+
         }
 
         return view;
