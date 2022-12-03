@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,7 +32,7 @@ public class MyGroupFragment extends Fragment {
     EditText edittxtNameFriend;
     String userLogged = "";
     List<String> listaAmigos;
-
+    String itemSelecionadoName = "";
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -58,11 +59,22 @@ public class MyGroupFragment extends Fragment {
 
         // ListView
         listView = view.findViewById(R.id.listview);
+        listView.setLongClickable(true);
         listaAmigos = new ArrayList<>();
         // BD - Subjects
         acessListFriends accF = new acessListFriends();
         accF.execute();
-        System.out.println("LISTA AMIGOS ON CREATE" + listaAmigos);
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                itemSelecionadoName = listView.getItemAtPosition(i).toString();
+                System.out.println("ITEM SELECIONADO :" + itemSelecionadoName);
+                deleteFriend delF = new deleteFriend();
+                delF.execute();
+                return false;
+            }
+        });
 
 
 
@@ -80,8 +92,6 @@ public class MyGroupFragment extends Fragment {
         // BD - Subjects
         acessListFriends accF = new acessListFriends();
         accF.execute();
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, listaAmigos);
-        listView.setAdapter(arrayAdapter);
     }
 
     private class AddFriendToGroup extends AsyncTask<String,String,String> {
@@ -132,7 +142,6 @@ public class MyGroupFragment extends Fragment {
                             break;
                         }
 
-                        System.out.println("ID DO USER LOGGED: " + idUserLogged);
 
                         String query2 = "SELECT IDFriend FROM userfriends WHERE IDUser = " + idUserLogged;
                         ResultSet rs2 = statement.executeQuery(query2);
@@ -141,7 +150,6 @@ public class MyGroupFragment extends Fragment {
                             friendsID.add(rs2.getString(1));
                         }
 
-                        System.out.println("FRIENDS ID: " + friendsID);
 
                         for (int i = 0; i < friendsID.size(); i++) {
                             String query3 = "SELECT Name FROM users WHERE id ='" + friendsID.get(i) + "'";
@@ -152,7 +160,6 @@ public class MyGroupFragment extends Fragment {
                             }
                         }
 
-                        System.out.println("FRIENDS Name: " + friendsName);
 
                         if (friendsName.contains(nomefriend)) {
                             z = "Esse user já está no grupo de amigos do user";
@@ -195,7 +202,6 @@ public class MyGroupFragment extends Fragment {
         boolean isSuccess = false;
         String z = "";
         ArrayList<String> friendsID = new ArrayList<>();
-        ArrayList<String> friendsName = new ArrayList<>();
         String idUserLogged;
         @Override
         protected String doInBackground(String... strings) {
@@ -215,8 +221,6 @@ public class MyGroupFragment extends Fragment {
                         break;
                     }
 
-                    System.out.println("ID DO USER LOGGED: " + idUserLogged);
-                    System.out.println("USER LOGGED NAME: " + userLogged);
 
                     String query2 = "SELECT IDFriend FROM userfriends WHERE IDUser = " + idUserLogged;
                     ResultSet rs2 = statement.executeQuery(query2);
@@ -225,7 +229,6 @@ public class MyGroupFragment extends Fragment {
                         friendsID.add(rs2.getString(1));
                     }
 
-                    System.out.println("FRIENDS ID: " + friendsID);
 
                     for (int i = 0; i < friendsID.size(); i++) {
                         String query3 = "SELECT Name FROM users WHERE id ='" + friendsID.get(i) + "'";
@@ -235,7 +238,7 @@ public class MyGroupFragment extends Fragment {
                             listaAmigos.add(rs3.getString(1));
                         }
                     }
-                    System.out.println("LISTA AMIGOS: " + listaAmigos);
+
                 }
             } catch (SQLException e) {
                 isSuccess = false;
@@ -250,6 +253,56 @@ public class MyGroupFragment extends Fragment {
             listView.setAdapter(arrayAdapter);
         }
     }
+
+    // Eliminar determinado amigo da Lista de Amigos
+    private class deleteFriend extends AsyncTask<String,String,String> {
+        boolean isSuccess = false;
+        String z = "";
+        String friendToRemoveID = "";
+        String idUserLogged;
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                P2L_DbHelper connectNow = new P2L_DbHelper();
+                Connection connectDB = connectNow.getConnection();
+
+                if (connectDB == null) {
+                    Toast.makeText(getActivity(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                } else {
+                    String query1 = "SELECT id From users where users.Name='" + userLogged + "'";
+                    Statement statement = connectDB.createStatement();
+                    ResultSet rs1 = statement.executeQuery(query1);
+
+                    while (rs1.next()) {
+                        idUserLogged = rs1.getString(1);
+                    }
+
+                    String query2 = "Select id from users where Name = '" + itemSelecionadoName + "'";
+                    ResultSet rs2 = statement.executeQuery(query2);
+
+                    while (rs2.next()) {
+                        friendToRemoveID = rs2.getString(1);
+                    }
+
+                    String query3 = "DELETE FROM userfriends where IDFriend = " + friendToRemoveID;
+                    statement.executeUpdate(query3);
+
+                    System.out.println("NAME USER LOGGED:" + userLogged + " com ID: " + idUserLogged + " ");
+
+                }
+            } catch (SQLException e) {
+                isSuccess = false;
+                z = "Exceptions" + e;
+            }
+            return z;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            onRefreshList();
+        }
+    }
+
 
 
 }
