@@ -68,6 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         {
             try {
+                //encripta a pass
                 encryptPass = Security.encrypt(password);
             } catch (Exception e) {
                 e.printStackTrace();

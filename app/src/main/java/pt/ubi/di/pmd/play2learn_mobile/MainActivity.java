@@ -1,6 +1,7 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -82,11 +83,12 @@ public class MainActivity extends AppCompatActivity {
                             nm = rs.getString(2);
                             System.out.println(nm);
                             pss = rs.getString(4);
+                            //obter pass desencriptada
                             dpss = Security.decrypt(pss);
 
-                            System.out.println(dpss);
+                            //System.out.println(dpss);
 
-                            if(nm.equals(user) && dpss.equals(pass)){
+                            if(nm.equals(user) && pss.equals(pass)){
                                 isSuccess = true;
                                 z = "Login successfull";
                                 System.out.println("Login successfull");
@@ -117,6 +119,11 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("cheguei aqui");
 
             if (isSuccess){
+                SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("uname", user);
+                editor.commit();
+
                 Intent intent = new Intent(MainActivity.this, BaseActivity.class);
                 intent.putExtra("name", user);
                 startActivity(intent);
