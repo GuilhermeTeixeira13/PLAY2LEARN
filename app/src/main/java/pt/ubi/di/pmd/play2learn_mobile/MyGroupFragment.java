@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -20,11 +22,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MyGroupFragment extends Fragment {
+    ListView listView;
     ImageButton btnAddFriend;
     EditText edittxtNameFriend;
     String userLogged = "";
+    List<String> listaAmigos;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -34,12 +40,12 @@ public class MyGroupFragment extends Fragment {
         btnAddFriend = view.findViewById(R.id.btn_add_player);
         edittxtNameFriend = view.findViewById(R.id.add_player_name);
 
+        BaseActivity BaseActivity = (BaseActivity) getActivity();
+        userLogged = BaseActivity.getUserLogged();
+
         btnAddFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BaseActivity BaseActivity = (BaseActivity) getActivity();
-                userLogged = BaseActivity.getUserLogged();
-                System.out.println("USER LOGGED: " + userLogged);
                 if (edittxtNameFriend.getText().toString().isEmpty()) {
                     Toast.makeText(getActivity(), "You need to specify your friend's name", Toast.LENGTH_SHORT).show();
                 }
@@ -50,6 +56,15 @@ public class MyGroupFragment extends Fragment {
             }
         });
 
+        // ListView
+        listView = view.findViewById(R.id.listview);
+        listaAmigos = new ArrayList<>();
+        // BD - Subjects
+        acessListFriends accF = new acessListFriends();
+        accF.execute();
+        System.out.println("LISTA AMIGOS ON CREATE" + listaAmigos);
+
+
 
 
         // Change toolbar title
@@ -58,11 +73,21 @@ public class MyGroupFragment extends Fragment {
         return view;
     }
 
+
+    public void onRefreshList() {
+        // ListView
+        listaAmigos = new ArrayList<>();
+        // BD - Subjects
+        acessListFriends accF = new acessListFriends();
+        accF.execute();
+        ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, listaAmigos);
+        listView.setAdapter(arrayAdapter);
+    }
+
     private class AddFriendToGroup extends AsyncTask<String,String,String> {
         ArrayList<String> friendsID = new ArrayList<>();
         ArrayList<String> friendsName = new ArrayList<>();
         String idUserLogged;
-        String idUserAmigo;
         String nomefriend = edittxtNameFriend.getText().toString();
         String idUserAdicionar = "-1";
         String z = "";
@@ -130,21 +155,13 @@ public class MyGroupFragment extends Fragment {
                         System.out.println("FRIENDS Name: " + friendsName);
 
                         if (friendsName.contains(nomefriend)) {
-                            System.out.println("JÁ EXISTE NA SEU GRUPO DE AMIGOS");
                             z = "Esse user já está no grupo de amigos do user";
                             return z;
                         }
                         else {
                             isSuccess = true;
-                            String query4 = "SELECT id From users where users.Name='" + nomefriend + "'";
-                            ResultSet rs4 = statement.executeQuery(query4);
-
-                            while (rs4.next()) {
-                                idUserAmigo= rs4.getString(1);
-                            }
-                            System.out.println("ATÉ AQUI ESTÁ BOM");
                             // Inserir na BD
-                            String query5 = "insert into userfriends (IDUser, IDFriend) values(" + idUserLogged + ", " + idUserAmigo + ")";
+                            String query5 = "insert into userfriends (IDUser, IDFriend) values(" + idUserLogged + ", " + idUserAdicionar + ")";
                             statement.executeUpdate(query5);
                         }
                     }
@@ -162,10 +179,77 @@ public class MyGroupFragment extends Fragment {
             if (isSuccess){
                 s = "O user " + nomefriend + " foi adicionado com sucesso";
                 Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+                onRefreshList();
             }
             else {
                 Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
             }
         }
     }
+
+
+
+
+    // Consultar na BD a lista de amigos do UserLogado
+    private class acessListFriends extends AsyncTask<String,String,String> {
+        boolean isSuccess = false;
+        String z = "";
+        ArrayList<String> friendsID = new ArrayList<>();
+        ArrayList<String> friendsName = new ArrayList<>();
+        String idUserLogged;
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                P2L_DbHelper connectNow = new P2L_DbHelper();
+                Connection connectDB = connectNow.getConnection();
+
+                if (connectDB == null) {
+                    Toast.makeText(getActivity(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                } else {
+                    String query1 = "SELECT id From users where users.Name='" + userLogged + "'";
+                    Statement statement = connectDB.createStatement();
+                    ResultSet rs1 = statement.executeQuery(query1);
+
+                    while (rs1.next()) {
+                        idUserLogged = rs1.getString(1);
+                        break;
+                    }
+
+                    System.out.println("ID DO USER LOGGED: " + idUserLogged);
+                    System.out.println("USER LOGGED NAME: " + userLogged);
+
+                    String query2 = "SELECT IDFriend FROM userfriends WHERE IDUser = " + idUserLogged;
+                    ResultSet rs2 = statement.executeQuery(query2);
+
+                    while (rs2.next()) {
+                        friendsID.add(rs2.getString(1));
+                    }
+
+                    System.out.println("FRIENDS ID: " + friendsID);
+
+                    for (int i = 0; i < friendsID.size(); i++) {
+                        String query3 = "SELECT Name FROM users WHERE id ='" + friendsID.get(i) + "'";
+                        ResultSet rs3 = statement.executeQuery(query3);
+
+                        while (rs3.next()) {
+                            listaAmigos.add(rs3.getString(1));
+                        }
+                    }
+                    System.out.println("LISTA AMIGOS: " + listaAmigos);
+                }
+            } catch (SQLException e) {
+                isSuccess = false;
+                z = "Exceptions" + e;
+            }
+            return z;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listaAmigos);
+            listView.setAdapter(arrayAdapter);
+        }
+    }
+
+
 }

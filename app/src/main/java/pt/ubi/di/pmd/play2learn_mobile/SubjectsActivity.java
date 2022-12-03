@@ -44,6 +44,7 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
     private String temaEscolhido;
 
     private List<String> list;
+    int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +73,6 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
         // BD - Subjects
         acessSubjects accSubj = new acessSubjects();
         accSubj.execute();
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, list);
-        listView.setAdapter(arrayAdapter);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -117,8 +115,8 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
 
         @Override
         protected void onPostExecute(String s) {
-            Toast.makeText(getBaseContext(),""+z,Toast.LENGTH_LONG).show();
-
+            ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, list);
+            listView.setAdapter(arrayAdapter);
         }
     }
 
