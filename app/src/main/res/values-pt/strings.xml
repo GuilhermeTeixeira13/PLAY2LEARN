@@ -48,4 +48,7 @@
     <string name="CorrectAnswers">Respostas corretas: </string>
     <string name="CompareWith">Comparar com:</string>
     <string name="PlayAgain">JOGAR OUTRA VEZ</string>
+    <string name="difEasy">Fácil</string>
+    <string name="difMedium">Média</string>
+    <string name="difHard">Difícil</string>
 </resources>
