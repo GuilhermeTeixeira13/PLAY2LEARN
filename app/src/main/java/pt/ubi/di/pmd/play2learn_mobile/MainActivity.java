@@ -1,5 +1,6 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText usr, password;
     P2L_DbHelper connectionhelper;
+    String a;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,17 @@ public class MainActivity extends AppCompatActivity {
 
         // Change toolbar title
         setTitle(getResources().getString(R.string.MainActivity));
+
+        //auto-login
+        SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
+        if (sp.contains("uname")){
+            //System.out.println("dei auto login pelas shp");
+            a = sp.getString("uname", "");
+            Intent intent = new Intent(this, BaseActivity.class);
+            intent.putExtra("username", a);
+            startActivity(intent);
+
+        }
 
         //login
         usr = findViewById(R.id.LoginEdTextUserName);
@@ -79,12 +92,12 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println(rs);
 
                         while (rs.next()){
-                            System.out.println("entrei aqui");
+                            System.out.println("entrei aqui1");
                             nm = rs.getString(2);
                             System.out.println(nm);
                             pss = rs.getString(4);
                             //obter pass desencriptada
-                            dpss = Security.decrypt(pss);
+                            //dpss = Security.decrypt(pss);
 
                             //System.out.println(dpss);
 
@@ -104,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                     isSuccess = false;
                     z = "Exceptions"+e;
                 }catch (Exception e) {
-                    isSuccess = false;
+                    //isSuccess = false;
                     e.printStackTrace();
                     z = "entrei aqui";
                 }
@@ -122,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("uname", user);
-                editor.commit();
+                editor.apply();
 
                 Intent intent = new Intent(MainActivity.this, BaseActivity.class);
                 intent.putExtra("name", user);

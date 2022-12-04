@@ -18,6 +18,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.crypto.Cipher;
@@ -64,12 +66,12 @@ public class RegisterActivity extends AppCompatActivity {
         String user = usr.getText().toString();
         String email = eml.getText().toString();
         String password = pass.getText().toString();
-        String encryptPass;
+        String encryptPass, nm;
 
         {
             try {
                 //encripta a pass
-                encryptPass = Security.encrypt(password);
+                //encryptPass = Security.encrypt(password);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -81,7 +83,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            if (user.isEmpty() || email.isEmpty() || encryptPass.isEmpty()){
+            //                                       encryptPass
+            if (user.isEmpty() || email.isEmpty() || password.isEmpty()){
                 z= "All fields Required";
             }else {
                 try {
@@ -91,13 +94,31 @@ public class RegisterActivity extends AppCompatActivity {
                     if (connectDB == null){
                         z = "Please check your internet connection";
                     }else {
-                        String query = "INSERT INTO users values (NULL,'"+user+"','"+email+"','"+encryptPass+"',NULL,NULL)";
+                        String query1 = "select * from users where Name='"+user+"'";
 
                         Statement statement = connectDB.createStatement();
-                        statement.executeUpdate(query);
 
-                        z = "Register successfull";
-                        isSuccess = true;
+                        ResultSet rs = statement.executeQuery(query1);
+                        System.out.println(rs);
+
+                        while (rs.next()) {
+                            System.out.println("entrei aqui1");
+                            nm = rs.getString(2);
+
+                            if (nm.equals(user)){
+                                z = "User Already used";
+                            }else {
+                                //String query = "INSERT INTO users values (NULL,'"+user+"','"+email+"','"+encryptPass+"',NULL,NULL)";
+                                String query = "INSERT INTO users values (NULL,'"+user+"','"+email+"','"+password+"',NULL,NULL)";
+
+                                Statement statement2 = connectDB.createStatement();
+                                statement2.executeUpdate(query);
+
+                                z = "Register successfull";
+                                isSuccess = true;
+                            }
+                        }
+
                     }
                 } catch (Exception e) {
                     isSuccess = false;
