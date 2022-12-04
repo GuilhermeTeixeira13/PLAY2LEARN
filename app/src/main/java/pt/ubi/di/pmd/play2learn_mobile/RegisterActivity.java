@@ -79,6 +79,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         String z = "";
         boolean isSuccess = false;
+        boolean userexists = false;
+        int countu = 0;
 
 
         @Override
@@ -94,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
                     if (connectDB == null){
                         z = "Please check your internet connection";
                     }else {
-                        String query1 = "select * from users where Name='"+user+"'";
+                        String query1 = "select * from users";
 
                         Statement statement = connectDB.createStatement();
 
@@ -105,18 +107,24 @@ public class RegisterActivity extends AppCompatActivity {
                             System.out.println("entrei aqui1");
                             nm = rs.getString(2);
 
-                            if (nm.equals(user)){
+                            if (nm.equals(user) && countu == 0){
                                 z = "User Already used";
-                            }else {
-                                //String query = "INSERT INTO users values (NULL,'"+user+"','"+email+"','"+encryptPass+"',NULL,NULL)";
-                                String query = "INSERT INTO users values (NULL,'"+user+"','"+email+"','"+password+"',NULL,NULL)";
+                                userexists = true;
+                                countu += 1;
 
-                                Statement statement2 = connectDB.createStatement();
-                                statement2.executeUpdate(query);
-
-                                z = "Register successfull";
-                                isSuccess = true;
+                            }else if (countu == 0){
+                                userexists = false;
                             }
+                        }
+                        if (!userexists) {
+                            //String query = "INSERT INTO users values (NULL,'"+user+"','"+email+"','"+encryptPass+"',NULL,NULL)";
+                            String query = "INSERT INTO users values (NULL,'" + user + "','" + email + "','" + password + "',NULL,NULL)";
+
+                            Statement statement2 = connectDB.createStatement();
+                            statement2.executeUpdate(query);
+
+                            z = "Register successfull";
+                            isSuccess = true;
                         }
 
                     }
