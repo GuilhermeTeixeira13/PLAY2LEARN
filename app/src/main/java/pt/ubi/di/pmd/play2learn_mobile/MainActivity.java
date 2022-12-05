@@ -1,6 +1,8 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText usr, password;
     P2L_DbHelper connectionhelper;
+    String a;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,17 @@ public class MainActivity extends AppCompatActivity {
 
         // Change toolbar title
         setTitle(getResources().getString(R.string.MainActivity));
+
+        //auto-login
+        SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
+        if (sp.contains("uname")){
+            //System.out.println("dei auto login pelas shp");
+            a = sp.getString("uname", "");
+            Intent intent = new Intent(this, BaseActivity.class);
+            intent.putExtra("username", a);
+            startActivity(intent);
+
+        }
 
         //login
         usr = findViewById(R.id.LoginEdTextUserName);
@@ -51,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class Dologin extends AsyncTask<String,String,String>{
-        String nm,pss;
+        String nm, eml,pss, dpss;
         String user = usr.getText().toString();
         String pass = password.getText().toString();
         String z = "";
@@ -70,19 +84,25 @@ public class MainActivity extends AppCompatActivity {
                     if (connectDB== null){
                         z = "Please check your internet connection";
                     }else {
-                        String query = "select * from users where Name='"+user+"' and Password='"+pass+"'";
+                        String query = "select * from users where Name='"+user+"' or Email='"+user+"' and Password='"+pass+"' ";
 
                         Statement statement = connectDB.createStatement();
 
                         ResultSet rs = statement.executeQuery(query);
+                        System.out.println(rs);
 
                         while (rs.next()){
+                            System.out.println("entrei aqui1");
                             nm = rs.getString(2);
+                            eml = rs.getString(3);
                             System.out.println(nm);
                             pss = rs.getString(4);
-                            System.out.println(pss);
+                            //obter pass desencriptada
+                            //dpss = Security.decrypt(pss);
 
-                            if(nm.equals(user) && pss.equals(pass)){
+                            //System.out.println(dpss);
+
+                            if((nm.equals(user) || eml.equals(user)) && pss.equals(pass)){
                                 isSuccess = true;
                                 z = "Login successfull";
                                 System.out.println("Login successfull");
@@ -97,6 +117,10 @@ public class MainActivity extends AppCompatActivity {
                 } catch (SQLException e) {
                     isSuccess = false;
                     z = "Exceptions"+e;
+                }catch (Exception e) {
+                    //isSuccess = false;
+                    e.printStackTrace();
+                    z = "entrei aqui";
                 }
 
             }
@@ -106,8 +130,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             Toast.makeText(getBaseContext(),""+z,Toast.LENGTH_LONG).show();
+            System.out.println("cheguei aqui");
 
             if (isSuccess){
+                SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("uname", user);
+                editor.apply();
+
                 Intent intent = new Intent(MainActivity.this, BaseActivity.class);
                 intent.putExtra("name", user);
                 startActivity(intent);
