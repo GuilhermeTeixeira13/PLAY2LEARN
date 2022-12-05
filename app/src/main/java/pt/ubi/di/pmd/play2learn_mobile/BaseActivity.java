@@ -20,15 +20,19 @@ import android.widget.TextView;
 import com.google.android.material.navigation.NavigationView;
 
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    public String userName;
     private DrawerLayout drawer;
     ImageView ProfileImage;
     TextView ProfileName;
+    private String nameuserlogged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
+        Intent iCameFromMainNameUser = getIntent();
+        nameuserlogged = iCameFromMainNameUser.getStringExtra("name");
 
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -115,4 +119,8 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    public String getUserLogged(){
+        return this.nameuserlogged;
+    }
+
 }
