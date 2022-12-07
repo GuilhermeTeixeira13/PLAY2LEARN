@@ -1,6 +1,7 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -140,6 +141,11 @@ public class RegisterActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             Toast.makeText(getBaseContext(),""+z,Toast.LENGTH_LONG).show();
             if (isSuccess){
+                SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("uname", user);
+                editor.apply();
+
                 Intent intent = new Intent(RegisterActivity.this, BaseActivity.class);
                 intent.putExtra("name", user);
                 startActivity(intent);
