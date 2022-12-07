@@ -143,11 +143,11 @@ public class ProfileFragment extends Fragment {
                             System.out.println(bio);
                             nameuser.setText(userLogged);
                             biogra.setText(bio);
-                            Blob b =rs.getBlob(2);
-                            int blobLength = (int) b.length();
-                            byte[] blobAsBytes = b.getBytes(1, blobLength);
-                            Bitmap btm =BitmapFactory.decodeByteArray(blobAsBytes,0,blobAsBytes.length);
-                            picuser.setImageBitmap(btm);
+                            //Blob b =rs.getBlob(2);
+                            //int blobLength = (int) b.length();
+                            //byte[] blobAsBytes = b.getBytes(1, blobLength);
+                            //Bitmap btm =BitmapFactory.decodeByteArray(blobAsBytes,0,blobAsBytes.length);
+                            //picuser.setImageBitmap(btm);
 
                         }
 

@@ -47,7 +47,7 @@ public class P2L_DbHelper {
 
     public Connection getConnection(){
         String dataBaseName = "play2learndb";
-        String dataBaseUser = "tiago2";
+        String dataBaseUser = "tiago4";
         String dataBasePassword = "";
         String url= "jdbc:mysql://192.168.1.229/"+dataBaseName; // Mudar para o IP DO PC
 
