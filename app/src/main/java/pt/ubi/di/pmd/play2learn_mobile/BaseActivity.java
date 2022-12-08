@@ -74,11 +74,12 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         // MyGroup
         Intent iCameFromMainNameUser = getIntent();
         nameuserlogged = iCameFromMainNameUser.getStringExtra("name");
-        System.out.println("ON CREATE DA ATIVIDADE BASE, NOME USER: " + nameuserlogged);
+        System.out.println("BASE NAME: "+ nameuserlogged);
     }
 
     public void GoToSubjectsPage(View v){
         Intent myIntent = new Intent(this, SubjectsActivity.class);
+        myIntent.putExtra("nameUserLogged", nameuserlogged);
         startActivity(myIntent);
     }
 

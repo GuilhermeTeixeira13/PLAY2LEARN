@@ -14,6 +14,7 @@ import androidx.core.view.MenuCompat;
 
 public class GameActivity extends AppCompatActivity {
 
+    String nameuserlogged;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -26,10 +27,15 @@ public class GameActivity extends AppCompatActivity {
 
         // Change toolbar title
         setTitle(getResources().getString(R.string.SubjectsActivity));
+
+        Intent iCameFromMainNameUser = getIntent();
+        nameuserlogged = iCameFromMainNameUser.getStringExtra("userlogged");
+        System.out.println("game activy NAME: " + nameuserlogged);
     }
 
     public void GoToResultsPage(View v){
         Intent myIntent = new Intent(this, ResultsActivity.class);
+        myIntent.putExtra("ulogged", nameuserlogged);
         startActivity(myIntent);
     }
 

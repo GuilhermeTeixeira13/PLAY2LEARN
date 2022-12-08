@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void GoToBasePage(View v){
         Intent myIntent = new Intent(this, BaseActivity.class);
+        myIntent.putExtra("name", usr.getText().toString());
         startActivity(myIntent);
     }
 

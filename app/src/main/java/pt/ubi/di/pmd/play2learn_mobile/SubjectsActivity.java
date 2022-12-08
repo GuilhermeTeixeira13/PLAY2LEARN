@@ -44,13 +44,18 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
     private String temaEscolhido;
 
     private List<String> list;
-    int count = 0;
+
+    String nameuserlogged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subjects);
+
+        Intent iCameFromMainNameUser = getIntent();
+        nameuserlogged = iCameFromMainNameUser.getStringExtra("nameUserLogged");
+        System.out.println("USER SUBJ: " + nameuserlogged);
 
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -122,6 +127,7 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
 
     public void GoToGamePage(View v){
         Intent myIntent = new Intent(this, GameActivity.class);
+        myIntent.putExtra("userlogged", nameuserlogged);
         startActivity(myIntent);
     }
 

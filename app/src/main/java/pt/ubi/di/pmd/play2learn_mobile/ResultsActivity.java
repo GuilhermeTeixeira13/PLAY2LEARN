@@ -1,16 +1,12 @@
 package pt.ubi.di.pmd.play2learn_mobile;
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-<<<<<<< Updated upstream
 import android.widget.Adapter;
 import android.widget.AdapterView;
-=======
->>>>>>> Stashed changes
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -21,9 +17,11 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuCompat;
 
-<<<<<<< Updated upstream
-public class ResultsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-=======
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,10 +29,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class ResultsActivity extends AppCompatActivity {
->>>>>>> Stashed changes
 
     private Spinner spinnerFriends;
+    ArrayList<String> friendsName = new ArrayList<>();
+    String nameuserlogged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,21 +49,15 @@ public class ResultsActivity extends AppCompatActivity {
         // Change toolbar title
         setTitle(getResources().getString(R.string.ResultsActivity));
 
-<<<<<<< Updated upstream
-
-        // Spinner
-        Spinner spinner = findViewById(R.id.spinnerCompareWith);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.friendsResult, android.R.layout.simple_list_item_1);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
-=======
-        List<String> nameFriendsAssocieatedTest = new ArrayList<>();
 
         // Spinner Friends Test
         spinnerFriends = findViewById(R.id.spinnerCompareWith);
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, );
->>>>>>> Stashed changes
+
+        Intent iCameFromMainNameUser = getIntent();
+        nameuserlogged = iCameFromMainNameUser.getStringExtra("ulogged");
+        System.out.println("USER LOGGED:" + nameuserlogged);
+
+
     }
 
     public void GoToBasePage(View v){
@@ -102,18 +96,6 @@ public class ResultsActivity extends AppCompatActivity {
     }
 
 
-<<<<<<< Updated upstream
-    // Spinner
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String text = adapterView.getItemAtPosition(i).toString();
-        Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-=======
     // BD LIGAÇÃO FRIENDS ASSOCIATED WITH TEST ID
     private class friendsAssTest extends AsyncTask<String,String,String> {
         boolean isSuccess = false;
@@ -129,7 +111,7 @@ public class ResultsActivity extends AppCompatActivity {
                 if (connectDB == null) {
                     Toast.makeText(ResultsActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
                 } else {
-                    String query1 = "SELECT id From users where users.Name='" + userLogged + "'";
+                    String query1 = "SELECT id From users where users.Name='" + nameuserlogged + "'";
                     Statement statement = connectDB.createStatement();
                     ResultSet rs1 = statement.executeQuery(query1);
 
@@ -155,9 +137,8 @@ public class ResultsActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, list);
-            listView.setAdapter(arrayAdapter);
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, friendsName);
+            spinnerFriends.setAdapter(spinnerAdapter);
         }
->>>>>>> Stashed changes
     }
 }
