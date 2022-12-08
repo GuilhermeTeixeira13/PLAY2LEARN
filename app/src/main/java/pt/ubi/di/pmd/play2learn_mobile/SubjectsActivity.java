@@ -30,6 +30,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SubjectsActivity extends AppCompatActivity implements CustomSpinnerDif.OnSpinnerEventsListener{
@@ -44,7 +45,12 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
     private String temaEscolhido;
 
     private List<String> list;
+
+    private String nameuserlogged;
+
     int count = 0;
+
+    String[] numDif;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +65,18 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
         // Change toolbar title
         setTitle(getResources().getString(R.string.GameActivity));
 
+        // Check flag and initialize objects
+        Intent intent = getIntent();
+        String checkFlag= intent.getStringExtra("flag");
+        if(checkFlag.equals("FROM_BASE")){
+            nameuserlogged = intent.getStringExtra("name");
+        }
+
         // Spinner
         spinner_dif = findViewById(R.id.spinnerDifficulty);
         spinner_dif.setSpinnerEventsListener(this);
         adapter = new DifficultyAdapter(    SubjectsActivity.this, DataDifficulty.getDifficultyList());
         spinner_dif.setAdapter(adapter);
-        escolhaDifUser = spinner_dif.getSelectedItem().toString();
 
         // ListView
         listView = findViewById(R.id.listview);
@@ -80,8 +92,12 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
                 System.out.println(temaEscolhido);
             }
         });
-    }
 
+        numDif = new String[3];
+        numDif[0] = getResources().getString(R.string.difEasy);
+        numDif[1] = getResources().getString(R.string.difMedium);
+        numDif[2] = getResources().getString(R.string.difHard);
+    }
 
     // BD LIGAÇÃO TEMAS SUBJECTS
     private class acessSubjects extends AsyncTask<String,String,String> {
@@ -121,8 +137,14 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
     }
 
     public void GoToGamePage(View v){
-        Intent myIntent = new Intent(this, GameActivity.class);
-        startActivity(myIntent);
+        Intent goToGameActivity = new Intent(this, GameActivity.class);
+        goToGameActivity.putExtra("flag", "FROM_SUBJECTS");
+        goToGameActivity.putExtra("name", nameuserlogged);
+        goToGameActivity.putExtra("subject", temaEscolhido);
+        escolhaDifUser = spinner_dif.getSelectedItem().toString();
+        goToGameActivity.putExtra("difficulty", Integer.parseInt(escolhaDifUser)+1);
+        startActivity(goToGameActivity);
+        overridePendingTransition(0, 0);
     }
 
     public void GoToBasePage(View v){

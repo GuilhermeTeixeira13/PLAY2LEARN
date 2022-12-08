@@ -33,12 +33,6 @@ public class SettingsFragment extends Fragment {
         btnPT = view.findViewById(R.id.changePT);
         btnEN = view.findViewById(R.id.changeENG);
 
-        // If it is the first time loading the view, it loads the last language used by the user
-        if(isInit) {
-            isInit = false;
-            loadPreviousLanguage();
-        }
-
         // Change toolbar title
         getActivity().setTitle(getResources().getString(R.string.app_name));
 
@@ -66,16 +60,7 @@ public class SettingsFragment extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences("CommonPrefs", getActivity().MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(langPref, lang);
-        editor.commit();
-    }
-
-    // Loading the language that was previously saved in Shared Preferences
-    public void loadPreviousLanguage() {
-        // Loading
-        String langPref = "Language";
-        SharedPreferences prefs = getActivity().getSharedPreferences("CommonPrefs", getActivity().MODE_PRIVATE);
-        String language = prefs.getString(langPref, "");
-        changeLanguage(language);
+        editor.apply();
     }
 
     // Change the app language to other one

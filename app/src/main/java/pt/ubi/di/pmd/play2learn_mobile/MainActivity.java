@@ -3,8 +3,11 @@ package pt.ubi.di.pmd.play2learn_mobile;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,18 +23,26 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
     EditText usr, password;
     P2L_DbHelper connectionhelper;
     String a;
+    static boolean isInit = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // If it is the first time loading the view, it loads the last language used by the user
+        if(isInit) {
+            isInit = false;
+            loadPreviousLanguage();
+        }
 
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -49,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
             goToMainActivity.putExtra("flag", "FROM_MAIN");
             goToMainActivity.putExtra("name", a);
             startActivity(goToMainActivity);
-
         }
 
         //login
@@ -151,6 +161,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(myIntent);
     }
 
+
+
     // Inflating the toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -173,5 +185,36 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // When the language is changed, it is saved using Shared Preferences
+    public void saveLanguage(String lang) {
+        String langPref = "Language";
+        SharedPreferences prefs = getSharedPreferences("CommonPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(langPref, lang);
+        editor.apply();
+    }
+
+    // Loading the language that was previously saved in Shared Preferences
+    public void loadPreviousLanguage() {
+        // Loading
+        String langPref = "Language";
+        SharedPreferences prefs = getSharedPreferences("CommonPrefs", MODE_PRIVATE);
+        String language = prefs.getString(langPref, "");
+        changeLanguage(language);
+    }
+
+    // Change the app language to other one
+    public void changeLanguage(String lang) {
+        Locale myLocale = new Locale(lang);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+        getResources().updateConfiguration(conf, getResources().getDisplayMetrics());
+        saveLanguage(lang);
+        recreate();
     }
 }

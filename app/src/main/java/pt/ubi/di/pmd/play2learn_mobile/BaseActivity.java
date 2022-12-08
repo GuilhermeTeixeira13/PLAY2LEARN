@@ -69,8 +69,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void GoToSubjectsPage(View v){
-        Intent myIntent = new Intent(this, SubjectsActivity.class);
-        startActivity(myIntent);
+        Intent goToSubjectsActivity = new Intent(this, SubjectsActivity.class);
+        goToSubjectsActivity.putExtra("flag", "FROM_BASE");
+        goToSubjectsActivity.putExtra("name", nameuserlogged);
+        startActivity(goToSubjectsActivity);
     }
 
     // Inflating the toolbar
