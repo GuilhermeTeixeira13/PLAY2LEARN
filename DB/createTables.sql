@@ -42,6 +42,7 @@ CREATE TABLE UserResults (
   NumCorrectAns INTEGER, 
   NumWrongAns INTEGER, 
   TimeToSolve TIME NULL, 
+  Difficulty INTEGER,
   CONSTRAINT fk_resultSubj FOREIGN KEY (IDSubject) REFERENCES subjects (id), CONSTRAINT fk_resultUser FOREIGN KEY (IDUser) REFERENCES users (id)
 );
 
