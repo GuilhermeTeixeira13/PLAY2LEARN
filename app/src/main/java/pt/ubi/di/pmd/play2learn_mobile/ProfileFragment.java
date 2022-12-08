@@ -1,10 +1,14 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,18 +67,18 @@ public class ProfileFragment extends Fragment {
 
         picuser.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //choseimage();
+                choseimage();
             }
         });
-        //save.setOnClickListener(new View.OnClickListener() {
-        //    public void onClick(View v) {
-        //        try {
-        //            save(view);
-        //        } catch (SQLException e) {
-        //            e.printStackTrace();
-        //        }
-        //    }
-        //});
+        save.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                try {
+                    save(view);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         return view;
     }
@@ -83,6 +87,37 @@ public class ProfileFragment extends Fragment {
         printbio printbio = new printbio();
         printbio.execute();
 
+    }
+
+    public void save(View v) throws SQLException {
+        savedata savedata = new savedata();
+        savedata.execute();
+
+    }
+    private void choseimage() {
+        try {
+            Intent intent=new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(intent,PICK_IMAGE_REQUEST);
+        }
+        catch (Exception e){
+            Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        try {
+            super.onActivityResult(requestCode, resultCode, data);
+            if(requestCode==PICK_IMAGE_REQUEST&&resultCode==RESULT_OK&&data!=null&&data.getData()!=null){
+                imagepath = data.getData();
+                imageTostore= MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),imagepath);
+                picuser.setImageBitmap(imageTostore);
+            }
+        }catch (Exception e){
+            Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+        }
     }
 
     private class printbio extends AsyncTask<String,String,String> {
@@ -121,6 +156,7 @@ public class ProfileFragment extends Fragment {
                             int blobLength = (int) pic.length();
                             byte[] blobAsBytes = pic.getBytes(1, blobLength);
                             btm = BitmapFactory.decodeByteArray(blobAsBytes, 0, blobAsBytes.length);
+                            System.out.println(btm);
                             picexist = true;
                         }
 
@@ -154,8 +190,8 @@ public class ProfileFragment extends Fragment {
         @Override
         protected String doInBackground(String... strings) {
             imageTostore.compress(Bitmap.CompressFormat.JPEG, 70, bos);
-            byte[] imagebArray = bos.toByteArray();
-            if (bio.isEmpty() || imagebArray.equals(null)){
+            imagebArray = bos.toByteArray();
+            if (bio.isEmpty() || imagebArray == null){
                 z="all fields required";
             }else {
                 try {
