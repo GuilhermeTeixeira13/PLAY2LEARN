@@ -86,9 +86,11 @@ public class ProfileFragment extends Fragment {
 
     private class printbio extends AsyncTask<String,String,String> {
         String bio;
-        //Blob pic;
+        Blob pic;
+        Bitmap btm;
         String z = "";
         boolean isSuccess = false;
+        boolean picexist = false;
         @Override
         protected String doInBackground(String... strings) {
 
@@ -100,7 +102,7 @@ public class ProfileFragment extends Fragment {
                 if (connectDB== null){
                     z = "Please check your internet connection";
                 }else {
-                    String query = "select Biblio from users where Name='"+userLogged+"'";
+                    String query = "select Biblio, ProfilePic from users where Name='"+userLogged+"'";
 
                     Statement statement = connectDB.createStatement();
 
@@ -113,13 +115,13 @@ public class ProfileFragment extends Fragment {
                         if (bio != null){
                             isSuccess = true;
                         }
-                        //pic =rs.getBlob(2);
-                        //if (pic!=null) {
-                        //    int blobLength = (int) pic.length();
-                        //    byte[] blobAsBytes = pic.getBytes(1, blobLength);
-                        //    Bitmap btm = BitmapFactory.decodeByteArray(blobAsBytes, 0, blobAsBytes.length);
-                        //    picuser.setImageBitmap(btm);
-                        //}
+                        pic =rs.getBlob(2);
+                        if (pic!=null) {
+                            int blobLength = (int) pic.length();
+                            byte[] blobAsBytes = pic.getBytes(1, blobLength);
+                            btm = BitmapFactory.decodeByteArray(blobAsBytes, 0, blobAsBytes.length);
+                            picexist = true;
+                        }
 
                     }
 
@@ -131,11 +133,14 @@ public class ProfileFragment extends Fragment {
             return z;
         }
         protected void onPostExecute(String s) {
-            Toast.makeText(getContext(),""+z,Toast.LENGTH_LONG).show();
-
+            //Toast.makeText(getContext(),""+z,Toast.LENGTH_LONG).show();
             if (isSuccess){
                 nameuser.setText(userLogged);
                 biogra.setText(bio);
+            }
+
+            if (picexist){
+                picuser.setImageBitmap(btm);
             }
         }
     }
