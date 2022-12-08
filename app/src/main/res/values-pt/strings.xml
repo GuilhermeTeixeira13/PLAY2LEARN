@@ -51,4 +51,11 @@
     <string name="difEasy">Fácil</string>
     <string name="difMedium">Média</string>
     <string name="difHard">Difícil</string>
+    <string-array name="friendsResult">
+        <item>One</item>
+        <item>Two</item>
+        <item>Three</item>
+        <item>Four</item>
+        <item>Five</item>
+    </string-array>
 </resources>
