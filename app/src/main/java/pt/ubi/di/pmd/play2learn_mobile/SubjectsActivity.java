@@ -42,7 +42,7 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
     private DifficultyAdapter adapter;
 
     private String escolhaDifUser;
-    private String temaEscolhido;
+    private String temaEscolhido = "";
 
     private List<String> list;
 
@@ -137,14 +137,19 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
     }
 
     public void GoToGamePage(View v){
-        Intent goToGameActivity = new Intent(this, GameActivity.class);
-        goToGameActivity.putExtra("flag", "FROM_SUBJECTS");
-        goToGameActivity.putExtra("name", nameuserlogged);
-        goToGameActivity.putExtra("subject", temaEscolhido);
-        escolhaDifUser = spinner_dif.getSelectedItem().toString();
-        goToGameActivity.putExtra("difficulty", Integer.parseInt(escolhaDifUser)+1);
-        startActivity(goToGameActivity);
-        overridePendingTransition(0, 0);
+        if(temaEscolhido != "") {
+            Intent goToGameActivity = new Intent(this, GameActivity.class);
+            goToGameActivity.putExtra("flag", "FROM_SUBJECTS");
+            goToGameActivity.putExtra("name", nameuserlogged);
+            goToGameActivity.putExtra("subject", temaEscolhido);
+            escolhaDifUser = spinner_dif.getSelectedItem().toString();
+            goToGameActivity.putExtra("difficulty", Integer.parseInt(escolhaDifUser)+1);
+            startActivity(goToGameActivity);
+            overridePendingTransition(0, 0);
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Selecione um tema antes de começar a jogar", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void GoToBasePage(View v){
