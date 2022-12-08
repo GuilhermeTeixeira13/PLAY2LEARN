@@ -70,4 +70,10 @@ public class ProfileFragment extends Fragment {
 
         return view;
     }
+
+    public void seebio(View v) throws SQLException {
+        printbio printbio = new printbio();
+        printbio.execute();
+
+    }
 }
