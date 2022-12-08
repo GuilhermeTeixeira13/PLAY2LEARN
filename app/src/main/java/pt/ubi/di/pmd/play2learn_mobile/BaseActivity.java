@@ -136,66 +136,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private class addFriendToGroup extends AsyncTask<String,String,String>{
-        String nomeuser = "";
-        String z = "";
-        boolean isSuccess = false;
-
-        @Override
-        protected String doInBackground(String... strings) {
-            if (editTextNomeFriend.getText().toString().isEmpty()){
-                z= "You need to specify our name's friend";
-            }else {
-                nomeuser = editTextNomeFriend.getText().toString();
-                try {
-                    P2L_DbHelper connectNow = new P2L_DbHelper();
-                    Connection connectDB = connectNow.getConnection();
-
-                    if (connectDB== null){
-                        z = "Please check your internet connection";
-                    }else {
-                        String query = "select * from users where Name='"+nomeuser;
-
-                        Statement statement = connectDB.createStatement();
-
-                        ResultSet rs = statement.executeQuery(query);
-
-                        while (rs.next()){
-                            nameuserlogged = rs.getString(2);
-                            nameuserlogged = rs.getString(4);
-
-                            if(nameuserlogged.equals(nameuserlogged) && nameuserlogged.equals(nameuserlogged)){
-                                isSuccess = true;
-                                z = "Login successfull";
-                                System.out.println("Login successfull");
-                            }else {
-                                isSuccess = false;
-                                System.out.println("Login NOT successfull");
-                            }
-                        }
-
-                    }
-
-                } catch (SQLException e) {
-                    isSuccess = false;
-                    z = "Exceptions"+e;
-                }
-
-            }
-            return z;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            Toast.makeText(getBaseContext(),""+z,Toast.LENGTH_LONG).show();
-
-            if (isSuccess){
-                Intent intent = new Intent(BaseActivity.this, BaseActivity.class);
-                intent.putExtra("name", nameuserlogged);
-                startActivity(intent);
-            }
-        }
-    }
 
     public String getUserLogged(){
         return this.nameuserlogged;

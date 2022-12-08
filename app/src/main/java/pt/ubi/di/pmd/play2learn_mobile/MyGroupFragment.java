@@ -76,9 +76,6 @@ public class MyGroupFragment extends Fragment {
             }
         });
 
-
-
-
         // Change toolbar title
         getActivity().setTitle(getResources().getString(R.string.MyGroupFragment));
 
@@ -142,7 +139,6 @@ public class MyGroupFragment extends Fragment {
                             break;
                         }
 
-
                         String query2 = "SELECT IDFriend FROM userfriends WHERE IDUser = " + idUserLogged;
                         ResultSet rs2 = statement.executeQuery(query2);
 
@@ -193,8 +189,6 @@ public class MyGroupFragment extends Fragment {
             }
         }
     }
-
-
 
 
     // Consultar na BD a lista de amigos do UserLogado
