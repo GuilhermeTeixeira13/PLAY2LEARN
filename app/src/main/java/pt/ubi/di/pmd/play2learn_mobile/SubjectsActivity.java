@@ -41,7 +41,7 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
     private DifficultyAdapter adapter;
 
     private String escolhaDifUser;
-    private String temaEscolhido;
+    private String temaEscolhido = "";
 
     private List<String> list;
     int count = 0;
@@ -121,8 +121,14 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
     }
 
     public void GoToGamePage(View v){
-        Intent myIntent = new Intent(this, GameActivity.class);
-        startActivity(myIntent);
+        System.out.println("TEMA ESCOLHIDO: " + temaEscolhido);
+        if(temaEscolhido != "") {
+            Intent myIntent = new Intent(this, GameActivity.class);
+            startActivity(myIntent);
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Selecione um tema antes de começar a jogar", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void GoToBasePage(View v){
