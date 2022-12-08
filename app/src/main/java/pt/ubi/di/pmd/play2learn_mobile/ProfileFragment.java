@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
+import java.sql.SQLException;
+
 public class ProfileFragment extends Fragment {
     private final int PICK_IMAGE_REQUEST=99;
     private Uri imagepath;
@@ -31,6 +33,40 @@ public class ProfileFragment extends Fragment {
 
         // Change toolbar title
         getActivity().setTitle(getResources().getString(R.string.ProfileFragment));
+
+        BaseActivity BaseActivity = (BaseActivity) getActivity();
+        System.out.println("base");
+        System.out.println(BaseActivity);
+        userLogged = BaseActivity.getUserLogged();
+        System.out.println("userlogg");
+        System.out.println(userLogged);
+        // Change toolbar title
+        getActivity().setTitle(getResources().getString(R.string.ProfileFragment));
+        nameuser = view.findViewById(R.id.edTextName);
+        biogra = view.findViewById(R.id.edTextNameBibio);
+        picuser = view.findViewById(R.id.profilePic);
+        save = view.findViewById(R.id.BtnSave);
+        connectionhelper = new P2L_DbHelper();
+        try {
+            seebio(view);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        picuser.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                choseimage();
+            }
+        });
+        save.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                try {
+                    save(view);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         return view;
     }
