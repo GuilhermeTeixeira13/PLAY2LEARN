@@ -110,7 +110,12 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(SubjectsActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            final Toast toast = Toast.makeText(SubjectsActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    });
                 } else {
                     String query = "select Name from subjects";
 
