@@ -1,12 +1,16 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+<<<<<<< Updated upstream
 import android.widget.Adapter;
 import android.widget.AdapterView;
+=======
+>>>>>>> Stashed changes
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -17,7 +21,20 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuCompat;
 
+<<<<<<< Updated upstream
 public class ResultsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+=======
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ResultsActivity extends AppCompatActivity {
+>>>>>>> Stashed changes
+
+    private Spinner spinnerFriends;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +49,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         // Change toolbar title
         setTitle(getResources().getString(R.string.ResultsActivity));
 
+<<<<<<< Updated upstream
 
         // Spinner
         Spinner spinner = findViewById(R.id.spinnerCompareWith);
@@ -39,6 +57,13 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+=======
+        List<String> nameFriendsAssocieatedTest = new ArrayList<>();
+
+        // Spinner Friends Test
+        spinnerFriends = findViewById(R.id.spinnerCompareWith);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, );
+>>>>>>> Stashed changes
     }
 
     public void GoToBasePage(View v){
@@ -77,6 +102,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     }
 
 
+<<<<<<< Updated upstream
     // Spinner
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -87,5 +113,51 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+=======
+    // BD LIGAÇÃO FRIENDS ASSOCIATED WITH TEST ID
+    private class friendsAssTest extends AsyncTask<String,String,String> {
+        boolean isSuccess = false;
+        String z = "";
+        String idUserLogged;
+        ArrayList<String> friendsID = new ArrayList<>();
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                P2L_DbHelper connectNow = new P2L_DbHelper();
+                Connection connectDB = connectNow.getConnection();
+
+                if (connectDB == null) {
+                    Toast.makeText(ResultsActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                } else {
+                    String query1 = "SELECT id From users where users.Name='" + userLogged + "'";
+                    Statement statement = connectDB.createStatement();
+                    ResultSet rs1 = statement.executeQuery(query1);
+
+                    while (rs1.next()) {
+                        idUserLogged = rs1.getString(1);
+                    }
+
+                    String query2 = "SELECT IDFriend FROM userfriends WHERE IDUser = " + idUserLogged;
+                    ResultSet rs2 = statement.executeQuery(query2);
+
+                    while (rs2.next()) {
+                        friendsID.add(rs2.getString(1));
+                    }
+
+                    
+                }
+            } catch (SQLException e) {
+                isSuccess = false;
+                z = "Exceptions" + e;
+            }
+            return z;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, list);
+            listView.setAdapter(arrayAdapter);
+        }
+>>>>>>> Stashed changes
     }
 }
