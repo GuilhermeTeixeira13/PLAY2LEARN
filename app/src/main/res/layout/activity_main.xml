@@ -116,18 +116,4 @@
         android:textColor="@color/blue_link"
         app:layout_constraintTop_toBottomOf="@+id/account"
         android:onClick="GoToRegisterPage"/>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/GoToBasePage"
-        android:layout_width="181dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:textSize="10dp"
-        android:text="(provisório) ir para a base"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:onClick="GoToBasePage"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

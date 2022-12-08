@@ -36,7 +36,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     ImageView ProfileImage;
     TextView ProfileName;
-    EditText editTextNomeFriend;
+    TextView ProfileEmail;
     private String nameuserlogged;
 
     @Override
@@ -63,6 +63,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         // Set user profile Image and user name
         ProfileImage = navigationView.getHeaderView(0).findViewById(R.id.ProfileImage);
         ProfileName = navigationView.getHeaderView(0).findViewById(R.id.NavUserName);
+        ProfileEmail = navigationView.getHeaderView(0).findViewById(R.id.NavUserEmail);
 
         // The main activity will start on the MainPageFragment
         if (savedInstanceState == null) {
