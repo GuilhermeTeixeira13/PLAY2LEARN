@@ -26,11 +26,8 @@ public class GameActivity extends AppCompatActivity {
 
         // Change toolbar title
         setTitle(getResources().getString(R.string.SubjectsActivity));
-    }
 
-    public void GoToResultsPage(View v){
-        Intent myIntent = new Intent(this, ResultsActivity.class);
-        startActivity(myIntent);
+        // Receive subject id, , difficulty, username
     }
 
     public void GoToBasePage(View v){
