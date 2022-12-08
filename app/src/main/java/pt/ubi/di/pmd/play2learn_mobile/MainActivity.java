@@ -45,9 +45,10 @@ public class MainActivity extends AppCompatActivity {
         if (sp.contains("uname")){
             //System.out.println("dei auto login pelas shp");
             a = sp.getString("uname", "");
-            Intent intent = new Intent(this, BaseActivity.class);
-            intent.putExtra("username", a);
-            startActivity(intent);
+            Intent goToMainActivity = new Intent(MainActivity.this, BaseActivity.class);
+            goToMainActivity.putExtra("flag", "FROM_MAIN");
+            goToMainActivity.putExtra("name", a);
+            startActivity(goToMainActivity);
 
         }
 
@@ -61,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
     public void Login(View v) throws SQLException {
         Dologin dologin = new Dologin();
         dologin.execute();
-
     }
 
     private class Dologin extends AsyncTask<String,String,String>{
@@ -138,16 +138,12 @@ public class MainActivity extends AppCompatActivity {
                 editor.putString("uname", user);
                 editor.apply();
 
-                Intent intent = new Intent(MainActivity.this, BaseActivity.class);
-                intent.putExtra("name", user);
-                startActivity(intent);
+                Intent goToMainActivity = new Intent(MainActivity.this, BaseActivity.class);
+                goToMainActivity.putExtra("flag", "FROM_MAIN");
+                goToMainActivity.putExtra("name", user);
+                startActivity(goToMainActivity);
             }
         }
-    }
-
-    public void GoToBasePage(View v){
-        Intent myIntent = new Intent(this, BaseActivity.class);
-        startActivity(myIntent);
     }
 
     public void GoToRegisterPage(View v){

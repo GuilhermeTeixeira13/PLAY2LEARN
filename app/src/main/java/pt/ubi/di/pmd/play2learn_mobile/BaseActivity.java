@@ -10,27 +10,14 @@ import androidx.core.view.MenuCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
@@ -72,10 +59,13 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.nav_game);
         }
 
-        // MyGroup
-        Intent iCameFromMainNameUser = getIntent();
-        nameuserlogged = iCameFromMainNameUser.getStringExtra("name");
-        System.out.println("ON CREATE DA ATIVIDADE BASE, NOME USER: " + nameuserlogged);
+        // Check flag and initialize objects
+        Intent intent = getIntent();
+        String checkFlag= intent.getStringExtra("flag");
+        if(checkFlag.equals("FROM_MAIN")){
+            nameuserlogged = intent.getStringExtra("name");
+            ProfileName.setText(nameuserlogged);
+        }
     }
 
     public void GoToSubjectsPage(View v){
