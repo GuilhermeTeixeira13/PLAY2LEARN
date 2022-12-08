@@ -1,16 +1,11 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,21 +14,24 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuCompat;
 
-import org.w3c.dom.ls.LSOutput;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Locale;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class GameActivity extends AppCompatActivity {
 
     String user_name;
     int game_difficulty;
     String game_subject;
-    private ArrayList<Question> questions;
+    private ArrayList<Question> selected_questions;
+    int num_of_questions = 3;
+    private static final Random RANDOM = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +55,7 @@ public class GameActivity extends AppCompatActivity {
             game_difficulty = (int) intent.getSerializableExtra("difficulty");
         }
 
-        questions = new ArrayList<>();
+        selected_questions = new ArrayList<>();
 
         // Get questions
         GetQuestions getQuestions = new GetQuestions();
@@ -87,13 +85,23 @@ public class GameActivity extends AppCompatActivity {
                         id_subject = rs.getString(1);
                     }
 
+                    ArrayList<Question> all_questions = new ArrayList<>();
                     query = "SELECT * FROM questions_eng WHERE IDSubject = "+id_subject+" AND Difficulty = "+game_difficulty+";";
                     statement = connectDB.createStatement();
                     rs = statement.executeQuery(query);
                     while (rs.next()) {
                         Question q = new Question(Integer.valueOf(rs.getString(1)), Integer.valueOf(rs.getString(2)), rs.getString(3), Integer.valueOf(rs.getString(4)), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
-                        questions.add(q);
+                        all_questions.add(q);
                     }
+
+                    Set<Integer> randoms = pickRandom(num_of_questions, all_questions.size());
+                    List<Integer> random_selection = new ArrayList<Integer>(randoms);
+
+                    for(int i = 0 ; i < random_selection.size(); i++)
+                        selected_questions.add(all_questions.get(random_selection.get(i)));
+
+                    System.out.println(all_questions);
+                    System.out.println(selected_questions);
                 }
             } catch (SQLException e) {
                 isSuccess = false;
@@ -106,6 +114,14 @@ public class GameActivity extends AppCompatActivity {
     public void GoToBasePage(View v){
         Intent myIntent = new Intent(this, BaseActivity.class);
         startActivity(myIntent);
+    }
+
+    public Set<Integer> pickRandom(int n, int k) {
+        final Set<Integer> picked = new HashSet<>();
+        while (picked.size() < n) {
+            picked.add(RANDOM.nextInt(k));
+        }
+        return picked;
     }
 
     // Inflating the toolbar
