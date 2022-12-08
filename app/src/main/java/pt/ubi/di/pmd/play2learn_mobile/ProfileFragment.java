@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
+import java.io.ByteArrayOutputStream;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -142,6 +143,44 @@ public class ProfileFragment extends Fragment {
             if (picexist){
                 picuser.setImageBitmap(btm);
             }
+        }
+    }
+
+    private class savedata extends AsyncTask<String,String,String>{
+        String bio = biogra.getText().toString();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] imagebArray;
+        String z;
+        @Override
+        protected String doInBackground(String... strings) {
+            imageTostore.compress(Bitmap.CompressFormat.JPEG, 70, bos);
+            byte[] imagebArray = bos.toByteArray();
+            if (bio.isEmpty() || imagebArray.equals(null)){
+                z="all fields required";
+            }else {
+                try {
+                    P2L_DbHelper connectNow = new P2L_DbHelper();
+                    Connection connectDB = connectNow.getConnection();
+
+                    if (connectDB == null) {
+                        z="Please check your internet connection";
+                    } else {
+                        System.out.println("1");
+                        String query = "UPDATE users Set Biblio='" + bio + "', ProfilePic ='"+imagebArray+"' where Name = '" + userLogged + "'";
+
+                        Statement statement = connectDB.createStatement();
+                        statement.executeUpdate(query);
+
+                        z="Update is successfull";
+                    }
+                } catch (Exception e) {
+                    z="error";
+                }
+            }
+            return z;
+        }
+        protected void onPostExecute(String s) {
+            Toast.makeText(getContext(),""+z,Toast.LENGTH_LONG).show();
         }
     }
 }
