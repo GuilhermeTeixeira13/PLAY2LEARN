@@ -50,4 +50,5 @@
     <string name="difEasy">Easy</string>
     <string name="difMedium">Medium</string>
     <string name="difHard">Hard</string>
+    <string name="question">question</string>
 </resources>

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,12 +27,14 @@ import java.util.Set;
 
 public class GameActivity extends AppCompatActivity {
 
+    TextView txt_game_difficulty;
     String user_name;
     int game_difficulty;
     String game_subject;
     private ArrayList<Question> selected_questions;
     int num_of_questions = 3;
     private static final Random RANDOM = new Random();
+    private String[] difs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +58,10 @@ public class GameActivity extends AppCompatActivity {
             game_difficulty = (int) intent.getSerializableExtra("difficulty");
         }
 
+        txt_game_difficulty = (TextView) findViewById(R.id.questionDificulty);
+
         selected_questions = new ArrayList<>();
+        difs = new String[] {getResources().getString(R.string.difEasy), getResources().getString(R.string.difMedium), getResources().getString(R.string.difHard)};
 
         // Get questions
         GetQuestions getQuestions = new GetQuestions();
@@ -102,12 +108,33 @@ public class GameActivity extends AppCompatActivity {
 
                     System.out.println(all_questions);
                     System.out.println(selected_questions);
+
+                    game(selected_questions);
                 }
             } catch (SQLException e) {
                 isSuccess = false;
                 z = "Exceptions" + e;
             }
             return z;
+        }
+    }
+
+    public void game (ArrayList<Question> questions){
+        setDifficultyText();
+
+    }
+
+    public void setDifficultyText(){
+        String locale = getApplicationContext().getResources().getConfiguration().locale.getLanguage();
+        String txt = "";
+
+        if (locale.equals("en")){
+            txt = difs[game_difficulty]+getResources().getString(R.string.question);
+            txt_game_difficulty.setText(txt);
+        }
+        else if (locale.equals("pt")){
+            txt = (getResources().getString(R.string.question)).substring(0, 1).toUpperCase() + (getResources().getString(R.string.question)).substring(1) + " " + difs[game_difficulty-1];
+            txt_game_difficulty.setText(txt);
         }
     }
 
