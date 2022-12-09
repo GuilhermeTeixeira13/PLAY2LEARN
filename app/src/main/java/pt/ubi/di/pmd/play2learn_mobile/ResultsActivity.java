@@ -67,6 +67,9 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
 
         spinnerFriends.setOnItemSelectedListener(this);
 
+        ResultsActivity.currentTestByUser currentTest = new ResultsActivity.currentTestByUser();
+        currentTest.execute();
+
 
     }
 
@@ -191,6 +194,58 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         protected void onPostExecute(String s) {
             ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, friendsName);
             spinnerFriends.setAdapter(spinnerAdapter);
+        }
+    }
+
+    // BD LIGAÇÃO Search Current Test by User
+    private class currentTestByUser extends AsyncTask<String,String,String> {
+        boolean isSuccess = false;
+        String z = "";
+        String idUserLogged;
+        String correctAns;
+        String wrongAns;
+        String time;
+        String score;
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                P2L_DbHelper connectNow = new P2L_DbHelper();
+                Connection connectDB = connectNow.getConnection();
+
+                if (connectDB == null) {
+                    Toast.makeText(ResultsActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                } else {
+                    String query1 = "SELECT id From users where users.Name='" + nameuserlogged + "'";
+                    Statement statement = connectDB.createStatement();
+                    ResultSet rs1 = statement.executeQuery(query1);
+
+                    while (rs1.next()) {
+                        idUserLogged = rs1.getString(1);
+                    }
+
+                    String query3 = "SELECT * FROM userresults WHERE IDUser = " + idUserLogged + " and IDSubject = " + temaID + " and Difficulty = " + difEsc + " Order by ID DESC";
+                    ResultSet rs3 = statement.executeQuery(query3);
+
+                    while (rs3.next()) {
+                        correctAns = rs3.getString(5);
+                        wrongAns = rs3.getString(6);;
+                        time = rs3.getString(7);;
+                        score = rs3.getString(8);;
+                        break;
+                    }
+
+                }
+            } catch (SQLException e) {
+                isSuccess = false;
+                z = "Exceptions" + e;
+            }
+            return z;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            System.out.println("ID USER LOGGED: " + idUserLogged);
+            System.out.println("CORRECT ANS: "+ correctAns);
         }
     }
 }
