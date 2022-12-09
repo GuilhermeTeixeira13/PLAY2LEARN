@@ -42,8 +42,10 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
 
     private int escolhaDifUser;
     private String temaEscolhido;
+    private String temaEscolhidoId;
 
     private List<String> list;
+    private List<String> listId;
 
     String nameuserlogged;
 
@@ -73,6 +75,7 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
         // ListView
         listView = findViewById(R.id.listview);
         list = new ArrayList<>();
+        listId = new ArrayList<>();
 
         // BD - Subjects
         acessSubjects accSubj = new acessSubjects();
@@ -81,7 +84,7 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 temaEscolhido = list.get(i);
-                System.out.println(temaEscolhido);
+                temaEscolhidoId = listId.get(i);
             }
         });
     }
@@ -126,6 +129,12 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
                     while (rs.next()) {
                         list.add(rs.getString(1));
                     }
+
+                    String query1 = "select Id from subjects";
+                    ResultSet rs1 = statement.executeQuery(query1);
+                    while (rs1.next()) {
+                        listId.add(rs1.getString(1));
+                    }
                 }
                 System.out.println(list);
             } catch (SQLException e) {
@@ -146,6 +155,8 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
         Intent myIntent = new Intent(this, GameActivity.class);
         myIntent.putExtra("userlogged", nameuserlogged);
         myIntent.putExtra("difEsc", escolhaDifUser);
+        myIntent.putExtra("temaEsc", temaEscolhido);
+        myIntent.putExtra("temaEscId", temaEscolhidoId);
         startActivity(myIntent);
     }
 

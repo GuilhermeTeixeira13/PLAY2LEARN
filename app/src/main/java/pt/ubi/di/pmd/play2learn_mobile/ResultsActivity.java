@@ -30,12 +30,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ResultsActivity extends AppCompatActivity {
+public class ResultsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private Spinner spinnerFriends;
     ArrayList<String> friendsName = new ArrayList<>();
     String nameuserlogged;
     int difEsc;
+    String temaID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,14 @@ public class ResultsActivity extends AppCompatActivity {
         Intent iCameFromMainNameUser = getIntent();
         nameuserlogged = iCameFromMainNameUser.getStringExtra("ulogged");
         difEsc = iCameFromMainNameUser.getIntExtra("dif", -1);
-        System.out.println("NAME: " + nameuserlogged + "  DIF: " + difEsc);
+        temaID = iCameFromMainNameUser.getStringExtra("temaID");
+
+        System.out.println("USER LOGADO: "+ nameuserlogged + "  DIF: "+ difEsc + "TemaID: " + temaID);
+
+        ResultsActivity.friendsAssTest friendsTest = new ResultsActivity.friendsAssTest();
+        friendsTest.execute();
+
+        spinnerFriends.setOnItemSelectedListener(this);
 
 
     }
@@ -97,6 +105,16 @@ public class ResultsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        System.out.println("SELECIONASTE O " + adapterView.getItemAtPosition(i).toString());
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
 
     // BD LIGAÇÃO FRIENDS ASSOCIATED WITH TEST ID
     private class friendsAssTest extends AsyncTask<String,String,String> {
@@ -104,6 +122,9 @@ public class ResultsActivity extends AppCompatActivity {
         String z = "";
         String idUserLogged;
         ArrayList<String> friendsID = new ArrayList<>();
+        ArrayList<String> testID = new ArrayList<>();
+        ArrayList<String> friendsIdSameTest = new ArrayList<>();
+        ArrayList<String> friendsNameSameTest = new ArrayList<>();
         @Override
         protected String doInBackground(String... strings) {
             try {
@@ -128,7 +149,36 @@ public class ResultsActivity extends AppCompatActivity {
                         friendsID.add(rs2.getString(1));
                     }
 
-                    
+                    for(int i = 0; i < friendsID.size(); i++) {
+                        String query3 = "SELECT id FROM userresults WHERE IDUser =" + friendsID.get(i) + " and IDSubject =" + temaID + " and Difficulty = " + difEsc;
+                        ResultSet rs3 = statement.executeQuery(query3);
+
+                        while (rs3.next()) {
+                            testID.add(rs3.getString(1));
+                        }
+                    }
+
+                    for(int i = 0; i < testID.size(); i++) {
+                        String query4 = "SELECT idUser FROM userresults WHERE id = " + testID.get(i);
+                        ResultSet rs4 = statement.executeQuery(query4);
+
+                        while (rs4.next()) {
+                            friendsIdSameTest.add(rs4.getString(1));
+                        }
+                    }
+
+                    for(int i = 0; i < friendsIdSameTest.size(); i++) {
+                        String query5 = "SELECT Name FROM users WHERE id = " + friendsIdSameTest.get(i);
+                        ResultSet rs5 = statement.executeQuery(query5);
+
+                        while (rs5.next()) {
+                            friendsNameSameTest.add(rs5.getString(1));
+                        }
+                    }
+                    for(int i = 0; i < friendsNameSameTest.size(); i++) {
+                        friendsName.add(friendsNameSameTest.get(i));
+                    }
+                    System.out.println("FRIENDS ID: "+ friendsName);
                 }
             } catch (SQLException e) {
                 isSuccess = false;
