@@ -80,6 +80,7 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
         // BD - Subjects
         acessSubjects accSubj = new acessSubjects();
         accSubj.execute();
+        temaEscolhido = "";
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -152,12 +153,17 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
     }
 
     public void GoToGamePage(View v){
-        Intent myIntent = new Intent(this, GameActivity.class);
-        myIntent.putExtra("userlogged", nameuserlogged);
-        myIntent.putExtra("difEsc", escolhaDifUser);
-        myIntent.putExtra("temaEsc", temaEscolhido);
-        myIntent.putExtra("temaEscId", temaEscolhidoId);
-        startActivity(myIntent);
+        if(!temaEscolhido.equals("")) {
+            Intent myIntent = new Intent(this, GameActivity.class);
+            myIntent.putExtra("userlogged", nameuserlogged);
+            myIntent.putExtra("difEsc", escolhaDifUser);
+            myIntent.putExtra("temaEsc", temaEscolhido);
+            myIntent.putExtra("temaEscId", temaEscolhidoId);
+            startActivity(myIntent);
+        }
+        else {
+            Toast.makeText(v.getContext(), "Escolha um tema antes de começar!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void GoToBasePage(View v){
