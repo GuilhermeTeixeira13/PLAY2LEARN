@@ -15,6 +15,7 @@ import androidx.core.view.MenuCompat;
 public class GameActivity extends AppCompatActivity {
 
     String nameuserlogged;
+    int difEscolhida;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -31,11 +32,15 @@ public class GameActivity extends AppCompatActivity {
         Intent iCameFromMainNameUser = getIntent();
         nameuserlogged = iCameFromMainNameUser.getStringExtra("userlogged");
         System.out.println("game activy NAME: " + nameuserlogged);
+
+        difEscolhida = iCameFromMainNameUser.getIntExtra("difEsc", -1);
+        System.out.println("Dif: " + difEscolhida);
     }
 
     public void GoToResultsPage(View v){
         Intent myIntent = new Intent(this, ResultsActivity.class);
         myIntent.putExtra("ulogged", nameuserlogged);
+        myIntent.putExtra("dif", difEscolhida);
         startActivity(myIntent);
     }
 

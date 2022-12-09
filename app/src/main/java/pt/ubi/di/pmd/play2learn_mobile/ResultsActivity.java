@@ -35,6 +35,7 @@ public class ResultsActivity extends AppCompatActivity {
     private Spinner spinnerFriends;
     ArrayList<String> friendsName = new ArrayList<>();
     String nameuserlogged;
+    int difEsc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,8 @@ public class ResultsActivity extends AppCompatActivity {
 
         Intent iCameFromMainNameUser = getIntent();
         nameuserlogged = iCameFromMainNameUser.getStringExtra("ulogged");
-        System.out.println("USER LOGGED:" + nameuserlogged);
+        difEsc = iCameFromMainNameUser.getIntExtra("dif", -1);
+        System.out.println("NAME: " + nameuserlogged + "  DIF: " + difEsc);
 
 
     }

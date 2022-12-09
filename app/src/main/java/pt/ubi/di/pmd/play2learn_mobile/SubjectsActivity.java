@@ -32,7 +32,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubjectsActivity extends AppCompatActivity implements CustomSpinnerDif.OnSpinnerEventsListener{
+public class SubjectsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     // Spinner Variables
     private CustomSpinnerDif spinner_dif;
@@ -40,7 +40,7 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
 
     private DifficultyAdapter adapter;
 
-    private String escolhaDifUser;
+    private int escolhaDifUser;
     private String temaEscolhido;
 
     private List<String> list;
@@ -66,10 +66,9 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
 
         // Spinner
         spinner_dif = findViewById(R.id.spinnerDifficulty);
-        spinner_dif.setSpinnerEventsListener(this);
         adapter = new DifficultyAdapter(    SubjectsActivity.this, DataDifficulty.getDifficultyList());
         spinner_dif.setAdapter(adapter);
-        escolhaDifUser = spinner_dif.getSelectedItem().toString();
+        spinner_dif.setOnItemSelectedListener(this);
 
         // ListView
         listView = findViewById(R.id.listview);
@@ -85,6 +84,24 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
                 System.out.println(temaEscolhido);
             }
         });
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        if(i == 0) {
+            escolhaDifUser = 1;
+        }
+        if(i == 1) {
+            escolhaDifUser = 2;
+        }
+        if(i == 2) {
+            escolhaDifUser = 3;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 
 
@@ -128,6 +145,7 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
     public void GoToGamePage(View v){
         Intent myIntent = new Intent(this, GameActivity.class);
         myIntent.putExtra("userlogged", nameuserlogged);
+        myIntent.putExtra("difEsc", escolhaDifUser);
         startActivity(myIntent);
     }
 
@@ -166,14 +184,4 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
         return super.onOptionsItemSelected(item);
     }
 
-    // Spinner Methods
-    @Override
-    public void onPopupWindowOpened(Spinner spinner) {
-
-    }
-
-    @Override
-    public void onPopupWindowClosed(Spinner spinner) {
-
-    }
 }
