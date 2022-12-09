@@ -52,4 +52,7 @@
     <string name="difMedium">Média</string>
     <string name="difHard">Difícil</string>
     <string name="question">questão</string>
+    <string name="submited">SUBMETIDO!</string>
+    <string name="wrong">Resposta errada!</string>
+    <string name="right">Resposta certa!</string>
 </resources>

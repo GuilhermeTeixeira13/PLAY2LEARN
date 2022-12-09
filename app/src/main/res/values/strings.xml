@@ -51,4 +51,7 @@
     <string name="difMedium">Medium</string>
     <string name="difHard">Hard</string>
     <string name="question">question</string>
+    <string name="submited">SUBMITED!</string>
+    <string name="wrong">Wrong answer!</string>
+    <string name="right">Right answer!</string>
 </resources>
