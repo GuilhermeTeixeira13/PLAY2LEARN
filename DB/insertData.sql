@@ -36,3 +36,8 @@ INSERT INTO `questions_pt` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightA
 INSERT INTO `questions_pt` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'qual é a resposta certa de portugues?', 'facil', 'esta é a certa', 'esta está errada1', 'esta está errada2', 'esta está errada3');
 INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '1', 'what is the biggest planet on the solar system?', 'easy', 'Jupiter', 'Mars', 'Earth', 'Saturn');
 INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'what is a portuguese word?', 'hard', 'ola', 'hello', 'good', 'hola');
+
+
+-- Insert Results 
+INSERT INTO `userresults` (`id`, `IDSubject`, `IDUser`, `Score`, `NumCorrectAns`, `NumWrongAns`, `TimeToSolve`, `Difficulty`) VALUES (NULL, '2', 1, 90, 9, 1, '09-12-2022 12:18:34', 2);
+INSERT INTO `userresults` (`id`, `IDSubject`, `IDUser`, `Score`, `NumCorrectAns`, `NumWrongAns`, `TimeToSolve`, `Difficulty`) VALUES (NULL, '2', 3, 75, 6, 4, '09-12-2022 17:18:34', 2);
