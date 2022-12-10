@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText usr, password;
     P2L_DbHelper connectionhelper;
-    String a;
+    String autolog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
         if (sp.contains("uname")){
             //System.out.println("dei auto login pelas shp");
-            a = sp.getString("uname", "");
+            autolog = sp.getString("uname", "");
             Intent intent = new Intent(this, BaseActivity.class);
-            intent.putExtra("username", a);
+            intent.putExtra("username", autolog);
             startActivity(intent);
 
         }
