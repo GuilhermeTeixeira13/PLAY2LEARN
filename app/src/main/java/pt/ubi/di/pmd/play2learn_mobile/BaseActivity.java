@@ -62,7 +62,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         // Check flag and initialize objects
         Intent intent = getIntent();
         String checkFlag= intent.getStringExtra("flag");
-        if(checkFlag.equals("FROM_MAIN")){
+        if(checkFlag.equals("FROM_MAIN") || checkFlag.equals("FROM_GAME") || checkFlag.equals("FROM_SUBJECTS")){
             nameuserlogged = intent.getStringExtra("name");
             ProfileName.setText(nameuserlogged);
         }

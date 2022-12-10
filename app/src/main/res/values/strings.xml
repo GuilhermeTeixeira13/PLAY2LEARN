@@ -51,7 +51,10 @@
     <string name="difMedium">Medium</string>
     <string name="difHard">Hard</string>
     <string name="question">question</string>
-    <string name="submited">SUBMITED!</string>
     <string name="wrong">Wrong answer!</string>
     <string name="right">Right answer!</string>
+    <string name="YES">YES!</string>
+    <string name="NO">NO!</string>
+    <string name="GoHome1">Are you sure?</string>
+    <string name="GoHome2">Do you want end the current game and go back to the main page?</string>
 </resources>

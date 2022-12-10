@@ -1,5 +1,7 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -158,8 +160,10 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
     }
 
     public void GoToBasePage(View v){
-        Intent myIntent = new Intent(this, BaseActivity.class);
-        startActivity(myIntent);
+        Intent goToBaseActivity = new Intent(this, BaseActivity.class);
+        goToBaseActivity.putExtra("flag", "FROM_SUBJECTS");
+        goToBaseActivity.putExtra("name", nameuserlogged);
+        startActivity(goToBaseActivity);
     }
 
     // Inflating the toolbar
@@ -184,9 +188,18 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
                 startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.Share2)));
                 break;
             case R.id.homeButton:
-                // Mostrar aviso
-
-                GoToBasePage(getWindow().getDecorView());
+                new AlertDialog.Builder(SubjectsActivity.this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle(getResources().getString(R.string.GoHome1))
+                        .setMessage(getResources().getString(R.string.GoHome2))
+                        .setPositiveButton(getResources().getString(R.string.YES), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                GoToBasePage(getWindow().getDecorView());
+                            }
+                        })
+                        .setNegativeButton(getResources().getString(R.string.NO), null)
+                        .show();
                 break;
         }
         return super.onOptionsItemSelected(item);

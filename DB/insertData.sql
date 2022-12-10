@@ -3,13 +3,13 @@
 INSERT INTO `subjects` (`id`, `Name`, `Image`) VALUES (NULL, 'Planets', NULL); 
 
 INSERT INTO `questions_pt` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '1', 'Qual é o planeta mais pequeno do Sistema Solar?', 1, 'Mercúrio', 'Júpiter', 'Vénus', 'Marte');
-INSERT INTO `questions_pt` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '1', 'QUal é o maior planeta do Sistema Solar?', 1, 'Júpiter', 'Saturno', 'Neptuno', 'Marte');
+INSERT INTO `questions_pt` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '1', 'Qual é o maior planeta do Sistema Solar?', 1, 'Júpiter', 'Saturno', 'Neptuno', 'Marte');
 INSERT INTO `questions_pt` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '1', 'Qual é o planeta mais quente do Sistema Solar?', 1, 'Vénus', 'Mercúrio', 'Terra', 'Júpiter');
 INSERT INTO `questions_pt` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '1', 'O sexto planeta do Sistema Solar possui um extenso anel, qual é o nome desse planeta?', 1, 'Saturno', 'Júpiter', 'Neptuno', 'Marte');
 INSERT INTO `questions_pt` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '1', 'O elemento químico Urânio foi nomeado depois de que planeta?', 2, 'Urânio', 'Saturno', 'Marte', 'Terra');
 INSERT INTO `questions_pt` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '1', 'Qual é o planeta mais distante do sol, no Sistema Solar', 2, 'Neptuno', 'Urânio', 'Marte', 'Mercúrio');
 INSERT INTO `questions_pt` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '1', 'Qual é o segundo planeta mais pequeno, dentro do Sistema Solar?', 2, 'Marte', 'Mercúrio', 'Terra', 'Neptuno');
-INSERT INTO `questions_pt` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '1', 'QUal é o planeta mais próximo em tamanho da Terra?', 2, 'Vénus', 'Mercúrio', 'Marte', 'Saturno');
+INSERT INTO `questions_pt` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '1', 'Qual é o planeta mais próximo em tamanho da Terra?', 2, 'Vénus', 'Mercúrio', 'Marte', 'Saturno');
 INSERT INTO `questions_pt` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '1', 'A lua Titã orbita que planeta?', 3, 'Saturno', 'Mercúrio', 'Marte', 'Júpiter');
 INSERT INTO `questions_pt` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '1', 'Qual é o planeta denomidado por "Planeta Vermelho?"', 3, 'Marte', 'Mercúrio', 'Vénus', 'Júpiter');
 INSERT INTO `questions_pt` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '1', 'As luas da Galiléia orbitam que planeta?', 3, 'Júpiter', 'Mercúrio', 'Terra', 'Neptuno');

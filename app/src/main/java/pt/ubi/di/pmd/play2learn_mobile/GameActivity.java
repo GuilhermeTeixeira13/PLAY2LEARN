@@ -1,6 +1,10 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -34,7 +38,6 @@ public class GameActivity extends AppCompatActivity {
     TextView TxtViewGameDifficulty;
     TextView TxtViewQuestion;
     TextView TextViewCorrectOrWrong;
-    Button BtnNextQuestion;
     Button BtnSubmit;
     CheckBox CheckBox1;
     CheckBox CheckBox2;
@@ -44,7 +47,6 @@ public class GameActivity extends AppCompatActivity {
     String user_name;
     int game_difficulty;
     String game_subject;
-    boolean submitButtonClicked;
 
     private ArrayList<Question> selected_questions;
     int num_of_questions = 3;
@@ -73,21 +75,19 @@ public class GameActivity extends AppCompatActivity {
             game_difficulty = (int) intent.getSerializableExtra("difficulty");
         }
 
-        TxtViewGameDifficulty = (TextView) findViewById(R.id.questionDificulty);
-        TxtViewQuestion = (TextView) findViewById(R.id.question);
-        TextViewCorrectOrWrong = (TextView) findViewById(R.id.correctWrong);
-        BtnNextQuestion = (Button) findViewById(R.id.BtnNextQuestion);
-        BtnSubmit = (Button) findViewById(R.id.BtnSubmit);
-        CheckBox1 = (CheckBox) findViewById(R.id.checkBox1);
-        CheckBox2 = (CheckBox) findViewById(R.id.checkBox2);
-        CheckBox3 = (CheckBox) findViewById(R.id.checkBox3);
-        CheckBox4 = (CheckBox) findViewById(R.id.checkBox4);
+        TxtViewGameDifficulty = findViewById(R.id.questionDificulty);
+        TxtViewQuestion = findViewById(R.id.question);
+        TextViewCorrectOrWrong = findViewById(R.id.correctWrong);
+        BtnSubmit = findViewById(R.id.BtnSubmit);
+        CheckBox1 = findViewById(R.id.checkBox1);
+        CheckBox2 = findViewById(R.id.checkBox2);
+        CheckBox3 = findViewById(R.id.checkBox3);
+        CheckBox4 = findViewById(R.id.checkBox4);
 
         selected_questions = new ArrayList<>();
         difs = new String[] {getResources().getString(R.string.difEasy), getResources().getString(R.string.difMedium), getResources().getString(R.string.difHard)};
-        submitButtonClicked = false;
 
-        // Get questions
+        // Build game flow
         BuildGame buildGame = new BuildGame();
         buildGame.execute();
     }
@@ -139,6 +139,7 @@ public class GameActivity extends AppCompatActivity {
 
     public ArrayList<Question> getQuestions(Connection connectDB, String id_subject) throws SQLException {
         String languange = getCurrentLanguage();
+
         String query = "";
         if(languange.equals("pt")){
             query = "SELECT * FROM questions_pt WHERE IDSubject = "+id_subject+" AND Difficulty = " + game_difficulty + ";";
@@ -160,7 +161,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void game (ArrayList<Question> questions, int question_num){
-        prepareForNewQuestion();
+        prepareForNewQuestion(question_num);
 
         Question question = questions.get(question_num);
         ArrayList<Answer> answers = shuffleAnswers(question);
@@ -173,42 +174,40 @@ public class GameActivity extends AppCompatActivity {
                 BtnSubmit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        submitButtonClicked = true;
+                        if(BtnSubmit.getText().equals(getResources().getString(R.string.Submit))){
+                            if(CheckBox1.isChecked() && !CheckBox2.isChecked() && !CheckBox3.isChecked() && !CheckBox4.isChecked()){
+                                if(answers.get(0).isRightAnswer())
+                                    rightAnswer();
+                                else
+                                    wrongAnswer();
+                                afterSubmission();
+                            }
+                            else if(CheckBox2.isChecked() && !CheckBox1.isChecked() && !CheckBox3.isChecked() && !CheckBox4.isChecked()){
+                                if(answers.get(1).isRightAnswer())
+                                    rightAnswer();
 
-                        if(CheckBox1.isChecked() && !CheckBox2.isChecked() && !CheckBox3.isChecked() && !CheckBox4.isChecked()){
-                            if(answers.get(0).isRightAnswer())
-                                rightAnswer();
-                            else
-                                wrongAnswer();
-                        }
-                        else if(CheckBox2.isChecked() && !CheckBox1.isChecked() && !CheckBox3.isChecked() && !CheckBox4.isChecked()){
-                            if(answers.get(1).isRightAnswer())
-                                rightAnswer();
-
-                            else
-                                wrongAnswer();
-                        }
-                        else if(CheckBox3.isChecked() && !CheckBox1.isChecked() && !CheckBox2.isChecked() && !CheckBox4.isChecked()){
-                            if(answers.get(2).isRightAnswer())
-                                rightAnswer();
-                            else
-                                wrongAnswer();
-                        }
-                        else if(CheckBox4.isChecked() && !CheckBox1.isChecked() && !CheckBox2.isChecked() && !CheckBox3.isChecked()){
-                            if(answers.get(3).isRightAnswer())
-                                rightAnswer();
-                            else
-                                wrongAnswer();
-                        }
-
-                        afterSubmission();
-                    }
-                });
-
-                BtnNextQuestion.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(submitButtonClicked){
+                                else
+                                    wrongAnswer();
+                                afterSubmission();
+                            }
+                            else if(CheckBox3.isChecked() && !CheckBox1.isChecked() && !CheckBox2.isChecked() && !CheckBox4.isChecked()){
+                                if(answers.get(2).isRightAnswer())
+                                    rightAnswer();
+                                else
+                                    wrongAnswer();
+                                afterSubmission();
+                            }
+                            else if(CheckBox4.isChecked() && !CheckBox1.isChecked() && !CheckBox2.isChecked() && !CheckBox3.isChecked()){
+                                if(answers.get(3).isRightAnswer())
+                                    rightAnswer();
+                                else
+                                    wrongAnswer();
+                                afterSubmission();
+                            }
+                            else {
+                                // Aviso -> Verifique as suas respostas
+                            }
+                        } else {
                             if(question_num+1 < num_of_questions)
                                 game(questions, question_num+1);
                             else
@@ -216,7 +215,6 @@ public class GameActivity extends AppCompatActivity {
                         }
                     }
                 });
-
             }
         });
     }
@@ -256,25 +254,24 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void afterSubmission(){
-        BtnSubmit.setText(getResources().getString(R.string.submited));
-        BtnSubmit.setEnabled(false);
-
         CheckBox1.setEnabled(false);
         CheckBox2.setEnabled(false);
         CheckBox3.setEnabled(false);
         CheckBox4.setEnabled(false);
+
+        BtnSubmit.setText(getResources().getString(R.string.NextQuestion));
     }
 
-    public void prepareForNewQuestion(){
+    public void prepareForNewQuestion(int question_num){
         String languange = getCurrentLanguage();
-        String txt = "";
+        String txt = (question_num+1) + " - ";
 
         if (languange.equals("en")){
-            txt = difs[game_difficulty]+getResources().getString(R.string.question);
+            txt = txt + difs[game_difficulty-1] + " " + getResources().getString(R.string.question);
             TxtViewGameDifficulty.setText(txt);
         }
         else if (languange.equals("pt")){
-            txt = (getResources().getString(R.string.question)).substring(0, 1).toUpperCase() + (getResources().getString(R.string.question)).substring(1) + " " + difs[game_difficulty-1];
+            txt = txt + (getResources().getString(R.string.question)).substring(0, 1).toUpperCase() + (getResources().getString(R.string.question)).substring(1) + " " + difs[game_difficulty-1];
             TxtViewGameDifficulty.setText(txt);
         }
 
@@ -291,17 +288,20 @@ public class GameActivity extends AppCompatActivity {
         CheckBox2.setEnabled(true);
         CheckBox3.setEnabled(true);
         CheckBox4.setEnabled(true);
-
-        submitButtonClicked = false;
     }
 
     public String getCurrentLanguage(){
-        return getApplicationContext().getResources().getConfiguration().locale.getLanguage();
+        SharedPreferences prefs = getSharedPreferences("CommonPrefs", MODE_PRIVATE);
+        String locale = prefs.getString("Language", "en");
+
+        return locale;
     }
 
     public void GoToBasePage(View v){
-        Intent myIntent = new Intent(this, BaseActivity.class);
-        startActivity(myIntent);
+        Intent goToBaseActivity = new Intent(this, BaseActivity.class);
+        goToBaseActivity.putExtra("flag", "FROM_GAME");
+        goToBaseActivity.putExtra("name", user_name);
+        startActivity(goToBaseActivity);
     }
 
     public Set<Integer> pickRandom(int n, int k) {
@@ -334,9 +334,19 @@ public class GameActivity extends AppCompatActivity {
                 startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.Share2)));
                 break;
             case R.id.homeButton:
-                // Mostrar aviso
+                new AlertDialog.Builder(GameActivity.this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle(getResources().getString(R.string.GoHome1))
+                        .setMessage(getResources().getString(R.string.GoHome2))
+                        .setPositiveButton(getResources().getString(R.string.YES), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                GoToBasePage(getWindow().getDecorView());
+                            }
+                        })
+                        .setNegativeButton(getResources().getString(R.string.NO), null)
+                        .show();
 
-                GoToBasePage(getWindow().getDecorView());
                 break;
         }
         return super.onOptionsItemSelected(item);

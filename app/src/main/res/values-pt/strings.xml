@@ -52,7 +52,10 @@
     <string name="difMedium">Média</string>
     <string name="difHard">Difícil</string>
     <string name="question">questão</string>
-    <string name="submited">SUBMETIDO!</string>
     <string name="wrong">Resposta errada!</string>
     <string name="right">Resposta certa!</string>
+    <string name="YES">SIM!</string>
+    <string name="NO">NÃO!</string>
+    <string name="GoHome1">Tem a certeza?</string>
+    <string name="GoHome2">Quer terminar o jogo atual e voltar para a página inicial?</string>
 </resources>

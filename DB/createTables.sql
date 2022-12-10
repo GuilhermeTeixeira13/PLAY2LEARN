@@ -1,36 +1,39 @@
 CREATE TABLE users (
   id INTEGER PRIMARY KEY AUTO_INCREMENT, 
-  Name TEXT, Email TEXT, Password TEXT, 
-  ProfilePic BLOB, Biblio TEXT
+  Name NVARCHAR(255),
+  Email NVARCHAR(255),
+  Password NVARCHAR(255),
+  ProfilePic BLOB,
+  Biblio NVARCHAR(255)
 );
 
 CREATE TABLE subjects (
   id INTEGER PRIMARY KEY AUTO_INCREMENT, 
-  Name TEXT, 
+  Name NVARCHAR(255),
   Image BLOB
 );
 
 CREATE TABLE Questions_PT (
   id INTEGER PRIMARY KEY AUTO_INCREMENT, 
   IDSubject INTEGER, 
-  Question TEXT, 
+  Question NVARCHAR(255),
   Difficulty INTEGER, 
-  RightAnswer TEXT, 
-  Wrong1 TEXT,
-  Wrong2 TEXT, 
-  Wrong3 TEXT, 
+  RightAnswer NVARCHAR(255),
+  Wrong1 NVARCHAR(255),
+  Wrong2 NVARCHAR(255),
+  Wrong3 NVARCHAR(255),
   CONSTRAINT fk_questSubj FOREIGN KEY (IDSubject) REFERENCES subjects (id)
 );
 
 CREATE TABLE Questions_ENG (
   id INTEGER PRIMARY KEY AUTO_INCREMENT, 
   IDSubject INTEGER, 
-  Question TEXT, 
+  Question NVARCHAR(255),
   Difficulty INTEGER, 
-  RightAnswer TEXT, 
-  Wrong1 TEXT, 
-  Wrong2 TEXT, 
-  Wrong3 TEXT, 
+  RightAnswer NVARCHAR(255),
+  Wrong1 NVARCHAR(255),
+  Wrong2 NVARCHAR(255),
+  Wrong3 NVARCHAR(255),
   CONSTRAINT fk_questSubjEng FOREIGN KEY (IDSubject) REFERENCES subjects (id)
 );
 
