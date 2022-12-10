@@ -259,6 +259,7 @@
         android:textSize="17dp"
         android:text="@string/PlayAgain"
         android:textColor="@color/white"
+        android:onClick="GoToBasePage"
         android:background="@drawable/rounded_corners_black_buttons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

@@ -1,5 +1,6 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -58,6 +60,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     TextView finalScoreO;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -75,8 +78,14 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         // Spinner Friends Test
         spinnerFriends = findViewById(R.id.spinnerCompareWith);
 
+        SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
+        if (sp.contains("uname")) {
+            //System.out.println("dei auto login pelas shp");
+            nameuserlogged = sp.getString("uname", "");
+        }
+
         Intent iCameFromMainNameUser = getIntent();
-        nameuserlogged = iCameFromMainNameUser.getStringExtra("ulogged");
+        //nameuserlogged = iCameFromMainNameUser.getStringExtra("ulogged");
         difEsc = iCameFromMainNameUser.getIntExtra("dif", -1);
         temaID = iCameFromMainNameUser.getStringExtra("temaID");
 
@@ -105,7 +114,6 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         wrongAnsO = findViewById(R.id.wrongAnsOther);
         timeToSolveAnsO = findViewById(R.id.timeToSolveOther);
         finalScoreO = findViewById(R.id.finalScoreOther);
-
 
 
     }
