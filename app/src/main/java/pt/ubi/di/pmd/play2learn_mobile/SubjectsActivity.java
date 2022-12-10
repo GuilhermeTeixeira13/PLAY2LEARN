@@ -38,6 +38,7 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
     private CustomSpinnerDif spinner_dif;
     private ListView listView;
 
+
     private DifficultyAdapter adapter;
 
     private int escolhaDifUser;

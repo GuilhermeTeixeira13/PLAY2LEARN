@@ -9,6 +9,8 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,7 +38,13 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     ArrayList<String> friendsName = new ArrayList<>();
     String nameuserlogged;
     int difEsc;
+    private TableLayout table;
     String temaID;
+
+    TextView correctAnsMe;
+    TextView wrongAnsMe;
+    TextView timeToSolveAnsMe;
+    TextView finalScoreMe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +77,11 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
 
         ResultsActivity.currentTestByUser currentTest = new ResultsActivity.currentTestByUser();
         currentTest.execute();
+
+        correctAnsMe = findViewById(R.id.correctAnsMe);
+        wrongAnsMe = findViewById(R.id.wrongAnsMe);
+        timeToSolveAnsMe = findViewById(R.id.timeToSolveMe);
+        finalScoreMe = findViewById(R.id.finalScoreMe);
 
 
     }
@@ -244,8 +257,10 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
 
         @Override
         protected void onPostExecute(String s) {
-            System.out.println("ID USER LOGGED: " + idUserLogged);
-            System.out.println("CORRECT ANS: "+ correctAns);
+            correctAnsMe.setText(correctAns);
+            wrongAnsMe.setText(wrongAns);
+            timeToSolveAnsMe.setText(time);
+            finalScoreMe.setText(score);
         }
     }
 }
