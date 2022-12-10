@@ -34,17 +34,27 @@ import java.util.List;
 
 public class ResultsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private Spinner spinnerFriends;
+
     ArrayList<String> friendsName = new ArrayList<>();
+    ArrayList<String> friendsIdSameTest = new ArrayList<>();
     String nameuserlogged;
     int difEsc;
-    private TableLayout table;
     String temaID;
+    int friendSelected = 0;
 
+
+    private Spinner spinnerFriends;
     TextView correctAnsMe;
     TextView wrongAnsMe;
     TextView timeToSolveAnsMe;
     TextView finalScoreMe;
+
+    TextView correctAnsO;
+    TextView wrongAnsO;
+    TextView timeToSolveAnsO;
+    TextView finalScoreO;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +92,11 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         wrongAnsMe = findViewById(R.id.wrongAnsMe);
         timeToSolveAnsMe = findViewById(R.id.timeToSolveMe);
         finalScoreMe = findViewById(R.id.finalScoreMe);
+
+        correctAnsO = findViewById(R.id.correctAnsOther);
+        wrongAnsO = findViewById(R.id.wrongAnsOther);
+        timeToSolveAnsO = findViewById(R.id.timeToSolveOther);
+        finalScoreO = findViewById(R.id.finalScoreOther);
 
 
     }
@@ -123,7 +138,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        System.out.println("SELECIONASTE O " + adapterView.getItemAtPosition(i).toString());
+        friendSelected = i;
     }
 
     @Override
@@ -139,7 +154,6 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         String idUserLogged;
         ArrayList<String> friendsID = new ArrayList<>();
         ArrayList<String> testID = new ArrayList<>();
-        ArrayList<String> friendsIdSameTest = new ArrayList<>();
         ArrayList<String> friendsNameSameTest = new ArrayList<>();
         @Override
         protected String doInBackground(String... strings) {
@@ -219,6 +233,11 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         String wrongAns;
         String time;
         String score;
+
+        String correctAnsOther;
+        String wrongAnsOther;
+        String timeOther;
+        String scoreOther;
         @Override
         protected String doInBackground(String... strings) {
             try {
@@ -247,6 +266,16 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                         break;
                     }
 
+                    String query4 = "SELECT * FROM userresults WHERE IDUser = " + friendsIdSameTest.get(friendSelected) + " and IDSubject = " + temaID + " and Difficulty = " + difEsc + " Order by ID DESC";
+                    ResultSet rs4 = statement.executeQuery(query4);
+
+                    while (rs4.next()) {
+                        correctAnsOther = rs4.getString(5);
+                        wrongAnsOther = rs4.getString(6);;
+                        timeOther = rs4.getString(7);;
+                        scoreOther = rs4.getString(8);;
+                        break;
+                    }
                 }
             } catch (SQLException e) {
                 isSuccess = false;
@@ -261,6 +290,11 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
             wrongAnsMe.setText(wrongAns);
             timeToSolveAnsMe.setText(time);
             finalScoreMe.setText(score);
+
+            correctAnsO.setText(correctAnsOther);
+            wrongAnsO.setText(wrongAnsOther);
+            timeToSolveAnsO.setText(timeOther);
+            finalScoreO.setText(scoreOther);
         }
     }
 }
