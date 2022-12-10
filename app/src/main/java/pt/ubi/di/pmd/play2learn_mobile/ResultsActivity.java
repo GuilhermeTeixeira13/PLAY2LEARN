@@ -44,6 +44,9 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
 
 
     private Spinner spinnerFriends;
+    TextView correctAnswers;
+    TextView points;
+
     TextView correctAnsMe;
     TextView wrongAnsMe;
     TextView timeToSolveAnsMe;
@@ -53,7 +56,6 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     TextView wrongAnsO;
     TextView timeToSolveAnsO;
     TextView finalScoreO;
-
 
 
     @Override
@@ -85,8 +87,14 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
 
         spinnerFriends.setOnItemSelectedListener(this);
 
+        ResultsActivity.yourscore yourscore = new ResultsActivity.yourscore();
+        yourscore.execute();
+
         ResultsActivity.currentTestByUser currentTest = new ResultsActivity.currentTestByUser();
         currentTest.execute();
+
+        points = findViewById(R.id.points);
+        correctAnswers = findViewById(R.id.correctAnswers);
 
         correctAnsMe = findViewById(R.id.correctAnsMe);
         wrongAnsMe = findViewById(R.id.wrongAnsMe);
@@ -97,6 +105,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         wrongAnsO = findViewById(R.id.wrongAnsOther);
         timeToSolveAnsO = findViewById(R.id.timeToSolveOther);
         finalScoreO = findViewById(R.id.finalScoreOther);
+
 
 
     }
@@ -144,6 +153,58 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    private  class yourscore extends AsyncTask<String,String,String> {
+        boolean isSuccess = false;
+        String msg = "";
+        String idUserLogged;
+        String correctAns;
+        String score;
+
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                P2L_DbHelper connectNow = new P2L_DbHelper();
+                Connection connectDB = connectNow.getConnection();
+
+                if (connectDB == null) {
+                    Toast.makeText(ResultsActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                } else {
+                    String query1 = "SELECT id From users where users.Name='" + nameuserlogged + "'";
+                    Statement statement = connectDB.createStatement();
+                    ResultSet rs1 = statement.executeQuery(query1);
+
+                    while (rs1.next()) {
+                        idUserLogged = rs1.getString(1);
+                    }
+
+                    String query3 = "SELECT * FROM userresults WHERE IDUser = " + idUserLogged + " and IDSubject = " + temaID + " and Difficulty = " + difEsc + " Order by ID DESC";
+                    ResultSet rs3 = statement.executeQuery(query3);
+
+                    while (rs3.next()) {
+                        correctAns = rs3.getString(5);
+                        score = rs3.getString(4);;
+                        break;
+                    }
+
+
+                }
+            } catch (SQLException e) {
+                isSuccess = false;
+                msg = "Exceptions" + e;
+            }
+            return msg;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            points.setText(score + " points!");
+            correctAnswers.setText("Corret answers: "+correctAns+"\\10");
+
+
+        }
     }
 
 
@@ -202,7 +263,9 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                         ResultSet rs5 = statement.executeQuery(query5);
 
                         while (rs5.next()) {
-                            friendsNameSameTest.add(rs5.getString(1));
+                            if(!friendsNameSameTest.contains(rs5.getString(1))){
+                                friendsNameSameTest.add(rs5.getString(1));
+                            }
                         }
                     }
                     for(int i = 0; i < friendsNameSameTest.size(); i++) {
@@ -262,7 +325,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                         correctAns = rs3.getString(5);
                         wrongAns = rs3.getString(6);;
                         time = rs3.getString(7);;
-                        score = rs3.getString(8);;
+                        score = rs3.getString(4);;
                         break;
                     }
 
@@ -273,7 +336,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                         correctAnsOther = rs4.getString(5);
                         wrongAnsOther = rs4.getString(6);;
                         timeOther = rs4.getString(7);;
-                        scoreOther = rs4.getString(8);;
+                        scoreOther = rs4.getString(4);;
                         break;
                     }
                 }
