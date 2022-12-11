@@ -1,7 +1,6 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -46,6 +45,7 @@ public class GameActivity extends AppCompatActivity {
     CheckBox CheckBox2;
     CheckBox CheckBox3;
     CheckBox CheckBox4;
+
     String user_name;
     int game_difficulty;
     String game_subject;
@@ -55,6 +55,10 @@ public class GameActivity extends AppCompatActivity {
     private static final Random RANDOM = new Random();
     private String[] difs;
     private ArrayList<Answer> answers;
+    private int num_right_answers = 0;
+    private int num_wrong_answers = 0;
+    private int test_time = 0;
+    private double final_score = 0;
 
     CountDownTimer timer;
 
@@ -129,6 +133,49 @@ public class GameActivity extends AppCompatActivity {
             }
             return exeption;
         }
+    }
+
+    // Get questions
+    private class SaveResults extends AsyncTask<String,String,String> {
+        boolean isSuccess = false;
+        String exeption = "";
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                P2L_DbHelper connectNow = new P2L_DbHelper();
+                Connection connectDB = connectNow.getConnection();
+
+                if (connectDB == null) {
+                    Toast.makeText(GameActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                } else {
+                    final_score = ((num_right_answers / num_of_questions) * 500) + ((6000-test_time)/12);
+
+                    String query = "INSERT INTO userresults (`id`, `IDSubject`, `IDUser`, `Score`, `NumCorrectAns`, `NumWrongAns`, `TimeToSolve`, `Difficulty`) " +
+                            "values (NULL," + getSubjectID(connectDB) + "," + getUserID(connectDB) + "," + final_score + "," + num_right_answers + "," + num_wrong_answers  + ",'" + test_time + "'," + game_difficulty +")";
+
+                    Statement statement = connectDB.createStatement();
+                    statement.executeUpdate(query);
+                }
+            } catch (SQLException e) {
+                isSuccess = false;
+                exeption = "Exceptions" + e;
+            }
+            return exeption;
+        }
+    }
+
+    public String getUserID(Connection connectDB) throws SQLException {
+        String query = "SELECT id from users WHERE name= '"+user_name+"'";
+        Statement statement = connectDB.createStatement();
+        ResultSet rs = statement.executeQuery(query);
+        String id_user = "";
+
+        while (rs.next()) {
+            id_user = rs.getString(1);
+        }
+
+        return id_user;
     }
 
     public String getSubjectID(Connection connectDB) throws SQLException {
@@ -216,8 +263,9 @@ public class GameActivity extends AppCompatActivity {
                     } else {
                         if(question_num+1 < num_of_questions)
                             game(questions, question_num+1);
-                        else{
-                            // GAME ENDED
+                        else {
+                            SaveResults saveResults = new SaveResults();
+                            saveResults.execute();
                         }
                     }
                 }
@@ -228,30 +276,34 @@ public class GameActivity extends AppCompatActivity {
     public void colorCheckBoxes (ArrayList<Answer> answers) {
         CheckBox[] checkBoxes = {CheckBox1,CheckBox2,CheckBox3,CheckBox4};
         for(int i=0; i<answers.size(); i++){
-            if(answers.get(i).isRightAnswer()){
+            if(answers.get(i).isRightAnswer())
                 checkBoxes[i].setTextColor(Color.parseColor("#00FF00"));
-            } else{
+             else
                 checkBoxes[i].setTextColor(Color.parseColor("#FF3030"));
-            }
         }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        TxtViewAdvice.setText(getResources().getString(R.string.minimizeApp));
-        wrongAnswer(answers);
-        afterSubmission();
-        timer.cancel();
+
+        if(BtnSubmit.getText().equals(getResources().getString(R.string.Submit))){
+            TxtViewAdvice.setText(getResources().getString(R.string.minimizeApp));
+            wrongAnswer(answers);
+            afterSubmission();
+            timer.cancel();
+        }
     }
 
     public void setTimer(long milisec, long countDown){
         timer = new CountDownTimer( milisec,countDown) {
-            String min, sec;
+            String min, sec, mil;
             public void onTick(long millisUntilFinished) {
                 min = String.valueOf(millisUntilFinished / (60 * 1000) % 60);
                 sec = String.valueOf(millisUntilFinished / 1000 % 60);
 
+                if (Long.parseLong(min) < 10)
+                    min = "0"+ millisUntilFinished / (60 * 1000) % 60;
                 if (Long.parseLong(sec) < 10)
                     sec = "0"+ millisUntilFinished / 1000 % 60;
 
@@ -291,12 +343,18 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void rightAnswer(){
+        num_right_answers++;
+        test_time += (60 - Integer.parseInt(TxtViewTimer.getText().toString().substring(3)));
+
         colorCheckBoxes(answers);
         TextViewCorrectOrWrong.setText(getResources().getString(R.string.right));
         TextViewCorrectOrWrong.setTextColor(Color.parseColor("#00FF00"));
     }
 
     public void wrongAnswer(ArrayList<Answer> answers){
+        num_wrong_answers++;
+        test_time += (60 - Integer.parseInt(TxtViewTimer.getText().toString().substring(3)));
+
         colorCheckBoxes(answers);
         TextViewCorrectOrWrong.setText(getResources().getString(R.string.wrong));
         TextViewCorrectOrWrong.setTextColor(Color.parseColor("#FF3030"));

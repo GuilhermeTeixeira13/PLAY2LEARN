@@ -146,9 +146,10 @@ public class RegisterActivity extends AppCompatActivity {
                 editor.putString("uname", user);
                 editor.apply();
 
-                Intent intent = new Intent(RegisterActivity.this, BaseActivity.class);
-                intent.putExtra("name", user);
-                startActivity(intent);
+                Intent goToBaseActivity = new Intent(RegisterActivity.this, BaseActivity.class);
+                goToBaseActivity.putExtra("flag", "FROM_REGISTER");
+                goToBaseActivity.putExtra("name", user);
+                startActivity(goToBaseActivity);
             }
         }
     }
