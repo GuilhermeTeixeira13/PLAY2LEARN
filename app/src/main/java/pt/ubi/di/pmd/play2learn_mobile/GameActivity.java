@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,12 +39,13 @@ public class GameActivity extends AppCompatActivity {
     TextView TxtViewGameDifficulty;
     TextView TxtViewQuestion;
     TextView TextViewCorrectOrWrong;
+    TextView TxtViewTimer;
+    TextView TxtViewAdvice;
     Button BtnSubmit;
     CheckBox CheckBox1;
     CheckBox CheckBox2;
     CheckBox CheckBox3;
     CheckBox CheckBox4;
-
     String user_name;
     int game_difficulty;
     String game_subject;
@@ -52,6 +54,9 @@ public class GameActivity extends AppCompatActivity {
     int num_of_questions = 3;
     private static final Random RANDOM = new Random();
     private String[] difs;
+    private ArrayList<Answer> answers;
+
+    CountDownTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +83,8 @@ public class GameActivity extends AppCompatActivity {
         TxtViewGameDifficulty = findViewById(R.id.questionDificulty);
         TxtViewQuestion = findViewById(R.id.question);
         TextViewCorrectOrWrong = findViewById(R.id.correctWrong);
+        TxtViewTimer = findViewById(R.id.backgroundTimer);
+        TxtViewAdvice = findViewById(R.id.advice);
         BtnSubmit = findViewById(R.id.BtnSubmit);
         CheckBox1 = findViewById(R.id.checkBox1);
         CheckBox2 = findViewById(R.id.checkBox2);
@@ -164,59 +171,99 @@ public class GameActivity extends AppCompatActivity {
         prepareForNewQuestion(question_num);
 
         Question question = questions.get(question_num);
-        ArrayList<Answer> answers = shuffleAnswers(question);
+        answers = shuffleAnswers(question);
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                setQuestionAndAnswers(question, answers);
+        runOnUiThread(() -> {
+            setTimer(60000, 1000);
 
-                BtnSubmit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(BtnSubmit.getText().equals(getResources().getString(R.string.Submit))){
-                            if(CheckBox1.isChecked() && !CheckBox2.isChecked() && !CheckBox3.isChecked() && !CheckBox4.isChecked()){
-                                if(answers.get(0).isRightAnswer())
-                                    rightAnswer();
-                                else
-                                    wrongAnswer();
-                                afterSubmission();
-                            }
-                            else if(CheckBox2.isChecked() && !CheckBox1.isChecked() && !CheckBox3.isChecked() && !CheckBox4.isChecked()){
-                                if(answers.get(1).isRightAnswer())
-                                    rightAnswer();
+            setQuestionAndAnswers(question, answers);
 
-                                else
-                                    wrongAnswer();
-                                afterSubmission();
-                            }
-                            else if(CheckBox3.isChecked() && !CheckBox1.isChecked() && !CheckBox2.isChecked() && !CheckBox4.isChecked()){
-                                if(answers.get(2).isRightAnswer())
-                                    rightAnswer();
-                                else
-                                    wrongAnswer();
-                                afterSubmission();
-                            }
-                            else if(CheckBox4.isChecked() && !CheckBox1.isChecked() && !CheckBox2.isChecked() && !CheckBox3.isChecked()){
-                                if(answers.get(3).isRightAnswer())
-                                    rightAnswer();
-                                else
-                                    wrongAnswer();
-                                afterSubmission();
-                            }
-                            else {
-                                // Aviso -> Verifique as suas respostas
-                            }
-                        } else {
-                            if(question_num+1 < num_of_questions)
-                                game(questions, question_num+1);
+            BtnSubmit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(BtnSubmit.getText().equals(getResources().getString(R.string.Submit))){
+                        if(CheckBox1.isChecked() && !CheckBox2.isChecked() && !CheckBox3.isChecked() && !CheckBox4.isChecked()){
+                            if(answers.get(0).isRightAnswer())
+                                rightAnswer();
                             else
-                                System.out.println("leave");
+                                wrongAnswer(answers);
+                            afterSubmission();
+                        }
+                        else if(CheckBox2.isChecked() && !CheckBox1.isChecked() && !CheckBox3.isChecked() && !CheckBox4.isChecked()){
+                            if(answers.get(1).isRightAnswer())
+                                rightAnswer();
+                            else
+                                wrongAnswer(answers);
+                            afterSubmission();
+                        }
+                        else if(CheckBox3.isChecked() && !CheckBox1.isChecked() && !CheckBox2.isChecked() && !CheckBox4.isChecked()){
+                            if(answers.get(2).isRightAnswer())
+                                rightAnswer();
+                            else
+                                wrongAnswer(answers);
+                            afterSubmission();
+                        }
+                        else if(CheckBox4.isChecked() && !CheckBox1.isChecked() && !CheckBox2.isChecked() && !CheckBox3.isChecked()){
+                            if(answers.get(3).isRightAnswer())
+                                rightAnswer();
+                            else
+                                wrongAnswer(answers);
+                            afterSubmission();
+                        }
+                        else {
+                            Toast.makeText(GameActivity.this, getResources().getString(R.string.VerifyAnswers), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        if(question_num+1 < num_of_questions)
+                            game(questions, question_num+1);
+                        else{
+                            // GAME ENDED
                         }
                     }
-                });
-            }
+                }
+            });
         });
+    }
+
+    public void colorCheckBoxes (ArrayList<Answer> answers) {
+        CheckBox[] checkBoxes = {CheckBox1,CheckBox2,CheckBox3,CheckBox4};
+        for(int i=0; i<answers.size(); i++){
+            if(answers.get(i).isRightAnswer()){
+                checkBoxes[i].setTextColor(Color.parseColor("#00FF00"));
+            } else{
+                checkBoxes[i].setTextColor(Color.parseColor("#FF3030"));
+            }
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        TxtViewAdvice.setText(getResources().getString(R.string.minimizeApp));
+        wrongAnswer(answers);
+        afterSubmission();
+        timer.cancel();
+    }
+
+    public void setTimer(long milisec, long countDown){
+        timer = new CountDownTimer( milisec,countDown) {
+            String min, sec;
+            public void onTick(long millisUntilFinished) {
+                min = String.valueOf(millisUntilFinished / (60 * 1000) % 60);
+                sec = String.valueOf(millisUntilFinished / 1000 % 60);
+
+                if (Long.parseLong(sec) < 10)
+                    sec = "0"+ millisUntilFinished / 1000 % 60;
+
+                TxtViewTimer.setText(min+":"+sec);
+            }
+
+            public void onFinish() {
+                wrongAnswer(answers);
+                afterSubmission();
+            }
+
+        }.start();
     }
 
     public void setQuestionAndAnswers(Question question, ArrayList<Answer> answers){
@@ -244,16 +291,20 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void rightAnswer(){
+        colorCheckBoxes(answers);
         TextViewCorrectOrWrong.setText(getResources().getString(R.string.right));
         TextViewCorrectOrWrong.setTextColor(Color.parseColor("#00FF00"));
     }
 
-    public void wrongAnswer(){
+    public void wrongAnswer(ArrayList<Answer> answers){
+        colorCheckBoxes(answers);
         TextViewCorrectOrWrong.setText(getResources().getString(R.string.wrong));
         TextViewCorrectOrWrong.setTextColor(Color.parseColor("#FF3030"));
     }
 
     public void afterSubmission(){
+        timer.cancel();
+
         CheckBox1.setEnabled(false);
         CheckBox2.setEnabled(false);
         CheckBox3.setEnabled(false);
@@ -275,19 +326,22 @@ public class GameActivity extends AppCompatActivity {
             TxtViewGameDifficulty.setText(txt);
         }
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                BtnSubmit.setEnabled(true);
-                BtnSubmit.setText(getResources().getString(R.string.Submit));
-            }
+        runOnUiThread(() -> {
+            BtnSubmit.setEnabled(true);
+            BtnSubmit.setText(getResources().getString(R.string.Submit));
         });
 
         TextViewCorrectOrWrong.setText("");
+        TxtViewAdvice.setText("");
+
         CheckBox1.setEnabled(true);
+        CheckBox1.setTextColor(Color.parseColor("#000000"));
         CheckBox2.setEnabled(true);
+        CheckBox2.setTextColor(Color.parseColor("#000000"));
         CheckBox3.setEnabled(true);
+        CheckBox3.setTextColor(Color.parseColor("#000000"));
         CheckBox4.setEnabled(true);
+        CheckBox4.setTextColor(Color.parseColor("#000000"));
     }
 
     public String getCurrentLanguage(){

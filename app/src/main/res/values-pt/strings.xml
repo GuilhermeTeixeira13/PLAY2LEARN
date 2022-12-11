@@ -53,9 +53,12 @@
     <string name="difHard">Difícil</string>
     <string name="question">questão</string>
     <string name="wrong">Resposta errada!</string>
+    <string name="minimizeApp">Não é permitido minimizar a aplicação enquanto se responde a uma pergunta!</string>
     <string name="right">Resposta certa!</string>
     <string name="YES">SIM!</string>
     <string name="NO">NÃO!</string>
     <string name="GoHome1">Tem a certeza?</string>
     <string name="GoHome2">Quer terminar o jogo atual e voltar para a página inicial?</string>
+    <string name="TimeToSubmit">Tempo para submeter:</string>
+    <string name="VerifyAnswers">Certifique-se que selecionou uma e apenas uma resposta.</string>
 </resources>
