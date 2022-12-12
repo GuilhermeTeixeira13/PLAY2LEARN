@@ -59,6 +59,7 @@ public class GameActivity extends AppCompatActivity {
     private int num_wrong_answers = 0;
     private int test_time = 0;
     private double final_score = 0;
+    int question_num = 0;
 
     CountDownTimer timer;
 
@@ -96,7 +97,11 @@ public class GameActivity extends AppCompatActivity {
         CheckBox4 = findViewById(R.id.checkBox4);
 
         selected_questions = new ArrayList<>();
-        difs = new String[] {getResources().getString(R.string.difEasy), getResources().getString(R.string.difMedium), getResources().getString(R.string.difHard)};
+        difs = new String[] {
+                getResources().getString(R.string.difEasy),
+                getResources().getString(R.string.difMedium),
+                getResources().getString(R.string.difHard)
+        };
 
         // Build game flow
         BuildGame buildGame = new BuildGame();
@@ -106,13 +111,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-
-        if(BtnSubmit.getText().equals(getResources().getString(R.string.Submit))){
-            TxtViewAdvice.setText(getResources().getString(R.string.minimizeApp));
-            wrongAnswer(answers);
-            afterSubmission();
-            timer.cancel();
-        }
+        cheat();
     }
 
     // Build game flow
@@ -136,7 +135,7 @@ public class GameActivity extends AppCompatActivity {
                         selected_questions.add(all_questions.get(random_selection.get(i)));
                     Collections.shuffle(selected_questions);
 
-                    game(selected_questions, 0);
+                    game(selected_questions);
                 }
             } catch (SQLException e) {
                 isSuccess = false;
@@ -164,8 +163,6 @@ public class GameActivity extends AppCompatActivity {
 
                     String query = "INSERT INTO userresults (`id`, `IDSubject`, `IDUser`, `Score`, `NumCorrectAns`, `NumWrongAns`, `TimeToSolve`, `Difficulty`) " +
                             "values (NULL," + game_subject + "," + getUserID(connectDB) + "," + final_score + "," + num_right_answers + "," + num_wrong_answers  + ",'" + test_time + "'," + game_difficulty +")";
-
-                    System.out.println(query);
 
                     Statement statement = connectDB.createStatement();
                     statement.executeUpdate(query);
@@ -214,7 +211,7 @@ public class GameActivity extends AppCompatActivity {
         return all_questions;
     }
 
-    public void game (ArrayList<Question> questions, int question_num){
+    public void game (ArrayList<Question> questions){
         prepareForNewQuestion(question_num);
 
         Question question = questions.get(question_num);
@@ -261,18 +258,43 @@ public class GameActivity extends AppCompatActivity {
                             Toast.makeText(GameActivity.this, getResources().getString(R.string.VerifyAnswers), Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        if(question_num+1 < num_of_questions)
-                            game(questions, question_num+1);
+                        if(question_num + 1 < num_of_questions){
+                            question_num += 1;
+                            game(questions);
+                        }
                         else {
                             SaveResults saveResults = new SaveResults();
                             saveResults.execute();
-
                             GoToResultsPage(getWindow().getDecorView());
                         }
                     }
                 }
             });
         });
+    }
+
+    public ArrayList<Answer> shuffleAnswers(Question question){
+        ArrayList<Answer> answers = new ArrayList<Answer>();
+        answers.add(new Answer(true, question.getRightAnswer()));
+        answers.add(new Answer(false, question.getWrongAnswer1()));
+        answers.add(new Answer(false, question.getWrongAnswer2()));
+        answers.add(new Answer(false, question.getWrongAnswer3()));
+        Collections.shuffle(answers);
+
+        return answers;
+    }
+
+    public void setQuestionAndAnswers(Question question, ArrayList<Answer> answers){
+        TxtViewQuestion.setText(question.getQuestion());
+
+        CheckBox1.setText(answers.get(0).getAnswer());
+        CheckBox1.setChecked(false);
+        CheckBox2.setText(answers.get(1).getAnswer());
+        CheckBox2.setChecked(false);
+        CheckBox3.setText(answers.get(2).getAnswer());
+        CheckBox3.setChecked(false);
+        CheckBox4.setText(answers.get(3).getAnswer());
+        CheckBox4.setChecked(false);
     }
 
     public void colorCheckBoxes (ArrayList<Answer> answers) {
@@ -308,28 +330,17 @@ public class GameActivity extends AppCompatActivity {
         }.start();
     }
 
-    public void setQuestionAndAnswers(Question question, ArrayList<Answer> answers){
-        TxtViewQuestion.setText(question.getQuestion());
+    public void afterSubmission(){
+        timer.cancel();
+        CheckBox1.setEnabled(false);
+        CheckBox2.setEnabled(false);
+        CheckBox3.setEnabled(false);
+        CheckBox4.setEnabled(false);
 
-        CheckBox1.setText(answers.get(0).getAnswer());
-        CheckBox1.setChecked(false);
-        CheckBox2.setText(answers.get(1).getAnswer());
-        CheckBox2.setChecked(false);
-        CheckBox3.setText(answers.get(2).getAnswer());
-        CheckBox3.setChecked(false);
-        CheckBox4.setText(answers.get(3).getAnswer());
-        CheckBox4.setChecked(false);
-    }
-
-    public ArrayList<Answer> shuffleAnswers(Question question){
-        ArrayList<Answer> answers = new ArrayList<Answer>();
-        answers.add(new Answer(true, question.getRightAnswer()));
-        answers.add(new Answer(false, question.getWrongAnswer1()));
-        answers.add(new Answer(false, question.getWrongAnswer2()));
-        answers.add(new Answer(false, question.getWrongAnswer3()));
-        Collections.shuffle(answers);
-
-        return answers;
+        if(question_num + 1 == num_of_questions)
+            BtnSubmit.setText(getResources().getString(R.string.FinishGame));
+        else
+            BtnSubmit.setText(getResources().getString(R.string.NextQuestion));
     }
 
     public void rightAnswer(){
@@ -350,15 +361,13 @@ public class GameActivity extends AppCompatActivity {
         TextViewCorrectOrWrong.setTextColor(Color.parseColor("#FF3030"));
     }
 
-    public void afterSubmission(){
-        timer.cancel();
-
-        CheckBox1.setEnabled(false);
-        CheckBox2.setEnabled(false);
-        CheckBox3.setEnabled(false);
-        CheckBox4.setEnabled(false);
-
-        BtnSubmit.setText(getResources().getString(R.string.NextQuestion));
+    public void cheat(){
+        if(BtnSubmit.getText().equals(getResources().getString(R.string.Submit))){
+            TxtViewAdvice.setText(getResources().getString(R.string.minimizeApp));
+            wrongAnswer(answers);
+            afterSubmission();
+            timer.cancel();
+        }
     }
 
     public void prepareForNewQuestion(int question_num){
