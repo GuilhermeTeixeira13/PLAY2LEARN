@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                                 System.out.println("Login successfull");
                             }else {
                                 isSuccess = false;
+                                z = "user does not exist";
                                 System.out.println("Login NOT successfull");
                             }
                         }
@@ -130,9 +131,9 @@ public class MainActivity extends AppCompatActivity {
                     isSuccess = false;
                     z = "Exceptions"+e;
                 }catch (Exception e) {
-                    //isSuccess = false;
+                    isSuccess = false;
                     e.printStackTrace();
-                    z = "entrei aqui";
+                    z = "Exceptions"+e;
                 }
 
             }
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             Toast.makeText(getBaseContext(),""+z,Toast.LENGTH_LONG).show();
-            System.out.println("cheguei aqui");
+            //System.out.println("cheguei aqui");
 
             if (isSuccess){
                 SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
