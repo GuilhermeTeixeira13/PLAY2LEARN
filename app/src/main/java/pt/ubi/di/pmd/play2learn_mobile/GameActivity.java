@@ -97,7 +97,11 @@ public class GameActivity extends AppCompatActivity {
         CheckBox4 = findViewById(R.id.checkBox4);
 
         selected_questions = new ArrayList<>();
-        difs = new String[] {getResources().getString(R.string.difEasy), getResources().getString(R.string.difMedium), getResources().getString(R.string.difHard)};
+        difs = new String[] {
+                getResources().getString(R.string.difEasy),
+                getResources().getString(R.string.difMedium),
+                getResources().getString(R.string.difHard)
+        };
 
         // Build game flow
         BuildGame buildGame = new BuildGame();
@@ -107,13 +111,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-
-        if(BtnSubmit.getText().equals(getResources().getString(R.string.Submit))){
-            TxtViewAdvice.setText(getResources().getString(R.string.minimizeApp));
-            wrongAnswer(answers);
-            afterSubmission();
-            timer.cancel();
-        }
+        cheat();
     }
 
     // Build game flow
@@ -275,6 +273,30 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
+    public ArrayList<Answer> shuffleAnswers(Question question){
+        ArrayList<Answer> answers = new ArrayList<Answer>();
+        answers.add(new Answer(true, question.getRightAnswer()));
+        answers.add(new Answer(false, question.getWrongAnswer1()));
+        answers.add(new Answer(false, question.getWrongAnswer2()));
+        answers.add(new Answer(false, question.getWrongAnswer3()));
+        Collections.shuffle(answers);
+
+        return answers;
+    }
+
+    public void setQuestionAndAnswers(Question question, ArrayList<Answer> answers){
+        TxtViewQuestion.setText(question.getQuestion());
+
+        CheckBox1.setText(answers.get(0).getAnswer());
+        CheckBox1.setChecked(false);
+        CheckBox2.setText(answers.get(1).getAnswer());
+        CheckBox2.setChecked(false);
+        CheckBox3.setText(answers.get(2).getAnswer());
+        CheckBox3.setChecked(false);
+        CheckBox4.setText(answers.get(3).getAnswer());
+        CheckBox4.setChecked(false);
+    }
+
     public void colorCheckBoxes (ArrayList<Answer> answers) {
         CheckBox[] checkBoxes = {CheckBox1,CheckBox2,CheckBox3,CheckBox4};
         for(int i=0; i<answers.size(); i++){
@@ -308,28 +330,17 @@ public class GameActivity extends AppCompatActivity {
         }.start();
     }
 
-    public void setQuestionAndAnswers(Question question, ArrayList<Answer> answers){
-        TxtViewQuestion.setText(question.getQuestion());
+    public void afterSubmission(){
+        timer.cancel();
+        CheckBox1.setEnabled(false);
+        CheckBox2.setEnabled(false);
+        CheckBox3.setEnabled(false);
+        CheckBox4.setEnabled(false);
 
-        CheckBox1.setText(answers.get(0).getAnswer());
-        CheckBox1.setChecked(false);
-        CheckBox2.setText(answers.get(1).getAnswer());
-        CheckBox2.setChecked(false);
-        CheckBox3.setText(answers.get(2).getAnswer());
-        CheckBox3.setChecked(false);
-        CheckBox4.setText(answers.get(3).getAnswer());
-        CheckBox4.setChecked(false);
-    }
-
-    public ArrayList<Answer> shuffleAnswers(Question question){
-        ArrayList<Answer> answers = new ArrayList<Answer>();
-        answers.add(new Answer(true, question.getRightAnswer()));
-        answers.add(new Answer(false, question.getWrongAnswer1()));
-        answers.add(new Answer(false, question.getWrongAnswer2()));
-        answers.add(new Answer(false, question.getWrongAnswer3()));
-        Collections.shuffle(answers);
-
-        return answers;
+        if(question_num + 1 == num_of_questions)
+            BtnSubmit.setText(getResources().getString(R.string.FinishGame));
+        else
+            BtnSubmit.setText(getResources().getString(R.string.NextQuestion));
     }
 
     public void rightAnswer(){
@@ -350,19 +361,13 @@ public class GameActivity extends AppCompatActivity {
         TextViewCorrectOrWrong.setTextColor(Color.parseColor("#FF3030"));
     }
 
-    public void afterSubmission(){
-        timer.cancel();
-        CheckBox1.setEnabled(false);
-        CheckBox2.setEnabled(false);
-        CheckBox3.setEnabled(false);
-        CheckBox4.setEnabled(false);
-
-        System.out.println("AFETR SUB --> questionNum:"+question_num+" // numQuestions:"+num_of_questions);
-
-        if(question_num + 1 == num_of_questions)
-            BtnSubmit.setText(getResources().getString(R.string.FinishGame));
-        else
-            BtnSubmit.setText(getResources().getString(R.string.NextQuestion));
+    public void cheat(){
+        if(BtnSubmit.getText().equals(getResources().getString(R.string.Submit))){
+            TxtViewAdvice.setText(getResources().getString(R.string.minimizeApp));
+            wrongAnswer(answers);
+            afterSubmission();
+            timer.cancel();
+        }
     }
 
     public void prepareForNewQuestion(int question_num){
