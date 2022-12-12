@@ -395,9 +395,11 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
             timeToSolveAnsO.setText(timeOther);
             finalScoreO.setText(scoreOther);
 
-            otherFriend.setText(friendsName.get(friendSelected));
-
-
+            if (friendSelected == -1) {
+                otherFriend.setText("My last test");
+            } else {
+                otherFriend.setText(friendsName.get(friendSelected));
+            }
         }
     }
 }
