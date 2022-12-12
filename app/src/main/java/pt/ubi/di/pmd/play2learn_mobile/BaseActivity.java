@@ -11,6 +11,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.SpannableString;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,7 +65,8 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = getIntent();
         String checkFlag= intent.getStringExtra("flag");
         if(checkFlag.equals("FROM_MAIN") || checkFlag.equals("FROM_GAME") || checkFlag.equals("FROM_SUBJECTS") || checkFlag.equals("FROM_REGISTER")){
-            nameuserlogged = intent.getStringExtra("name");
+            nameuserlogged = (String) intent.getSerializableExtra("name");
+            System.out.println("recebeu na base --> "+nameuserlogged);
             ProfileName.setText(nameuserlogged);
         }
     }
@@ -72,6 +75,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         Intent goToSubjectsActivity = new Intent(this, SubjectsActivity.class);
         goToSubjectsActivity.putExtra("flag", "FROM_BASE");
         goToSubjectsActivity.putExtra("name", nameuserlogged);
+        System.out.println("name enviado para subjects --> "+nameuserlogged);
         startActivity(goToSubjectsActivity);
     }
 

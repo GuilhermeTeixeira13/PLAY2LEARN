@@ -56,9 +56,12 @@ public class MainActivity extends AppCompatActivity {
         if (sp.contains("uname")){
             //System.out.println("dei auto login pelas shp");
             autolog = sp.getString("uname", "");
-            Intent intent = new Intent(this, BaseActivity.class);
-            intent.putExtra("username", autolog);
-            startActivity(intent);
+
+            Intent goToBaseActivity = new Intent(this, BaseActivity.class);
+            goToBaseActivity.putExtra("flag", "FROM_MAIN");
+            goToBaseActivity.putExtra("name", autolog);
+            System.out.println("Da main para Base 0 --> "+autolog);
+            startActivity(goToBaseActivity);
         }
 
         //login
@@ -147,18 +150,21 @@ public class MainActivity extends AppCompatActivity {
                 editor.putString("uname", user);
                 editor.apply();
 
-                Intent goToMainActivity = new Intent(MainActivity.this, BaseActivity.class);
-                goToMainActivity.putExtra("flag", "FROM_MAIN");
-                goToMainActivity.putExtra("name", user);
-                startActivity(goToMainActivity);
+                Intent goToBaseActivity = new Intent(MainActivity.this, BaseActivity.class);
+                goToBaseActivity.putExtra("flag", "FROM_MAIN");
+                System.out.println("Da main para Base 1 --> "+user);
+                goToBaseActivity.putExtra("name", user);
+                startActivity(goToBaseActivity);
             }
         }
     }
 
     public void GoToBasePage(View v){
-        Intent myIntent = new Intent(this, BaseActivity.class);
-        myIntent.putExtra("name", usr.getText().toString());
-        startActivity(myIntent);
+        Intent goToBaseActivity = new Intent(this, BaseActivity.class);
+        goToBaseActivity.putExtra("flag", "FROM_MAIN");
+        System.out.println("Da main para Base 2 --> "+usr.getText());
+        goToBaseActivity.putExtra("name", usr.getText());
+        startActivity(goToBaseActivity);
     }
 
     public void GoToRegisterPage(View v){

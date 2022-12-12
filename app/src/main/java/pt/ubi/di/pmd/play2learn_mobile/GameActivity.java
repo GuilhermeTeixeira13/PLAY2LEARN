@@ -48,6 +48,7 @@ public class GameActivity extends AppCompatActivity {
     String user_name;
     int game_difficulty;
     String game_subject;
+    String id_subject;
 
     private ArrayList<Question> selected_questions;
     int num_of_questions = 3;
@@ -116,7 +117,7 @@ public class GameActivity extends AppCompatActivity {
                 if (connectDB == null) {
                     Toast.makeText(GameActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
                 } else {
-                    String id_subject = getSubjectID(connectDB);
+                    id_subject = getSubjectID(connectDB);
                     ArrayList<Question> all_questions = getQuestions(connectDB, id_subject);
 
                     List<Integer> random_selection = new ArrayList<Integer>(pickRandom(num_of_questions, all_questions.size()));
@@ -152,6 +153,8 @@ public class GameActivity extends AppCompatActivity {
 
                     String query = "INSERT INTO userresults (`id`, `IDSubject`, `IDUser`, `Score`, `NumCorrectAns`, `NumWrongAns`, `TimeToSolve`, `Difficulty`) " +
                             "values (NULL," + getSubjectID(connectDB) + "," + getUserID(connectDB) + "," + final_score + "," + num_right_answers + "," + num_wrong_answers  + ",'" + test_time + "'," + game_difficulty +")";
+
+                    System.out.println(query);
 
                     Statement statement = connectDB.createStatement();
                     statement.executeUpdate(query);
@@ -265,6 +268,8 @@ public class GameActivity extends AppCompatActivity {
                         else {
                             SaveResults saveResults = new SaveResults();
                             saveResults.execute();
+
+                            GoToResultsPage(getWindow().getDecorView());
                         }
                     }
                 }
@@ -409,11 +414,12 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void GoToResultsPage(View v){
-        Intent myIntent = new Intent(this, ResultsActivity.class);
-        myIntent.putExtra("ulogged", nameuserlogged);
-        myIntent.putExtra("dif", difEscolhida);
-        myIntent.putExtra("temaID", temaEscolhidoID);
-        startActivity(myIntent);
+        Intent goToResultsActivity = new Intent(this, ResultsActivity.class);
+        goToResultsActivity.putExtra("flag", "FROM_GAME");
+        goToResultsActivity.putExtra("ulogged", user_name);
+        goToResultsActivity.putExtra("dif", game_difficulty);
+        goToResultsActivity.putExtra("temaID", id_subject);
+        startActivity(goToResultsActivity);
     }
 
     public void GoToBasePage(View v){

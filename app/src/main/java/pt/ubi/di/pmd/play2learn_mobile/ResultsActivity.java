@@ -40,10 +40,10 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     ArrayList<String> friendsName = new ArrayList<>();
     ArrayList<String> friendsIdSameTest = new ArrayList<>();
     String nameuserlogged;
+
     int difEsc;
     String temaID;
     int friendSelected = 0;
-
 
     private Spinner spinnerFriends;
     TextView correctAnswers;
@@ -58,7 +58,6 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     TextView wrongAnsO;
     TextView timeToSolveAnsO;
     TextView finalScoreO;
-
 
 
     @Override
@@ -84,10 +83,14 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
             nameuserlogged = sp.getString("uname", "");
         }
 
-        Intent iCameFromMainNameUser = getIntent();
-        //nameuserlogged = iCameFromMainNameUser.getStringExtra("ulogged");
-        difEsc = iCameFromMainNameUser.getIntExtra("dif", -1);
-        temaID = iCameFromMainNameUser.getStringExtra("temaID");
+
+        // Check flag and initialize objects
+        Intent intent = getIntent();
+        String checkFlag= intent.getStringExtra("flag");
+        if(checkFlag.equals("FROM_GAME")){
+            temaID = (String) intent.getSerializableExtra("temaID");
+            difEsc = (int) intent.getSerializableExtra("dif");
+        }
 
         System.out.println("USER LOGADO: "+ nameuserlogged + "  DIF: "+ difEsc + "TemaID: " + temaID);
 
@@ -114,8 +117,6 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         wrongAnsO = findViewById(R.id.wrongAnsOther);
         timeToSolveAnsO = findViewById(R.id.timeToSolveOther);
         finalScoreO = findViewById(R.id.finalScoreOther);
-
-
     }
 
     public void GoToBasePage(View v){
@@ -276,6 +277,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                             }
                         }
                     }
+
                     for(int i = 0; i < friendsNameSameTest.size(); i++) {
                         friendsName.add(friendsNameSameTest.get(i));
                     }

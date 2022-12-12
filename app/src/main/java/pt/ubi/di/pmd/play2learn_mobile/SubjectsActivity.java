@@ -61,10 +61,6 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subjects);
 
-        Intent iCameFromMainNameUser = getIntent();
-        nameuserlogged = iCameFromMainNameUser.getStringExtra("nameUserLogged");
-        System.out.println("USER SUBJ: " + nameuserlogged);
-
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,6 +73,7 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
         String checkFlag= intent.getStringExtra("flag");
         if(checkFlag.equals("FROM_BASE")){
             nameuserlogged = intent.getStringExtra("name");
+            System.out.println("name nos subjects --> "+nameuserlogged);
         }
 
         // Spinner
@@ -181,8 +178,7 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
             goToGameActivity.putExtra("flag", "FROM_SUBJECTS");
             goToGameActivity.putExtra("name", nameuserlogged);
             goToGameActivity.putExtra("subject", temaEscolhido);
-            escolhaDifUser = spinner_dif.getSelectedItem().toString();
-            goToGameActivity.putExtra("difficulty", Integer.parseInt(escolhaDifUser)+1);
+            goToGameActivity.putExtra("difficulty", escolhaDifUser);
             startActivity(goToGameActivity);
             overridePendingTransition(0, 0);
         }

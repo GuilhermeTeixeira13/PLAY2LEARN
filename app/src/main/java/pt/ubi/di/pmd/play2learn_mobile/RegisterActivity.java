@@ -162,8 +162,9 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void GoToBasePage(View v){
-        Intent myIntent = new Intent(this, BaseActivity.class);
-        startActivity(myIntent);
+        Intent goToBaseActivity = new Intent(this, BaseActivity.class);
+        goToBaseActivity.putExtra("flag", "FROM_REGISTER");
+        startActivity(goToBaseActivity);
     }
 
     // Inflating the toolbar
