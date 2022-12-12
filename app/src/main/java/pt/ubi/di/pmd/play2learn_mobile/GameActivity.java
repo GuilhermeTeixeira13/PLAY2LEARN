@@ -59,6 +59,7 @@ public class GameActivity extends AppCompatActivity {
     private int num_wrong_answers = 0;
     private int test_time = 0;
     private double final_score = 0;
+    int question_num = 0;
 
     CountDownTimer timer;
 
@@ -136,7 +137,7 @@ public class GameActivity extends AppCompatActivity {
                         selected_questions.add(all_questions.get(random_selection.get(i)));
                     Collections.shuffle(selected_questions);
 
-                    game(selected_questions, 0);
+                    game(selected_questions);
                 }
             } catch (SQLException e) {
                 isSuccess = false;
@@ -164,8 +165,6 @@ public class GameActivity extends AppCompatActivity {
 
                     String query = "INSERT INTO userresults (`id`, `IDSubject`, `IDUser`, `Score`, `NumCorrectAns`, `NumWrongAns`, `TimeToSolve`, `Difficulty`) " +
                             "values (NULL," + game_subject + "," + getUserID(connectDB) + "," + final_score + "," + num_right_answers + "," + num_wrong_answers  + ",'" + test_time + "'," + game_difficulty +")";
-
-                    System.out.println(query);
 
                     Statement statement = connectDB.createStatement();
                     statement.executeUpdate(query);
@@ -214,7 +213,7 @@ public class GameActivity extends AppCompatActivity {
         return all_questions;
     }
 
-    public void game (ArrayList<Question> questions, int question_num){
+    public void game (ArrayList<Question> questions){
         prepareForNewQuestion(question_num);
 
         Question question = questions.get(question_num);
@@ -261,12 +260,13 @@ public class GameActivity extends AppCompatActivity {
                             Toast.makeText(GameActivity.this, getResources().getString(R.string.VerifyAnswers), Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        if(question_num+1 < num_of_questions)
-                            game(questions, question_num+1);
+                        if(question_num + 1 < num_of_questions){
+                            question_num += 1;
+                            game(questions);
+                        }
                         else {
                             SaveResults saveResults = new SaveResults();
                             saveResults.execute();
-
                             GoToResultsPage(getWindow().getDecorView());
                         }
                     }
@@ -352,13 +352,17 @@ public class GameActivity extends AppCompatActivity {
 
     public void afterSubmission(){
         timer.cancel();
-
         CheckBox1.setEnabled(false);
         CheckBox2.setEnabled(false);
         CheckBox3.setEnabled(false);
         CheckBox4.setEnabled(false);
 
-        BtnSubmit.setText(getResources().getString(R.string.NextQuestion));
+        System.out.println("AFETR SUB --> questionNum:"+question_num+" // numQuestions:"+num_of_questions);
+
+        if(question_num + 1 == num_of_questions)
+            BtnSubmit.setText(getResources().getString(R.string.FinishGame));
+        else
+            BtnSubmit.setText(getResources().getString(R.string.NextQuestion));
     }
 
     public void prepareForNewQuestion(int question_num){

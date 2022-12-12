@@ -60,6 +60,7 @@
     <string name="GoHome2">Do you want end the current game and go back to the main page?</string>
     <string name="TimeToSubmit">Time to submit:</string>
     <string name="VerifyAnswers">Make sure you checked one and only one answer.</string>
+    <string name="FinishGame">FINISH GAME</string>
     <string-array name="friendsResult">
         <item>One</item>
         <item>Two</item>
