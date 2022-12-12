@@ -53,8 +53,6 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
 
     String nameuserlogged;
 
-    String[] numDif;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -99,24 +97,16 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
                 temaEscolhidoId = listId.get(i);
             }
         });
-
-        numDif = new String[3];
-        numDif[0] = getResources().getString(R.string.difEasy);
-        numDif[1] = getResources().getString(R.string.difMedium);
-        numDif[2] = getResources().getString(R.string.difHard);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        if(i == 0) {
+        if(i == 0)
             escolhaDifUser = 1;
-        }
-        if(i == 1) {
+        if(i == 1)
             escolhaDifUser = 2;
-        }
-        if(i == 2) {
+        if(i == 2)
             escolhaDifUser = 3;
-        }
     }
 
     @Override
@@ -177,7 +167,7 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
             Intent goToGameActivity = new Intent(this, GameActivity.class);
             goToGameActivity.putExtra("flag", "FROM_SUBJECTS");
             goToGameActivity.putExtra("name", nameuserlogged);
-            goToGameActivity.putExtra("subject", temaEscolhido);
+            goToGameActivity.putExtra("subject", temaEscolhidoId);
             goToGameActivity.putExtra("difficulty", escolhaDifUser);
             startActivity(goToGameActivity);
             overridePendingTransition(0, 0);

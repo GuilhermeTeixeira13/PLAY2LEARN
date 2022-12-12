@@ -103,7 +103,19 @@ public class GameActivity extends AppCompatActivity {
         buildGame.execute();
     }
 
-    // Get questions
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if(BtnSubmit.getText().equals(getResources().getString(R.string.Submit))){
+            TxtViewAdvice.setText(getResources().getString(R.string.minimizeApp));
+            wrongAnswer(answers);
+            afterSubmission();
+            timer.cancel();
+        }
+    }
+
+    // Build game flow
     private class BuildGame extends AsyncTask<String,String,String> {
         boolean isSuccess = false;
         String exeption = "";
@@ -117,8 +129,7 @@ public class GameActivity extends AppCompatActivity {
                 if (connectDB == null) {
                     Toast.makeText(GameActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
                 } else {
-                    id_subject = getSubjectID(connectDB);
-                    ArrayList<Question> all_questions = getQuestions(connectDB, id_subject);
+                    ArrayList<Question> all_questions = getQuestions(connectDB, game_subject);
 
                     List<Integer> random_selection = new ArrayList<Integer>(pickRandom(num_of_questions, all_questions.size()));
                     for(int i = 0 ; i < random_selection.size(); i++)
@@ -135,7 +146,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    // Get questions
+    // Save Results
     private class SaveResults extends AsyncTask<String,String,String> {
         boolean isSuccess = false;
         String exeption = "";
@@ -152,7 +163,7 @@ public class GameActivity extends AppCompatActivity {
                     final_score = ((num_right_answers / num_of_questions) * 500) + ((6000-test_time)/12);
 
                     String query = "INSERT INTO userresults (`id`, `IDSubject`, `IDUser`, `Score`, `NumCorrectAns`, `NumWrongAns`, `TimeToSolve`, `Difficulty`) " +
-                            "values (NULL," + getSubjectID(connectDB) + "," + getUserID(connectDB) + "," + final_score + "," + num_right_answers + "," + num_wrong_answers  + ",'" + test_time + "'," + game_difficulty +")";
+                            "values (NULL," + game_subject + "," + getUserID(connectDB) + "," + final_score + "," + num_right_answers + "," + num_wrong_answers  + ",'" + test_time + "'," + game_difficulty +")";
 
                     System.out.println(query);
 
@@ -178,19 +189,6 @@ public class GameActivity extends AppCompatActivity {
         }
 
         return id_user;
-    }
-
-    public String getSubjectID(Connection connectDB) throws SQLException {
-        String query = "SELECT id from subjects WHERE name= '"+game_subject+"'";
-        Statement statement = connectDB.createStatement();
-        ResultSet rs = statement.executeQuery(query);
-        String id_subject = "";
-
-        while (rs.next()) {
-            id_subject = rs.getString(1);
-        }
-
-        return id_subject;
     }
 
     public ArrayList<Question> getQuestions(Connection connectDB, String id_subject) throws SQLException {
@@ -284,18 +282,6 @@ public class GameActivity extends AppCompatActivity {
                 checkBoxes[i].setTextColor(Color.parseColor("#00FF00"));
              else
                 checkBoxes[i].setTextColor(Color.parseColor("#FF3030"));
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        if(BtnSubmit.getText().equals(getResources().getString(R.string.Submit))){
-            TxtViewAdvice.setText(getResources().getString(R.string.minimizeApp));
-            wrongAnswer(answers);
-            afterSubmission();
-            timer.cancel();
         }
     }
 
@@ -413,22 +399,6 @@ public class GameActivity extends AppCompatActivity {
         return locale;
     }
 
-    public void GoToResultsPage(View v){
-        Intent goToResultsActivity = new Intent(this, ResultsActivity.class);
-        goToResultsActivity.putExtra("flag", "FROM_GAME");
-        goToResultsActivity.putExtra("ulogged", user_name);
-        goToResultsActivity.putExtra("dif", game_difficulty);
-        goToResultsActivity.putExtra("temaID", id_subject);
-        startActivity(goToResultsActivity);
-    }
-
-    public void GoToBasePage(View v){
-        Intent goToBaseActivity = new Intent(this, BaseActivity.class);
-        goToBaseActivity.putExtra("flag", "FROM_GAME");
-        goToBaseActivity.putExtra("name", user_name);
-        startActivity(goToBaseActivity);
-    }
-
     public Set<Integer> pickRandom(int n, int k) {
         final Set<Integer> picked = new HashSet<>();
         while (picked.size() < n) {
@@ -475,5 +445,21 @@ public class GameActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void GoToResultsPage(View v){
+        Intent goToResultsActivity = new Intent(this, ResultsActivity.class);
+        goToResultsActivity.putExtra("flag", "FROM_GAME");
+        goToResultsActivity.putExtra("ulogged", user_name);
+        goToResultsActivity.putExtra("dif", game_difficulty);
+        goToResultsActivity.putExtra("temaID", id_subject);
+        startActivity(goToResultsActivity);
+    }
+
+    public void GoToBasePage(View v){
+        Intent goToBaseActivity = new Intent(this, BaseActivity.class);
+        goToBaseActivity.putExtra("flag", "FROM_GAME");
+        goToBaseActivity.putExtra("name", user_name);
+        startActivity(goToBaseActivity);
     }
 }
