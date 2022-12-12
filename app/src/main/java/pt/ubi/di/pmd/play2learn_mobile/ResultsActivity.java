@@ -43,7 +43,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
 
     int difEsc;
     String temaID;
-    int friendSelected = 0;
+    int friendSelected = -1;
 
     private Spinner spinnerFriends;
     TextView correctAnswers;
@@ -59,6 +59,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     TextView timeToSolveAnsO;
     TextView finalScoreO;
 
+    TextView otherFriend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +118,8 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         wrongAnsO = findViewById(R.id.wrongAnsOther);
         timeToSolveAnsO = findViewById(R.id.timeToSolveOther);
         finalScoreO = findViewById(R.id.finalScoreOther);
+
+        otherFriend = findViewById(R.id.otherFriendID);
     }
 
     public void GoToBasePage(View v){
@@ -156,7 +159,12 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        friendSelected = i;
+        if(adapterView.getSelectedItem().equals("My last test") || adapterView.getSelectedItem().equals("Último teste")) {
+            friendSelected = -1;
+        }
+        else {
+            friendSelected = i;
+        }
     }
 
     @Override
@@ -293,6 +301,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         @Override
         protected void onPostExecute(String s) {
             ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, friendsName);
+            friendsName.add("My last test");
             spinnerFriends.setAdapter(spinnerAdapter);
         }
     }
@@ -339,15 +348,32 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                         break;
                     }
 
-                    String query4 = "SELECT * FROM userresults WHERE IDUser = " + friendsIdSameTest.get(friendSelected) + " and IDSubject = " + temaID + " and Difficulty = " + difEsc + " Order by ID DESC";
-                    ResultSet rs4 = statement.executeQuery(query4);
+                    if(friendSelected == -1) {
+                        int count = 0;
+                        String query4 = "SELECT * FROM userresults WHERE IDUser = " + idUserLogged + " and IDSubject = " + temaID + " and Difficulty = " + difEsc + " Order by ID DESC";
+                        ResultSet rs4 = statement.executeQuery(query4);
 
-                    while (rs4.next()) {
-                        correctAnsOther = rs4.getString(5);
-                        wrongAnsOther = rs4.getString(6);;
-                        timeOther = rs4.getString(7);;
-                        scoreOther = rs4.getString(4);;
-                        break;
+                        while (rs4.next()) {
+                            if(count == 1) {
+                                correctAnsOther = rs4.getString(5);
+                                wrongAnsOther = rs4.getString(6);
+                                timeOther = rs4.getString(7);
+                                scoreOther = rs4.getString(4);
+                            }
+                            count++;
+                        }
+                    }
+                    else {
+                        String query4 = "SELECT * FROM userresults WHERE IDUser = " + friendsIdSameTest.get(friendSelected) + " and IDSubject = " + temaID + " and Difficulty = " + difEsc + " Order by ID DESC";
+                        ResultSet rs4 = statement.executeQuery(query4);
+
+                        while (rs4.next()) {
+                            correctAnsOther = rs4.getString(5);
+                            wrongAnsOther = rs4.getString(6);;
+                            timeOther = rs4.getString(7);;
+                            scoreOther = rs4.getString(4);;
+                            break;
+                        }
                     }
                 }
             } catch (SQLException e) {
@@ -368,6 +394,10 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
             wrongAnsO.setText(wrongAnsOther);
             timeToSolveAnsO.setText(timeOther);
             finalScoreO.setText(scoreOther);
+
+            otherFriend.setText(friendsName.get(friendSelected));
+
+
         }
     }
 }
