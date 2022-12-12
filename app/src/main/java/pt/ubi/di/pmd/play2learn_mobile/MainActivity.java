@@ -29,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
     EditText usr, password;
     P2L_DbHelper connectionhelper;
-    String a;
     static boolean isInit = true;
+    String autolog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +55,10 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
         if (sp.contains("uname")){
             //System.out.println("dei auto login pelas shp");
-            a = sp.getString("uname", "");
-            Intent goToMainActivity = new Intent(MainActivity.this, BaseActivity.class);
-            goToMainActivity.putExtra("flag", "FROM_MAIN");
-            goToMainActivity.putExtra("name", a);
-            startActivity(goToMainActivity);
+            autolog = sp.getString("uname", "");
+            Intent intent = new Intent(this, BaseActivity.class);
+            intent.putExtra("username", autolog);
+            startActivity(intent);
         }
 
         //login
@@ -156,12 +155,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void GoToBasePage(View v){
+        Intent myIntent = new Intent(this, BaseActivity.class);
+        myIntent.putExtra("name", usr.getText().toString());
+        startActivity(myIntent);
+    }
+
     public void GoToRegisterPage(View v){
         Intent myIntent = new Intent(this, RegisterActivity.class);
         startActivity(myIntent);
     }
-
-
 
     // Inflating the toolbar
     @Override

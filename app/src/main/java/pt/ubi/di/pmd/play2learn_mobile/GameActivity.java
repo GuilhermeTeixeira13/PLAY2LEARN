@@ -34,7 +34,6 @@ import java.util.Random;
 import java.util.Set;
 
 public class GameActivity extends AppCompatActivity {
-
     TextView TxtViewGameDifficulty;
     TextView TxtViewQuestion;
     TextView TextViewCorrectOrWrong;
@@ -407,6 +406,14 @@ public class GameActivity extends AppCompatActivity {
         String locale = prefs.getString("Language", "en");
 
         return locale;
+    }
+
+    public void GoToResultsPage(View v){
+        Intent myIntent = new Intent(this, ResultsActivity.class);
+        myIntent.putExtra("ulogged", nameuserlogged);
+        myIntent.putExtra("dif", difEscolhida);
+        myIntent.putExtra("temaID", temaEscolhidoID);
+        startActivity(myIntent);
     }
 
     public void GoToBasePage(View v){

@@ -83,6 +83,7 @@
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
+        android:dropDownVerticalOffset="45dp"
         android:layout_marginTop="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -145,12 +146,16 @@
                 android:layout_column="1" />
 
             <TextView
+                android:id="@+id/correctAnsMe"
+                android:textColor="@color/green"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:background="@drawable/table_border"
                 android:gravity="center" />
 
             <TextView
+                android:id="@+id/correctAnsOther"
+                android:textColor="#CC7CFC00"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:background="@drawable/table_border"
@@ -170,12 +175,16 @@
                 android:layout_column="1" />
 
             <TextView
+                android:id="@+id/wrongAnsMe"
+                android:textColor="#FF0000"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:gravity="center"
                 android:background="@drawable/table_border"/>
 
             <TextView
+                android:id="@+id/wrongAnsOther"
+                android:textColor="#CCFF0000"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:gravity="center"
@@ -195,6 +204,7 @@
                 android:layout_column="1" />
 
             <TextView
+                android:id="@+id/timeToSolveMe"
                 android:width="50dp"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
@@ -202,6 +212,7 @@
                 android:background="@drawable/table_border"/>
 
             <TextView
+                android:id="@+id/timeToSolveOther"
                 android:width="50dp"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
@@ -222,12 +233,14 @@
                 android:layout_column="1" />
 
             <TextView
+                android:id="@+id/finalScoreMe"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:background="@drawable/table_border"
                 android:gravity="center" />
 
             <TextView
+                android:id="@+id/finalScoreOther"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:background="@drawable/table_border"
@@ -246,6 +259,7 @@
         android:textSize="17dp"
         android:text="@string/PlayAgain"
         android:textColor="@color/white"
+        android:onClick="GoToBasePage"
         android:background="@drawable/rounded_corners_black_buttons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

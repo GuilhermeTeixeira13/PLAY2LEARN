@@ -35,22 +35,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SubjectsActivity extends AppCompatActivity implements CustomSpinnerDif.OnSpinnerEventsListener{
+public class SubjectsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     // Spinner Variables
     private CustomSpinnerDif spinner_dif;
     private ListView listView;
 
+
     private DifficultyAdapter adapter;
 
-    private String escolhaDifUser;
-    private String temaEscolhido = "";
+    private int escolhaDifUser;
+    private String temaEscolhido;
+    private String temaEscolhidoId;
 
     private List<String> list;
+    private List<String> listId;
 
-    private String nameuserlogged;
-
-    int count = 0;
+    String nameuserlogged;
 
     String[] numDif;
 
@@ -59,6 +60,10 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subjects);
+
+        Intent iCameFromMainNameUser = getIntent();
+        nameuserlogged = iCameFromMainNameUser.getStringExtra("nameUserLogged");
+        System.out.println("USER SUBJ: " + nameuserlogged);
 
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -76,22 +81,25 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
 
         // Spinner
         spinner_dif = findViewById(R.id.spinnerDifficulty);
-        spinner_dif.setSpinnerEventsListener(this);
         adapter = new DifficultyAdapter(    SubjectsActivity.this, DataDifficulty.getDifficultyList());
         spinner_dif.setAdapter(adapter);
+
+        spinner_dif.setOnItemSelectedListener(this);
 
         // ListView
         listView = findViewById(R.id.listview);
         list = new ArrayList<>();
+        listId = new ArrayList<>();
 
         // BD - Subjects
         acessSubjects accSubj = new acessSubjects();
         accSubj.execute();
+        temaEscolhido = "";
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 temaEscolhido = list.get(i);
-                System.out.println(temaEscolhido);
+                temaEscolhidoId = listId.get(i);
             }
         });
 
@@ -99,6 +107,24 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
         numDif[0] = getResources().getString(R.string.difEasy);
         numDif[1] = getResources().getString(R.string.difMedium);
         numDif[2] = getResources().getString(R.string.difHard);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        if(i == 0) {
+            escolhaDifUser = 1;
+        }
+        if(i == 1) {
+            escolhaDifUser = 2;
+        }
+        if(i == 2) {
+            escolhaDifUser = 3;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 
     // BD LIGAÇÃO TEMAS SUBJECTS
@@ -126,6 +152,12 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
                     ResultSet rs = statement.executeQuery(query);
                     while (rs.next()) {
                         list.add(rs.getString(1));
+                    }
+
+                    String query1 = "select Id from subjects";
+                    ResultSet rs1 = statement.executeQuery(query1);
+                    while (rs1.next()) {
+                        listId.add(rs1.getString(1));
                     }
                 }
                 System.out.println(list);
@@ -205,14 +237,4 @@ public class SubjectsActivity extends AppCompatActivity implements CustomSpinner
         return super.onOptionsItemSelected(item);
     }
 
-    // Spinner Methods
-    @Override
-    public void onPopupWindowOpened(Spinner spinner) {
-
-    }
-
-    @Override
-    public void onPopupWindowClosed(Spinner spinner) {
-
-    }
 }
