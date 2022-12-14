@@ -1,5 +1,6 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -51,7 +52,7 @@ public class SettingsFragment extends Fragment {
         eml = view.findViewById(R.id.edTextEmail);
         pass = view.findViewById(R.id.edTextPass);
 
-        SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
+        SharedPreferences sp = getContext().getSharedPreferences("userLogged", Context.MODE_PRIVATE);
         username = sp.getString("uname", "");
 
         // Change toolbar title
@@ -103,7 +104,7 @@ public class SettingsFragment extends Fragment {
                     if (connectDB== null){
                         z = "Please check your internet connection";
                     }else {
-                        String query = "select * from users where Email='"+usereml+"' and Password='"+userpass+"' ";
+                        String query = "select * from users where Email='"+usereml+"' and User='"+username+"' and Password='"+userpass+"' ";
 
                         Statement statement = connectDB.createStatement();
 
