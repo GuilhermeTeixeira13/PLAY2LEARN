@@ -117,6 +117,11 @@ public class SettingsFragment extends Fragment {
                             pss = rs.getString(4);
 
                             if((ueml.equals(usereml)) && pss.equals(userpass)){
+                                String query1 = "DELETE FROM users where Email='" + usereml + "' and Password='" + userpass + "'";
+
+
+                                Statement statement1 = connectDB.createStatement();
+                                statement1.executeUpdate(query1);
                                 isSuccess = true;
                             }else {
                                 isSuccess = false;
@@ -145,24 +150,14 @@ public class SettingsFragment extends Fragment {
             //System.out.println("cheguei aqui");
 
             if (isSuccess){
-                P2L_DbHelper connectNow = new P2L_DbHelper();
-                Connection connectDB = connectNow.getConnection();
-                System.out.println(connectDB);
+                SharedPreferences sp = getActivity().getSharedPreferences("userLogged", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.remove("uname");
+                editor.apply();
+                System.out.println("removi o user da shp");
 
-                if (connectDB== null) {
-                    z = "Please check your internet connection";
-                }else {
-
-                    String query = "DELETE FROM users where Email='" + usereml + "' and Password='" + userpass + "'";
-
-                    Statement statement = null;
-                    try {
-                        statement = connectDB.createStatement();
-                        statement.executeUpdate(query);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                startActivity(intent);
             }
         }
     }
