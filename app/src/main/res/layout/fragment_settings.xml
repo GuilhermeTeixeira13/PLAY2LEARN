@@ -94,6 +94,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edTextNameBibio"/>
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/BtnDelUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:paddingStart="50dp"
+        android:paddingEnd="50dp"
+        android:textSize="17dp"
+        android:text="Delete User"
+        android:textColor="@color/black"
+        android:background="@drawable/rounded_coners_red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BtnSave"/>
+
     <View
         android:id="@+id/horizontal_line1"
         android:layout_width="0dp"
@@ -103,7 +119,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/BtnSave" />
+        app:layout_constraintTop_toBottomOf="@id/BtnDelUser" />
 
     <TextView
         android:id="@+id/appLanguage"
@@ -146,33 +162,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/changePT"
-            android:layout_weight="1"
-            android:layout_width="130dp"
-            android:layout_height="70dp"
-            app:layout_constraintTop_toBottomOf="@+id/takeLook"
-            android:textColor="@color/white"
-            android:background="@drawable/pt"
-            android:layout_marginStart="40dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/changeENG"
-            android:layout_weight="1"
-            android:layout_width="130dp"
-            android:layout_height="70dp"
-            app:layout_constraintTop_toBottomOf="@+id/takeLook"
-            android:background="@drawable/en"
-            android:textColor="@color/white"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="40dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/changePT"
-            />
     </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/changePT"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginBottom="48dp"
+        android:layout_weight="1"
+        android:background="@drawable/pt"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/takeLook" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/changeENG"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="48dp"
+        android:layout_weight="1"
+        android:background="@drawable/en"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.254"
+        app:layout_constraintStart_toEndOf="@+id/changePT"
+        app:layout_constraintTop_toBottomOf="@+id/takeLook" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
