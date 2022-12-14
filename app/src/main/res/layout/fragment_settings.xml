@@ -7,29 +7,29 @@
     tools:context=".BaseActivity">
 
     <ImageView
-        android:id="@+id/personIcon"
+        android:id="@+id/EmailIcon"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/email_icon"
         android:layout_marginTop="10dp"
         android:layout_marginStart="60dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/name"
-        app:layout_constraintTop_toBottomOf="@+id/name">
+        app:layout_constraintEnd_toStartOf="@+id/Email"
+        app:layout_constraintTop_toBottomOf="@+id/Email">
     </ImageView>
 
     <EditText
-        android:id="@+id/edTextName"
+        android:id="@+id/edTextEmail"
         android:layout_width="210dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
-        app:layout_constraintStart_toEndOf="@+id/personIcon"
-        app:layout_constraintTop_toBottomOf="@+id/name">
+        app:layout_constraintStart_toEndOf="@+id/EmailIcon"
+        app:layout_constraintTop_toBottomOf="@+id/Email">
     </EditText>
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/Email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Email"
@@ -38,34 +38,34 @@
         android:textSize="20dp"
         android:textColor="@color/black"
         android:fontFamily="@font/roboto_black"
-        app:layout_constraintStart_toEndOf="@+id/personIcon"
+        app:layout_constraintStart_toEndOf="@+id/EmailIcon"
         app:layout_constraintTop_toTopOf="parent">
     </TextView>
 
     <ImageView
-        android:id="@+id/infoIcon"
+        android:id="@+id/keyIcon"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
         android:layout_marginStart="60dp"
         android:background="@drawable/key_icon"
-        app:layout_constraintEnd_toStartOf="@+id/name"
+        app:layout_constraintEnd_toStartOf="@+id/Email"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bibio"></ImageView>
+        app:layout_constraintTop_toBottomOf="@+id/Password"></ImageView>
 
     <EditText
-        android:id="@+id/edTextNameBibio"
+        android:id="@+id/edTextPass"
         android:layout_width="210dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
-        app:layout_constraintStart_toEndOf="@+id/infoIcon"
-        app:layout_constraintTop_toBottomOf="@+id/bibio">
+        app:layout_constraintStart_toEndOf="@+id/keyIcon"
+        app:layout_constraintTop_toBottomOf="@+id/Password">
     </EditText>
 
     <TextView
-        android:id="@+id/bibio"
+        android:id="@+id/Password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Password"
@@ -74,8 +74,8 @@
         android:textSize="20dp"
         android:textColor="@color/black"
         android:fontFamily="@font/roboto_black"
-        app:layout_constraintStart_toEndOf="@+id/personIcon"
-        app:layout_constraintTop_toBottomOf="@+id/edTextName">
+        app:layout_constraintStart_toEndOf="@+id/EmailIcon"
+        app:layout_constraintTop_toBottomOf="@+id/edTextEmail">
     </TextView>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -92,7 +92,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edTextNameBibio"/>
+        app:layout_constraintTop_toBottomOf="@+id/edTextPass"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnDelUser"
