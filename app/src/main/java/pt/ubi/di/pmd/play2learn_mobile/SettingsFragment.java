@@ -104,7 +104,7 @@ public class SettingsFragment extends Fragment {
                     if (connectDB== null){
                         z = "Please check your internet connection";
                     }else {
-                        String query = "select * from users where Email='"+usereml+"' and User='"+username+"' and Password='"+userpass+"' ";
+                        String query = "select * from users where Email='"+usereml+"' and Name='"+username+"' and Password='"+userpass+"' ";
 
                         Statement statement = connectDB.createStatement();
 
