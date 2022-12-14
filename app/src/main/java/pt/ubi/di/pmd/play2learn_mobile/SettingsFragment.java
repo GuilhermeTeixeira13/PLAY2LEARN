@@ -32,6 +32,8 @@ public class SettingsFragment extends Fragment {
     EditText eml;
     EditText pass;
 
+    String username;
+
     static boolean isInit = true;
 
     @Override
@@ -48,6 +50,9 @@ public class SettingsFragment extends Fragment {
 
         eml = view.findViewById(R.id.edTextEmail);
         pass = view.findViewById(R.id.edTextPass);
+
+        SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
+        username = sp.getString("uname", "");
 
         // Change toolbar title
         getActivity().setTitle(getResources().getString(R.string.app_name));
@@ -70,7 +75,7 @@ public class SettingsFragment extends Fragment {
         btnDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.Deluser deluser = new MainActivity.Deluser();
+                SettingsFragment.Deluser deluser = new SettingsFragment.Deluser();
                 deluser.execute();
             }
         });
@@ -139,7 +144,24 @@ public class SettingsFragment extends Fragment {
             //System.out.println("cheguei aqui");
 
             if (isSuccess){
+                P2L_DbHelper connectNow = new P2L_DbHelper();
+                Connection connectDB = connectNow.getConnection();
+                System.out.println(connectDB);
 
+                if (connectDB== null) {
+                    z = "Please check your internet connection";
+                }else {
+
+                    String query = "DELETE FROM users where Email='" + usereml + "' and Password='" + userpass + "'";
+
+                    Statement statement = null;
+                    try {
+                        statement = connectDB.createStatement();
+                        statement.executeUpdate(query);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }
