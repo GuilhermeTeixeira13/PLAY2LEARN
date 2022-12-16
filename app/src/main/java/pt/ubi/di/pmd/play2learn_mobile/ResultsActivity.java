@@ -161,9 +161,14 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if(adapterView.getSelectedItem().equals("My last test") || adapterView.getSelectedItem().equals("Último teste")) {
             friendSelected = -1;
+            ResultsActivity.currentTestByUser currentTest = new ResultsActivity.currentTestByUser();
+            currentTest.execute();
+
         }
         else {
             friendSelected = i;
+            ResultsActivity.currentTestByUser currentTest = new ResultsActivity.currentTestByUser();
+            currentTest.execute();
         }
     }
 
@@ -249,6 +254,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                     while (rs1.next()) {
                         idUserLogged = rs1.getString(1);
                     }
+                    System.out.println("USER LOGGED: " + idUserLogged);
 
                     String query2 = "SELECT IDFriend FROM userfriends WHERE IDUser = " + idUserLogged;
                     ResultSet rs2 = statement.executeQuery(query2);
@@ -256,6 +262,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                     while (rs2.next()) {
                         friendsID.add(rs2.getString(1));
                     }
+                    System.out.println("FRIENDS ID: " + friendsID);
 
                     for(int i = 0; i < friendsID.size(); i++) {
                         String query3 = "SELECT id FROM userresults WHERE IDUser =" + friendsID.get(i) + " and IDSubject =" + temaID + " and Difficulty = " + difEsc;
@@ -265,6 +272,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                             testID.add(rs3.getString(1));
                         }
                     }
+                    System.out.println("TEST FRIENDS ID: " + testID);
 
                     for(int i = 0; i < testID.size(); i++) {
                         String query4 = "SELECT idUser FROM userresults WHERE id = " + testID.get(i);
@@ -274,6 +282,8 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                             friendsIdSameTest.add(rs4.getString(1));
                         }
                     }
+
+                    System.out.println("SAME TEST FRIENDS ID: " + friendsID);
 
                     for(int i = 0; i < friendsIdSameTest.size(); i++) {
                         String query5 = "SELECT Name FROM users WHERE id = " + friendsIdSameTest.get(i);
@@ -285,6 +295,8 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                             }
                         }
                     }
+
+                    System.out.println("SAME TEST FRIENDS NAME: " + friendsID);
 
                     for(int i = 0; i < friendsNameSameTest.size(); i++) {
                         friendsName.add(friendsNameSameTest.get(i));

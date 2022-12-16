@@ -168,6 +168,7 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
             goToGameActivity.putExtra("flag", "FROM_SUBJECTS");
             goToGameActivity.putExtra("name", nameuserlogged);
             goToGameActivity.putExtra("subject", temaEscolhidoId);
+            System.out.println("TEMA SUBJ: "+ temaEscolhidoId);
             goToGameActivity.putExtra("difficulty", escolhaDifUser);
             startActivity(goToGameActivity);
             overridePendingTransition(0, 0);

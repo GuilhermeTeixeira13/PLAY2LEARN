@@ -83,6 +83,8 @@ public class GameActivity extends AppCompatActivity {
             user_name = sp.getString("uname", "");
         }
         Intent intent = getIntent();
+        id_subject = intent.getStringExtra("subject");
+        System.out.println("ID SUBJECT ONCREATE GAME: " + id_subject);
         String checkFlag= intent.getStringExtra("flag");
         if(checkFlag.equals("FROM_SUBJECTS")){
             //user_name = (String) intent.getSerializableExtra("name");
