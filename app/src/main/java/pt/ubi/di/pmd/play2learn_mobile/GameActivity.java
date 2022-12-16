@@ -77,10 +77,15 @@ public class GameActivity extends AppCompatActivity {
         setTitle(getResources().getString(R.string.SubjectsActivity));
 
         // Check flag and initialize objects
+
+        SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
+        if (sp.contains("uname")) {
+            user_name = sp.getString("uname", "");
+        }
         Intent intent = getIntent();
         String checkFlag= intent.getStringExtra("flag");
         if(checkFlag.equals("FROM_SUBJECTS")){
-            user_name = (String) intent.getSerializableExtra("name");
+            //user_name = (String) intent.getSerializableExtra("name");
             game_subject = (String) intent.getSerializableExtra("subject");
             game_difficulty = (int) intent.getSerializableExtra("difficulty");
         }
