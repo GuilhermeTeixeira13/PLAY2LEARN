@@ -13,7 +13,7 @@ CREATE TABLE subjects (
   Image BLOB
 );
 
-CREATE TABLE Questions_PT (
+CREATE TABLE questions_pt (
   id INTEGER PRIMARY KEY AUTO_INCREMENT, 
   IDSubject INTEGER, 
   Question NVARCHAR(255),
@@ -25,7 +25,7 @@ CREATE TABLE Questions_PT (
   CONSTRAINT fk_questSubj FOREIGN KEY (IDSubject) REFERENCES subjects (id)
 );
 
-CREATE TABLE Questions_ENG (
+CREATE TABLE questions_eng (
   id INTEGER PRIMARY KEY AUTO_INCREMENT, 
   IDSubject INTEGER, 
   Question NVARCHAR(255),
@@ -37,7 +37,7 @@ CREATE TABLE Questions_ENG (
   CONSTRAINT fk_questSubjEng FOREIGN KEY (IDSubject) REFERENCES subjects (id)
 );
 
-CREATE TABLE UserResults (
+CREATE TABLE userresults (
   id INTEGER PRIMARY KEY AUTO_INCREMENT, 
   IDSubject INTEGER, 
   IDUser INTEGER, 
@@ -50,7 +50,7 @@ CREATE TABLE UserResults (
 );
 
 
-CREATE TABLE UserFriends (
+CREATE TABLE userfriends (
   id INTEGER PRIMARY KEY AUTO_INCREMENT, 
   IDUser INTEGER, 
   IDFriend INTEGER, 
