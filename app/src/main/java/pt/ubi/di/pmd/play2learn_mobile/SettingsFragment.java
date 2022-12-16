@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -19,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
+import java.io.ByteArrayOutputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,6 +31,7 @@ public class SettingsFragment extends Fragment {
     Button btnPT;
     Button btnEN;
     Button btnDel;
+    Button btnSave;
 
     EditText eml;
     EditText pass;
@@ -48,6 +51,7 @@ public class SettingsFragment extends Fragment {
         btnPT = view.findViewById(R.id.changePT);
         btnEN = view.findViewById(R.id.changeENG);
         btnDel = view.findViewById(R.id.BtnDelUser);
+        btnSave = view.findViewById(R.id.BtnSave);
 
         eml = view.findViewById(R.id.edTextEmail);
         pass = view.findViewById(R.id.edTextPass);
@@ -73,6 +77,14 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SettingsFragment.Updatedata updatedata = new SettingsFragment.Updatedata();
+                updatedata.execute();
+            }
+        });
+
         btnDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +94,43 @@ public class SettingsFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private class Updatedata extends AsyncTask<String,String,String>{
+        String usereml = eml.getText().toString();
+        String userpass = pass.getText().toString();
+        String z = "";
+        boolean isSuccess = false;
+
+        @Override
+        protected String doInBackground(String... strings) {
+            if (usereml.isEmpty() || userpass.isEmpty()){
+                z="all fields required";
+            }else {
+                try {
+                    P2L_DbHelper connectNow = new P2L_DbHelper();
+                    Connection connectDB = connectNow.getConnection();
+
+                    if (connectDB == null) {
+                        z="Please check your internet connection";
+                    } else {
+                        System.out.println("1");
+                        String query = "UPDATE users Set Email='" + usereml + "', Password ='"+userpass+"' where Name = '" + username + "'";
+
+                        Statement statement = connectDB.createStatement();
+                        statement.executeUpdate(query);
+
+                        z="Update is successfull";
+                    }
+                } catch (Exception e) {
+                    z="error";
+                }
+            }
+            return z;
+        }
+        protected void onPostExecute(String s) {
+            Toast.makeText(getContext(),""+z,Toast.LENGTH_LONG).show();
+        }
     }
 
     private class Deluser extends AsyncTask<String,String,String> {

@@ -86,7 +86,7 @@
         android:paddingStart="50dp"
         android:paddingEnd="50dp"
         android:textSize="17dp"
-        android:text="@string/Save"
+        android:text="Update"
         android:textColor="@color/white"
         android:background="@drawable/rounded_corners_black_buttons"
         app:layout_constraintEnd_toEndOf="parent"
