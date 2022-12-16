@@ -118,9 +118,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
         @Override
         protected void onPostExecute(String s) {
-            Toast.makeText(getBaseContext(),""+z,Toast.LENGTH_LONG).show();
-            //System.out.println("cheguei aqui");
-
             if (isSuccess){
                 ProfileEmail.setText(eml);
             }
