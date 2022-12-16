@@ -9,7 +9,10 @@ import androidx.core.view.GravityCompat;
 import androidx.core.view.MenuCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.SpannableString;
@@ -18,8 +21,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
@@ -61,13 +70,60 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.nav_game);
         }
 
-        // Check flag and initialize objects
-        Intent intent = getIntent();
-        String checkFlag= intent.getStringExtra("flag");
-        if(checkFlag.equals("FROM_MAIN") || checkFlag.equals("FROM_GAME") || checkFlag.equals("FROM_SUBJECTS") || checkFlag.equals("FROM_REGISTER")){
-            nameuserlogged = (String) intent.getSerializableExtra("name");
-            System.out.println("recebeu na base --> "+nameuserlogged);
+        // Check sharedPreferences and initialize objects
+        SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
+        if (sp.contains("uname")) {
+            nameuserlogged = sp.getString("uname", "");
             ProfileName.setText(nameuserlogged);
+
+            Showeml showeml = new Showeml();
+            showeml.execute();
+        }
+    }
+
+    private class Showeml extends AsyncTask<String,String,String> {
+        String eml;
+        String z = "";
+        boolean isSuccess = false;
+
+        @Override
+        protected String doInBackground(String... strings) {
+                try {
+                    P2L_DbHelper connectNow = new P2L_DbHelper();
+                    Connection connectDB = connectNow.getConnection();
+                    System.out.println(connectDB);
+
+                    if (connectDB == null) {
+                        System.out.println("Please check your internet connection");
+                    } else {
+                        String query = "select * from users where Name='" + nameuserlogged + "'";
+
+                        Statement statement = connectDB.createStatement();
+
+                        ResultSet rs = statement.executeQuery(query);
+                        System.out.println(rs);
+
+                        while (rs.next()) {
+                            eml = rs.getString(3);
+                            isSuccess = true;
+                        }
+
+
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            return z;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Toast.makeText(getBaseContext(),""+z,Toast.LENGTH_LONG).show();
+            //System.out.println("cheguei aqui");
+
+            if (isSuccess){
+                ProfileEmail.setText(eml);
+            }
         }
     }
 
