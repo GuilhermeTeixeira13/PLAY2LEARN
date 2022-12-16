@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
             if (isSuccess){
                 SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
-                editor.putString("uname", user);
+                editor.putString("uname", nm);
                 editor.apply();
 
                 Intent goToBaseActivity = new Intent(MainActivity.this, BaseActivity.class);

@@ -1,6 +1,8 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -41,8 +43,10 @@ public class MyGroupFragment extends Fragment {
         btnAddFriend = view.findViewById(R.id.btn_add_player);
         edittxtNameFriend = view.findViewById(R.id.add_player_name);
 
-        BaseActivity BaseActivity = (BaseActivity) getActivity();
-        userLogged = BaseActivity.getUserLogged();
+        SharedPreferences sp = getContext().getSharedPreferences("userLogged", Context.MODE_PRIVATE);
+        if (sp.contains("uname")) {
+            userLogged = sp.getString("uname", "");
+        }
 
         btnAddFriend.setOnClickListener(new View.OnClickListener() {
             @Override
