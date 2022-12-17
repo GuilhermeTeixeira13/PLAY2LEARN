@@ -1,6 +1,8 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -35,10 +37,11 @@ public class MyGroupFragment extends Fragment {
     String userLogged = "";
     List<String> listaAmigos;
     String itemSelecionadoName = "";
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        View view = inflater.inflate(R.layout.fragment_mygroup, container, false);
+        view = inflater.inflate(R.layout.fragment_mygroup, container, false);
 
         btnAddFriend = view.findViewById(R.id.btn_add_player);
         edittxtNameFriend = view.findViewById(R.id.add_player_name);
@@ -71,11 +74,29 @@ public class MyGroupFragment extends Fragment {
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                itemSelecionadoName = listView.getItemAtPosition(i).toString();
-                System.out.println("ITEM SELECIONADO :" + itemSelecionadoName);
-                deleteFriend delF = new deleteFriend();
-                delF.execute();
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int il, long l) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
+
+                // Title
+                alertDialogBuilder.setTitle("Alerta");
+
+                alertDialogBuilder.setMessage("Deseja mesmo eliminar?")
+                        .setCancelable(false)
+                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent iResult = new Intent();
+                                itemSelecionadoName = listView.getItemAtPosition(il).toString();
+                                deleteFriend delF = new deleteFriend();
+                                delF.execute();
+                            }
+                        }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+                alertDialogBuilder.show();
                 return false;
             }
         });
