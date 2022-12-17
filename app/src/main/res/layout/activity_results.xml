@@ -111,6 +111,7 @@
                 android:layout_column="1" />
 
             <TextView
+                android:id="@+id/txtViewMe"
                 android:text="Me (now)"
                 android:textColor="@color/black"
                 android:gravity="center"

@@ -1,6 +1,7 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -60,6 +61,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     TextView finalScoreO;
 
     TextView otherFriend;
+    TextView txtViewMe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +122,8 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         finalScoreO = findViewById(R.id.finalScoreOther);
 
         otherFriend = findViewById(R.id.otherFriendID);
+        txtViewMe = findViewById(R.id.txtViewMe);
+
     }
 
     public void GoToBasePage(View v){
@@ -406,6 +410,73 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
             wrongAnsO.setText(wrongAnsOther);
             timeToSolveAnsO.setText(timeOther);
             finalScoreO.setText(scoreOther);
+
+
+            // Compare Corret Answers
+            if(Integer.compare((Integer.parseInt(correctAnsMe.getText().toString())),(Integer.parseInt(correctAnsO.getText().toString()))) > 0) {
+                System.out.println("1 - 1");
+                correctAnsMe.setTypeface(correctAnsMe.getTypeface(), Typeface.BOLD_ITALIC);
+                correctAnsO.setTypeface(correctAnsO.getTypeface(), Typeface.NORMAL);
+            } else if(Integer.compare((Integer.parseInt(correctAnsMe.getText().toString())),(Integer.parseInt(correctAnsO.getText().toString()))) == 0) {
+                System.out.println("1 - 2");
+                correctAnsMe.setTypeface(correctAnsMe.getTypeface(), Typeface.NORMAL);
+                correctAnsO.setTypeface(correctAnsO.getTypeface(), Typeface.NORMAL);
+            } else {
+                System.out.println("1 - 3");
+                correctAnsO.setTypeface(correctAnsO.getTypeface(), Typeface.BOLD_ITALIC);
+                correctAnsMe.setTypeface(correctAnsMe.getTypeface(), Typeface.NORMAL);
+            }
+
+            // Compare Wrong Answers
+            if(Integer.compare((Integer.parseInt(wrongAnsMe.getText().toString())),(Integer.parseInt(wrongAnsO.getText().toString()))) < 0) {
+                System.out.println("2 - 1");
+                wrongAnsMe.setTypeface(wrongAnsMe.getTypeface(), Typeface.BOLD_ITALIC);
+                wrongAnsO.setTypeface(wrongAnsO.getTypeface(), Typeface.NORMAL);
+            } else if(Integer.compare((Integer.parseInt(wrongAnsMe.getText().toString())),(Integer.parseInt(wrongAnsO.getText().toString()))) == 0) {
+                System.out.println("2 - 2");
+                wrongAnsMe.setTypeface(wrongAnsMe.getTypeface(), Typeface.NORMAL);
+                wrongAnsO.setTypeface(wrongAnsO.getTypeface(), Typeface.NORMAL);
+            } else {
+                System.out.println("2 - 3");
+                wrongAnsO.setTypeface(wrongAnsO.getTypeface(), Typeface.BOLD_ITALIC);
+                wrongAnsMe.setTypeface(wrongAnsMe.getTypeface(), Typeface.NORMAL);
+            }
+
+            // Compare Time_To_Solve
+            if(Integer.compare((Integer.parseInt(timeToSolveAnsMe.getText().toString())),(Integer.parseInt(timeToSolveAnsO.getText().toString()))) < 0) {
+                System.out.println("3 - 1");
+                timeToSolveAnsMe.setTypeface(timeToSolveAnsMe.getTypeface(), Typeface.BOLD_ITALIC);
+                timeToSolveAnsO.setTypeface(timeToSolveAnsO.getTypeface(), Typeface.NORMAL);
+            } else if(Integer.compare((Integer.parseInt(timeToSolveAnsMe.getText().toString())),(Integer.parseInt(timeToSolveAnsO.getText().toString()))) == 0) {
+                System.out.println("3 - 2");
+                timeToSolveAnsMe.setTypeface(timeToSolveAnsMe.getTypeface(), Typeface.NORMAL);
+                timeToSolveAnsO.setTypeface(timeToSolveAnsO.getTypeface(), Typeface.NORMAL);
+            } else {
+                System.out.println("3 - 3");
+                timeToSolveAnsMe.setTypeface(timeToSolveAnsMe.getTypeface(), Typeface.NORMAL);
+                timeToSolveAnsO.setTypeface(timeToSolveAnsO.getTypeface(), Typeface.BOLD_ITALIC);
+            }
+
+            // Compare Final Score
+            if(Integer.compare((Integer.parseInt(finalScoreMe.getText().toString())),(Integer.parseInt(finalScoreO.getText().toString()))) > 0) {
+                System.out.println("4 - 1");
+                finalScoreMe.setTypeface(finalScoreMe.getTypeface(), Typeface.BOLD_ITALIC);
+                finalScoreO.setTypeface(finalScoreO.getTypeface(), Typeface.NORMAL);
+                txtViewMe.setTypeface(txtViewMe.getTypeface(), Typeface.BOLD_ITALIC);
+                otherFriend.setTypeface(otherFriend.getTypeface(), Typeface.NORMAL);
+            } else if(Integer.compare((Integer.parseInt(finalScoreMe.getText().toString())),(Integer.parseInt(finalScoreO.getText().toString()))) == 0){
+                System.out.println("4 - 2");
+                finalScoreMe.setTypeface(finalScoreMe.getTypeface(), Typeface.NORMAL);
+                txtViewMe.setTypeface(txtViewMe.getTypeface(), Typeface.NORMAL);
+                finalScoreO.setTypeface(finalScoreO.getTypeface(), Typeface.NORMAL);
+                otherFriend.setTypeface(otherFriend.getTypeface(), Typeface.NORMAL);
+            } else {
+                System.out.println("4 - 3");
+                finalScoreO.setTypeface(finalScoreO.getTypeface(), Typeface.BOLD_ITALIC);
+                finalScoreMe.setTypeface(finalScoreMe.getTypeface(), Typeface.NORMAL);
+                otherFriend.setTypeface(otherFriend.getTypeface(), Typeface.BOLD_ITALIC);
+                txtViewMe.setTypeface(txtViewMe.getTypeface(), Typeface.NORMAL);
+            }
 
             if (friendSelected == -1) {
                 otherFriend.setText("My last test");
