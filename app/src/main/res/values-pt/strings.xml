@@ -69,6 +69,11 @@
     <string name="AllFieldsRequired">Todos os campos são necessários</string>
     <string name="LoginSuccessfull">Login feito com sucesso</string>
     <string name="UserNotExist">O utilizador não existe</string>
+    <string name="SpecFriendName">Precisa expecificar o nome do seu amigo</string>
+    <string name="UserinFriendGroup">Este utilizador já está no grupo de amigos</string>
+    <string name="AddedSuccess">foi adicionado com sucesso</string>
+    <string name="Alert">Alerta!</string>
+    <string name="Eliminate">Deseja mesmo eliminar?</string>
     <string-array name="friendsResult">
         <item>One</item>
         <item>Two</item>

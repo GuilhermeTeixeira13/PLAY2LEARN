@@ -68,6 +68,11 @@
     <string name="AllFieldsRequired">All Fields are required</string>
     <string name="LoginSuccessfull">Login successfull</string>
     <string name="UserNotExist">User does not exist</string>
+    <string name="SpecFriendName">You need to specify your friend\'s name</string>
+    <string name="UserinFriendGroup">This user is already in the friend\'s group</string>
+    <string name="AddedSuccess">has been successfully added</string>
+    <string name="Alert">Alert!</string>
+    <string name="Eliminate">Do you really want to delete?</string>
     <string-array name="friendsResult">
         <item>One</item>
         <item>Two</item>
