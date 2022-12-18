@@ -196,7 +196,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(ResultsActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ResultsActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
                 } else {
                     String query1 = "SELECT id From users where users.Name='" + nameuserlogged + "'";
                     Statement statement = connectDB.createStatement();
@@ -226,8 +226,8 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
 
         @Override
         protected void onPostExecute(String s) {
-            points.setText(score + " points!");
-            correctAnswers.setText("Corret answers: "+correctAns+"\\10");
+            points.setText(score + getResources().getString(R.string.Points));
+            correctAnswers.setText(getResources().getString(R.string.CorrectAnswer)+correctAns+"\\10");
 
 
         }
@@ -249,7 +249,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(ResultsActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ResultsActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
                 } else {
                     String query1 = "SELECT id From users where users.Name='" + nameuserlogged + "'";
                     Statement statement = connectDB.createStatement();
@@ -343,7 +343,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(ResultsActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ResultsActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
                 } else {
                     String query1 = "SELECT id From users where users.Name='" + nameuserlogged + "'";
                     Statement statement = connectDB.createStatement();

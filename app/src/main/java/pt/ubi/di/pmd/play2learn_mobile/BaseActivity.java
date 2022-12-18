@@ -91,24 +91,19 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 try {
                     P2L_DbHelper connectNow = new P2L_DbHelper();
                     Connection connectDB = connectNow.getConnection();
-                    System.out.println(connectDB);
 
                     if (connectDB == null) {
-                        System.out.println("Please check your internet connection");
+                        System.out.println(getResources().getString(R.string.InternetConnection));
                     } else {
-                        String query = "select * from users where Name='" + nameuserlogged + "'";
+                        String query = "SELECT * FROM users WHERE Name='" + nameuserlogged + "'";
 
                         Statement statement = connectDB.createStatement();
-
                         ResultSet rs = statement.executeQuery(query);
-                        System.out.println(rs);
 
                         while (rs.next()) {
                             eml = rs.getString(3);
                             isSuccess = true;
                         }
-
-
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -184,10 +179,5 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-
-    public String getUserLogged(){
-        return this.nameuserlogged;
     }
 }

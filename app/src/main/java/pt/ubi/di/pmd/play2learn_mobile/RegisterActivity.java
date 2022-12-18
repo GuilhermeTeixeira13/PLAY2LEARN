@@ -34,8 +34,6 @@ public class RegisterActivity extends AppCompatActivity {
     EditText pass;
     P2L_DbHelper connectionhelper;
 
-    String AES = "AES";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -95,7 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Connection connectDB = connectNow.getConnection();
 
                     if (connectDB == null){
-                        z = "Please check your internet connection";
+                        z = getResources().getString(R.string.InternetConnection);
                     }else {
                         String query1 = "select * from users";
 

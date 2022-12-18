@@ -38,8 +38,6 @@ public class SettingsFragment extends Fragment {
 
     String username;
 
-    static boolean isInit = true;
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -112,7 +110,7 @@ public class SettingsFragment extends Fragment {
                     Connection connectDB = connectNow.getConnection();
 
                     if (connectDB == null) {
-                        z="Please check your internet connection";
+                        z=getResources().getString(R.string.InternetConnection);
                     } else {
                         System.out.println("1");
                         String query = "UPDATE users Set Email='" + usereml + "', Password ='"+userpass+"' where Name = '" + username + "'";
@@ -151,7 +149,7 @@ public class SettingsFragment extends Fragment {
                     System.out.println(connectDB);
 
                     if (connectDB== null){
-                        z = "Please check your internet connection";
+                        z = getResources().getString(R.string.InternetConnection);
                     }else {
                         String query = "select * from users where Email='"+usereml+"' and Name='"+username+"' and Password='"+userpass+"' ";
 
@@ -167,7 +165,6 @@ public class SettingsFragment extends Fragment {
 
                             if((ueml.equals(usereml)) && pss.equals(userpass)){
                                 String query1 = "DELETE FROM users where Email='" + usereml + "' and Password='" + userpass + "'";
-
 
                                 Statement statement1 = connectDB.createStatement();
                                 statement1.executeUpdate(query1);
@@ -196,14 +193,12 @@ public class SettingsFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             Toast.makeText(getContext(),""+z,Toast.LENGTH_LONG).show();
-            //System.out.println("cheguei aqui");
 
             if (isSuccess){
                 SharedPreferences sp = getActivity().getSharedPreferences("userLogged", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.remove("uname");
                 editor.apply();
-                System.out.println("removi o user da shp");
 
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 startActivity(intent);

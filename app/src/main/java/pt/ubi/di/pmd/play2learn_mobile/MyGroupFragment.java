@@ -229,7 +229,7 @@ public class MyGroupFragment extends Fragment {
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(getActivity(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
                 } else {
                     String query1 = "SELECT id From users where users.Name='" + userLogged + "'";
                     Statement statement = connectDB.createStatement();
@@ -286,7 +286,7 @@ public class MyGroupFragment extends Fragment {
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(getActivity(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
                 } else {
                     String query1 = "SELECT id From users where users.Name='" + userLogged + "'";
                     Statement statement = connectDB.createStatement();

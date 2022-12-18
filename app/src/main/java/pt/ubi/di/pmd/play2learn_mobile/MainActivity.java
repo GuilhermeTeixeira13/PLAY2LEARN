@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         //auto-login
         SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
         if (sp.contains("uname")){
-            //System.out.println("dei auto login pelas shp");
             autolog = sp.getString("uname", "");
 
             Intent goToBaseActivity = new Intent(this, BaseActivity.class);
@@ -94,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println(connectDB);
 
                     if (connectDB== null){
-                        z = "Please check your internet connection";
+                        z = getResources().getString(R.string.InternetConnection);
                     }else {
                         String query = "select * from users where Name='"+user+"' or Email='"+user+"' and Password='"+pass+"' ";
 

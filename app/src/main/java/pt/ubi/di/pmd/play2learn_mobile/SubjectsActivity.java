@@ -127,12 +127,12 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
                 if (connectDB == null) {
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            final Toast toast = Toast.makeText(SubjectsActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT);
+                            final Toast toast = Toast.makeText(SubjectsActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
                             toast.show();
                         }
                     });
                 } else {
-                    String query = "select Name from subjects";
+                    String query = "SELECT Name FROM subjects";
 
                     Statement statement = connectDB.createStatement();
 
@@ -141,7 +141,7 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
                         list.add(rs.getString(1));
                     }
 
-                    String query1 = "select Id from subjects";
+                    String query1 = "SELECT Id FROM subjects";
                     ResultSet rs1 = statement.executeQuery(query1);
                     while (rs1.next()) {
                         listId.add(rs1.getString(1));

@@ -87,7 +87,6 @@ public class GameActivity extends AppCompatActivity {
         System.out.println("ID SUBJECT ONCREATE GAME: " + id_subject);
         String checkFlag= intent.getStringExtra("flag");
         if(checkFlag.equals("FROM_SUBJECTS")){
-            //user_name = (String) intent.getSerializableExtra("name");
             game_subject = (String) intent.getSerializableExtra("subject");
             game_difficulty = (int) intent.getSerializableExtra("difficulty");
         }
@@ -133,7 +132,7 @@ public class GameActivity extends AppCompatActivity {
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(GameActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GameActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
                 } else {
                     ArrayList<Question> all_questions = getQuestions(connectDB, game_subject);
 
@@ -164,7 +163,7 @@ public class GameActivity extends AppCompatActivity {
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(GameActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GameActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
                 } else {
                     final_score = ((num_right_answers / num_of_questions) * 500) + ((6000-test_time)/12);
 

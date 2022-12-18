@@ -62,6 +62,9 @@
     <string name="TimeToSubmit">Tempo para submeter:</string>
     <string name="VerifyAnswers">Certifique-se que selecionou uma e apenas uma resposta.</string>
     <string name="FinishGame">FINALIZAR JOGO</string>
+    <string name="InternetConnection">Por favor verifique a sua conexão à internet</string>
+    <string name="Points"> Pontos!</string>
+    <string name="CorrectAnswer">Resposts corretas: </string>
     <string-array name="friendsResult">
         <item>One</item>
         <item>Two</item>

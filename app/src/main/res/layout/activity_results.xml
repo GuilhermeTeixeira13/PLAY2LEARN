@@ -33,7 +33,7 @@
         android:id="@+id/points"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="2340 points!"
+        android:text=""
         android:textAlignment="center"
         android:fontFamily="@font/roboto_black"
         android:textSize="30dp"
