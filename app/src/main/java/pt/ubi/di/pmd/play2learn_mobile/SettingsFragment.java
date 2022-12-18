@@ -55,7 +55,9 @@ public class SettingsFragment extends Fragment {
         pass = view.findViewById(R.id.edTextPass);
 
         SharedPreferences sp = getContext().getSharedPreferences("userLogged", Context.MODE_PRIVATE);
-        username = sp.getString("uname", "");
+        if (sp.contains("uname")) {
+            username = sp.getString("uname", "");
+        }
 
         // Change toolbar title
         getActivity().setTitle(getResources().getString(R.string.app_name));
@@ -97,37 +99,32 @@ public class SettingsFragment extends Fragment {
     private class Updatedata extends AsyncTask<String,String,String>{
         String usereml = eml.getText().toString();
         String userpass = pass.getText().toString();
-        String z = "";
-        boolean isSuccess = false;
+        String exception = "";
 
         @Override
         protected String doInBackground(String... strings) {
             if (usereml.isEmpty() || userpass.isEmpty()){
-                z="all fields required";
+                Toast.makeText(getContext(), getResources().getString(R.string.AllFieldsRequired), Toast.LENGTH_SHORT).show();
             }else {
                 try {
                     P2L_DbHelper connectNow = new P2L_DbHelper();
                     Connection connectDB = connectNow.getConnection();
 
                     if (connectDB == null) {
-                        z=getResources().getString(R.string.InternetConnection);
+                        Toast.makeText(getContext(), getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
                     } else {
-                        System.out.println("1");
-                        String query = "UPDATE users Set Email='" + usereml + "', Password ='"+userpass+"' where Name = '" + username + "'";
+                        String query = "UPDATE users SET Email='" + usereml + "', Password ='"+userpass+"' WHERE Name = '" + username + "'";
 
                         Statement statement = connectDB.createStatement();
                         statement.executeUpdate(query);
 
-                        z="Update is successfull";
+                        Toast.makeText(getContext(), getResources().getString(R.string.UpdateSuccessfull), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
-                    z="error";
+                    exception = getResources().getString(R.string.Exceptions) + e;
                 }
             }
-            return z;
-        }
-        protected void onPostExecute(String s) {
-            Toast.makeText(getContext(),""+z,Toast.LENGTH_LONG).show();
+            return exception;
         }
     }
 
@@ -135,43 +132,39 @@ public class SettingsFragment extends Fragment {
         String ueml,pss;
         String usereml = eml.getText().toString();
         String userpass = pass.getText().toString();
-        String z = "";
+        String exception = "";
         boolean isSuccess = false;
 
         @Override
         protected String doInBackground(String... strings) {
             if (usereml.isEmpty() || userpass.isEmpty()){
-                z= "All fields Required";
+                Toast.makeText(getContext(), getResources().getString(R.string.AllFieldsRequired), Toast.LENGTH_SHORT).show();
             }else {
                 try {
                     P2L_DbHelper connectNow = new P2L_DbHelper();
                     Connection connectDB = connectNow.getConnection();
-                    System.out.println(connectDB);
 
                     if (connectDB== null){
-                        z = getResources().getString(R.string.InternetConnection);
+                        Toast.makeText(getContext(), getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
                     }else {
-                        String query = "select * from users where Email='"+usereml+"' and Name='"+username+"' and Password='"+userpass+"' ";
+                        String query = "SELECT * FROM users WHERE Email='"+usereml+"' AND Name='"+username+"' AND Password='"+userpass+"'";
 
                         Statement statement = connectDB.createStatement();
-
                         ResultSet rs = statement.executeQuery(query);
-                        System.out.println(rs);
 
                         while (rs.next()){
-                            System.out.println("entrei aqui1");
                             ueml = rs.getString(3);
                             pss = rs.getString(4);
 
                             if((ueml.equals(usereml)) && pss.equals(userpass)){
-                                String query1 = "DELETE FROM users where Email='" + usereml + "' and Password='" + userpass + "'";
+                                String query1 = "DELETE FROM users WHERE Email='" + usereml + "' AND Password='" + userpass + "'";
 
                                 Statement statement1 = connectDB.createStatement();
                                 statement1.executeUpdate(query1);
                                 isSuccess = true;
                             }else {
                                 isSuccess = false;
-                                z = "email or password does not exist";
+                                Toast.makeText(getContext(), getResources().getString(R.string.EmailPassIncorrect), Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -179,21 +172,19 @@ public class SettingsFragment extends Fragment {
 
                 } catch (SQLException e) {
                     isSuccess = false;
-                    z = "Exceptions"+e;
+                    exception = getResources().getString(R.string.Exceptions) + e;
                 }catch (Exception e) {
                     isSuccess = false;
                     e.printStackTrace();
-                    z = "Exceptions"+e;
+                    exception = getResources().getString(R.string.Exceptions) + e;
                 }
 
             }
-            return z;
+            return exception;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            Toast.makeText(getContext(),""+z,Toast.LENGTH_LONG).show();
-
             if (isSuccess){
                 SharedPreferences sp = getActivity().getSharedPreferences("userLogged", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();

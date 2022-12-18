@@ -83,7 +83,6 @@ public class GameActivity extends AppCompatActivity {
         }
         Intent intent = getIntent();
         id_subject = intent.getStringExtra("subject");
-        System.out.println("ID SUBJECT ONCREATE GAME: " + id_subject);
         String checkFlag= intent.getStringExtra("flag");
         if(checkFlag.equals("FROM_SUBJECTS")){
             game_subject = (String) intent.getSerializableExtra("subject");
@@ -460,7 +459,6 @@ public class GameActivity extends AppCompatActivity {
     public void GoToResultsPage(View v){
         Intent goToResultsActivity = new Intent(this, ResultsActivity.class);
         goToResultsActivity.putExtra("flag", "FROM_GAME");
-        goToResultsActivity.putExtra("ulogged", user_name);
         goToResultsActivity.putExtra("dif", game_difficulty);
         goToResultsActivity.putExtra("temaID", id_subject);
         startActivity(goToResultsActivity);
@@ -469,7 +467,6 @@ public class GameActivity extends AppCompatActivity {
     public void GoToBasePage(View v){
         Intent goToBaseActivity = new Intent(this, BaseActivity.class);
         goToBaseActivity.putExtra("flag", "FROM_GAME");
-        goToBaseActivity.putExtra("name", user_name);
         startActivity(goToBaseActivity);
     }
 }

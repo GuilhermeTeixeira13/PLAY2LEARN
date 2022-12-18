@@ -74,6 +74,12 @@
     <string name="AddedSuccess">foi adicionado com sucesso</string>
     <string name="Alert">Alerta!</string>
     <string name="Eliminate">Deseja mesmo eliminar?</string>
+    <string name="UserUsed">O nome de utilizador já foi utilizado</string>
+    <string name="RegisterSuccessfull">Utilizador registado com sucesso</string>
+    <string name="SelectTheme">Selecione um tema antes de jogar</string>
+    <string name="UpdateSuccessfull">Atualização feita com sucesso</string>
+    <string name="EmailPassIncorrect">O email ou a palavra-passe está incorreta</string>
+    <string name="MyLastTest">O meu ultímo teste</string>
     <string-array name="friendsResult">
         <item>One</item>
         <item>Two</item>

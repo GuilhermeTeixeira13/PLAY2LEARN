@@ -92,7 +92,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                     Connection connectDB = connectNow.getConnection();
 
                     if (connectDB == null) {
-                        System.out.println(getResources().getString(R.string.InternetConnection));
+                        Toast.makeText(getBaseContext(), getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
                     } else {
                         String query = "SELECT * FROM users WHERE Name='" + nameuserlogged + "'";
 
