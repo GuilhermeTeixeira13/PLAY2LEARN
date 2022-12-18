@@ -94,7 +94,7 @@ public class SettingsFragment extends Fragment {
                         .setPositiveButton(getResources().getString(R.string.YES), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Deluser deluser = new Deluser();
+                                SettingsFragment.Deluser deluser = new SettingsFragment.Deluser();
                                 deluser.execute();
                             }
                         })
