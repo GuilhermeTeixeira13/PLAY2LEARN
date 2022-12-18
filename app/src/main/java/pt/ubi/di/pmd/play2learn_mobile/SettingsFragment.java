@@ -1,11 +1,12 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -20,7 +21,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
-import java.io.ByteArrayOutputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -88,8 +88,20 @@ public class SettingsFragment extends Fragment {
         btnDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SettingsFragment.Deluser deluser = new SettingsFragment.Deluser();
-                deluser.execute();
+                new AlertDialog.Builder(getContext())
+                        .setTitle(getResources().getString(R.string.Alert))
+                        .setMessage(getResources().getString(R.string.Eliminate))
+                        .setPositiveButton(getResources().getString(R.string.YES), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                System.out.println("entrei aqui");
+                                Deluser deluser = new Deluser();
+                                deluser.execute();
+                            }
+                        })
+
+                        .setNegativeButton(getResources().getString(R.string.NO), null)
+                        .show();
             }
         });
 
@@ -100,6 +112,7 @@ public class SettingsFragment extends Fragment {
         String usereml = eml.getText().toString();
         String userpass = pass.getText().toString();
         String exception = "";
+        boolean isSuccess = false;
 
         @Override
         protected String doInBackground(String... strings) {
@@ -118,13 +131,21 @@ public class SettingsFragment extends Fragment {
                         Statement statement = connectDB.createStatement();
                         statement.executeUpdate(query);
 
-                        Toast.makeText(getContext(), getResources().getString(R.string.UpdateSuccessfull), Toast.LENGTH_SHORT).show();
+                        isSuccess = true;
+
                     }
                 } catch (Exception e) {
                     exception = getResources().getString(R.string.Exceptions) + e;
                 }
             }
             return exception;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if(isSuccess){
+                Toast.makeText(getContext(), getResources().getString(R.string.UpdateSuccessfull), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
