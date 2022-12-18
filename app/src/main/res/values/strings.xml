@@ -45,6 +45,8 @@
     <string name="NextQuestion">NEXT QUESTION</string>
     <string name="YourScore">Your score:</string>
     <string name="CorrectAnswers">Correct answers:</string>
+    <string name="CorrectAnswers2">Correct answers</string>
+    <string name="WrongAnswers">Wrong answers</string>
     <string name="CompareWith">Compare with:</string>
     <string name="PlayAgain">PLAY AGAIN</string>
     <string name="difEasy">Easy</string>
@@ -79,6 +81,10 @@
     <string name="UpdateSuccessfull">Update successfull</string>
     <string name="EmailPassIncorrect">Email or password are incorrect</string>
     <string name="MyLastTest">My Last Test</string>
+    <string name="TimeToSolve">Time to solve (s)</string>
+    <string name="FinalScore">Final score</string>
+    <string name="Update">UPDATE</string>
+    <string name="DelUser">DELETE USER</string>
     <string-array name="friendsResult">
         <item>One</item>
         <item>Two</item>

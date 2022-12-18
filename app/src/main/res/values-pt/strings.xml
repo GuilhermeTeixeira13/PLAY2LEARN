@@ -46,6 +46,8 @@
     <string name="NextQuestion">PRÓXIMA PERGUNTA</string>
     <string name="YourScore">A sua pontuação:</string>
     <string name="CorrectAnswers">Respostas corretas: </string>
+    <string name="CorrectAnswers2">Respostas corretas</string>
+    <string name="WrongAnswers">Respostas erradas</string>
     <string name="CompareWith">Comparar com:</string>
     <string name="PlayAgain">JOGAR OUTRA VEZ</string>
     <string name="difEasy">Fácil</string>
@@ -80,6 +82,10 @@
     <string name="UpdateSuccessfull">Atualização feita com sucesso</string>
     <string name="EmailPassIncorrect">O email ou a palavra-passe está incorreta</string>
     <string name="MyLastTest">O meu ultímo teste</string>
+    <string name="TimeToSolve">Tempo para resolver (s)</string>
+    <string name="FinalScore">Resultado Final</string>
+    <string name="Update">ATUALIZAR</string>
+    <string name="DelUser">ELIMINAR UTILIZADOR</string>
     <string-array name="friendsResult">
         <item>One</item>
         <item>Two</item>
