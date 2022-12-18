@@ -66,7 +66,7 @@
     <string name="FinishGame">FINALIZAR JOGO</string>
     <string name="InternetConnection">Por favor verifique a sua conexão à internet</string>
     <string name="Points"> Pontos!</string>
-    <string name="CorrectAnswer">Resposts corretas: </string>
+    <string name="CorrectAnswer">Respostas corretas: </string>
     <string name="Exceptions">Exceções</string>
     <string name="AllFieldsRequired">Todos os campos são necessários</string>
     <string name="LoginSuccessfull">Login feito com sucesso</string>
