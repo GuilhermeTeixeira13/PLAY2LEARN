@@ -82,14 +82,24 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             if (user.isEmpty() || pass.isEmpty()){
-                Toast.makeText(getBaseContext(), getResources().getString(R.string.AllFieldsRequired), Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        final Toast toast = Toast.makeText(MainActivity.this, getResources().getString(R.string.AllFieldsRequired), Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
             }else {
                 try {
                     P2L_DbHelper connectNow = new P2L_DbHelper();
                     Connection connectDB = connectNow.getConnection();
 
                     if (connectDB== null){
-                        Toast.makeText(getBaseContext(), getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                final Toast toast = Toast.makeText(MainActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        });
                     }else {
                         String query = "SELECT * FROM users WHERE Name='"+user+"' OR Email='"+user+"' AND Password='"+pass+"'";
 
@@ -107,10 +117,15 @@ public class MainActivity extends AppCompatActivity {
 
                             if((nm.equals(user) || eml.equals(user)) && pss.equals(pass)){
                                 isSuccess = true;
-                                Toast.makeText(getBaseContext(), getResources().getString(R.string.LoginSuccessfull), Toast.LENGTH_SHORT).show();
+                                exception = getResources().getString(R.string.LoginSuccessfull);
                             }else {
                                 isSuccess = false;
-                                Toast.makeText(getBaseContext(), getResources().getString(R.string.UserNotExist), Toast.LENGTH_SHORT).show();
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        final Toast toast = Toast.makeText(MainActivity.this, getResources().getString(R.string.UserNotExist), Toast.LENGTH_SHORT);
+                                        toast.show();
+                                    }
+                                });
                             }
                         }
 
@@ -132,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             if (isSuccess){
+                Toast.makeText(getBaseContext(), s, Toast.LENGTH_SHORT).show();
                 SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("uname", nm);

@@ -94,7 +94,6 @@ public class SettingsFragment extends Fragment {
                         .setPositiveButton(getResources().getString(R.string.YES), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                System.out.println("entrei aqui");
                                 Deluser deluser = new Deluser();
                                 deluser.execute();
                             }
@@ -117,14 +116,14 @@ public class SettingsFragment extends Fragment {
         @Override
         protected String doInBackground(String... strings) {
             if (usereml.isEmpty() || userpass.isEmpty()){
-                Toast.makeText(getContext(), getResources().getString(R.string.AllFieldsRequired), Toast.LENGTH_SHORT).show();
+                exception = getResources().getString(R.string.AllFieldsRequired);
             }else {
                 try {
                     P2L_DbHelper connectNow = new P2L_DbHelper();
                     Connection connectDB = connectNow.getConnection();
 
                     if (connectDB == null) {
-                        Toast.makeText(getContext(), getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
+                        exception = getResources().getString(R.string.InternetConnection);
                     } else {
                         String query = "UPDATE users SET Email='" + usereml + "', Password ='"+userpass+"' WHERE Name = '" + username + "'";
 
@@ -159,14 +158,24 @@ public class SettingsFragment extends Fragment {
         @Override
         protected String doInBackground(String... strings) {
             if (usereml.isEmpty() || userpass.isEmpty()){
-                Toast.makeText(getContext(), getResources().getString(R.string.AllFieldsRequired), Toast.LENGTH_SHORT).show();
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        final Toast toast = Toast.makeText(getContext(), getResources().getString(R.string.AllFieldsRequired), Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
             }else {
                 try {
                     P2L_DbHelper connectNow = new P2L_DbHelper();
                     Connection connectDB = connectNow.getConnection();
 
                     if (connectDB== null){
-                        Toast.makeText(getContext(), getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
+                        getActivity().runOnUiThread(new Runnable() {
+                            public void run() {
+                                final Toast toast = Toast.makeText(getContext(), getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        });
                     }else {
                         String query = "SELECT * FROM users WHERE Email='"+usereml+"' AND Name='"+username+"' AND Password='"+userpass+"'";
 
@@ -185,7 +194,12 @@ public class SettingsFragment extends Fragment {
                                 isSuccess = true;
                             }else {
                                 isSuccess = false;
-                                Toast.makeText(getContext(), getResources().getString(R.string.EmailPassIncorrect), Toast.LENGTH_SHORT).show();
+                                getActivity().runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        final Toast toast = Toast.makeText(getContext(), getResources().getString(R.string.EmailPassIncorrect), Toast.LENGTH_SHORT);
+                                        toast.show();
+                                    }
+                                });
                             }
                         }
 

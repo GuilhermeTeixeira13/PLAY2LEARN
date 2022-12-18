@@ -191,7 +191,12 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(ResultsActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            final Toast toast = Toast.makeText(ResultsActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    });
                 } else {
                     String query1 = "SELECT id FROM users WHERE users.Name='" + nameuserlogged + "'";
                     Statement statement = connectDB.createStatement();
@@ -240,7 +245,12 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(ResultsActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            final Toast toast = Toast.makeText(ResultsActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    });
                 } else {
                     String query1 = "SELECT id FROM users WHERE users.Name='" + nameuserlogged + "'";
                     Statement statement = connectDB.createStatement();
@@ -326,7 +336,12 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(ResultsActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            final Toast toast = Toast.makeText(ResultsActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    });
                 } else {
                     String query1 = "SELECT id FROM users WHERE users.Name='" + nameuserlogged + "'";
                     Statement statement = connectDB.createStatement();

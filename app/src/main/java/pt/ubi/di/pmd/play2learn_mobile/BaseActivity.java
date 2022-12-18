@@ -83,6 +83,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
     private class Showeml extends AsyncTask<String,String,String> {
         String eml;
+        String exception;
         boolean isSuccess = false;
 
         @Override
@@ -92,7 +93,12 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                     Connection connectDB = connectNow.getConnection();
 
                     if (connectDB == null) {
-                        Toast.makeText(getBaseContext(), getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                final Toast toast = Toast.makeText(BaseActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        });
                     } else {
                         String query = "SELECT * FROM users WHERE Name='" + nameuserlogged + "'";
 

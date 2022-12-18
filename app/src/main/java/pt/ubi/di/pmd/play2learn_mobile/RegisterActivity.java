@@ -86,14 +86,24 @@ public class RegisterActivity extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             //                                       encryptPass
             if (user.isEmpty() || email.isEmpty() || password.isEmpty()){
-                Toast.makeText(getBaseContext(), getResources().getString(R.string.AllFieldsRequired), Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        final Toast toast = Toast.makeText(RegisterActivity.this, getResources().getString(R.string.AllFieldsRequired), Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
             }else {
                 try {
                     P2L_DbHelper connectNow = new P2L_DbHelper();
                     Connection connectDB = connectNow.getConnection();
 
                     if (connectDB == null){
-                        Toast.makeText(getBaseContext(), getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                final Toast toast = Toast.makeText(RegisterActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        });
                     }else {
                         String query1 = "SELECT * FROM users";
 
@@ -104,7 +114,12 @@ public class RegisterActivity extends AppCompatActivity {
                             nm = rs.getString(2);
 
                             if (nm.equals(user) && countu == 0){
-                                Toast.makeText(getBaseContext(), getResources().getString(R.string.UserUsed), Toast.LENGTH_SHORT).show();
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        final Toast toast = Toast.makeText(RegisterActivity.this, getResources().getString(R.string.UserUsed), Toast.LENGTH_SHORT);
+                                        toast.show();
+                                    }
+                                });
                                 userexists = true;
                                 countu += 1;
 
@@ -119,7 +134,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Statement statement2 = connectDB.createStatement();
                             statement2.executeUpdate(query);
 
-                            Toast.makeText(getBaseContext(), getResources().getString(R.string.RegisterSuccessfull), Toast.LENGTH_SHORT).show();
+                            exception = getResources().getString(R.string.RegisterSuccessfull);
                             isSuccess = true;
                         }
 
@@ -135,6 +150,7 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             if (isSuccess){
+                Toast.makeText(getBaseContext(), s, Toast.LENGTH_SHORT).show();
                 SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("uname", user);

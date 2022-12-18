@@ -129,7 +129,12 @@ public class GameActivity extends AppCompatActivity {
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(GameActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            final Toast toast = Toast.makeText(GameActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    });
                 } else {
                     ArrayList<Question> all_questions = getQuestions(connectDB, game_subject);
 
@@ -158,7 +163,12 @@ public class GameActivity extends AppCompatActivity {
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(GameActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            final Toast toast = Toast.makeText(GameActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    });
                 } else {
                     final_score = ((num_right_answers / num_of_questions) * 500) + ((6000-test_time)/12);
 

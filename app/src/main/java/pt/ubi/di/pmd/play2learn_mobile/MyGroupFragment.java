@@ -133,7 +133,7 @@ public class MyGroupFragment extends Fragment {
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(getContext(), getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
+                    exception = getResources().getString(R.string.InternetConnection);
                 } else {
                     // Verifica se o nome escrito pertence à BD
                     String query = "SELECT id FROM users WHERE users.Name='" + nomefriend + "'";
@@ -226,7 +226,7 @@ public class MyGroupFragment extends Fragment {
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
+                    exception = getResources().getString(R.string.InternetConnection);
                 } else {
                     String query1 = "SELECT id FROM users WHERE users.Name='" + userLogged + "'";
                     Statement statement = connectDB.createStatement();
@@ -282,7 +282,7 @@ public class MyGroupFragment extends Fragment {
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT).show();
+                    exception = getResources().getString(R.string.InternetConnection);
                 } else {
                     String query1 = "SELECT id FROM users WHERE users.Name='" + userLogged + "'";
                     Statement statement = connectDB.createStatement();
