@@ -64,6 +64,10 @@
     <string name="InternetConnection">Please check your internet connection</string>
     <string name="Points"> Points!</string>
     <string name="CorrectAnswer">Correct answers: </string>
+    <string name="Exceptions">Exceptions</string>
+    <string name="AllFieldsRequired">All Fields are required</string>
+    <string name="LoginSuccessfull">Login successfull</string>
+    <string name="UserNotExist">User does not exist</string>
     <string-array name="friendsResult">
         <item>One</item>
         <item>Two</item>

@@ -83,7 +83,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
     private class Showeml extends AsyncTask<String,String,String> {
         String eml;
-        String z = "";
         boolean isSuccess = false;
 
         @Override
@@ -108,7 +107,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-            return z;
+            return eml;
         }
 
         @Override
@@ -122,8 +121,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     public void GoToSubjectsPage(View v){
         Intent goToSubjectsActivity = new Intent(this, SubjectsActivity.class);
         goToSubjectsActivity.putExtra("flag", "FROM_BASE");
-        goToSubjectsActivity.putExtra("name", nameuserlogged);
-        System.out.println("name enviado para subjects --> "+nameuserlogged);
         startActivity(goToSubjectsActivity);
     }
 

@@ -77,7 +77,6 @@ public class GameActivity extends AppCompatActivity {
         setTitle(getResources().getString(R.string.SubjectsActivity));
 
         // Check flag and initialize objects
-
         SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
         if (sp.contains("uname")) {
             user_name = sp.getString("uname", "");
@@ -122,8 +121,7 @@ public class GameActivity extends AppCompatActivity {
 
     // Build game flow
     private class BuildGame extends AsyncTask<String,String,String> {
-        boolean isSuccess = false;
-        String exeption = "";
+        String exception = "";
 
         @Override
         protected String doInBackground(String... strings) {
@@ -144,17 +142,15 @@ public class GameActivity extends AppCompatActivity {
                     game(selected_questions);
                 }
             } catch (SQLException e) {
-                isSuccess = false;
-                exeption = "Exceptions" + e;
+                exception = getResources().getString(R.string.Exceptions) + e;
             }
-            return exeption;
+            return exception;
         }
     }
 
     // Save Results
     private class SaveResults extends AsyncTask<String,String,String> {
-        boolean isSuccess = false;
-        String exeption = "";
+        String exception = "";
 
         @Override
         protected String doInBackground(String... strings) {
@@ -174,15 +170,14 @@ public class GameActivity extends AppCompatActivity {
                     statement.executeUpdate(query);
                 }
             } catch (SQLException e) {
-                isSuccess = false;
-                exeption = "Exceptions" + e;
+                exception = getResources().getString(R.string.Exceptions) + e;
             }
-            return exeption;
+            return exception;
         }
     }
 
     public String getUserID(Connection connectDB) throws SQLException {
-        String query = "SELECT id from users WHERE name= '"+user_name+"'";
+        String query = "SELECT id FROM users WHERE name= '"+user_name+"'";
         Statement statement = connectDB.createStatement();
         ResultSet rs = statement.executeQuery(query);
         String id_user = "";
