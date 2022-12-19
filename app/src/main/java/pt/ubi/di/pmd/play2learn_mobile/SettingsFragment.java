@@ -150,6 +150,7 @@ public class SettingsFragment extends Fragment {
 
     private class Deluser extends AsyncTask<String,String,String> {
         String ueml,pss;
+        Integer id;
         String usereml = eml.getText().toString();
         String userpass = pass.getText().toString();
         String exception = "";
@@ -183,14 +184,19 @@ public class SettingsFragment extends Fragment {
                         ResultSet rs = statement.executeQuery(query);
 
                         while (rs.next()){
+                            id = rs.getInt(1);
                             ueml = rs.getString(3);
                             pss = rs.getString(4);
 
                             if((ueml.equals(usereml)) && pss.equals(userpass)){
-                                String query1 = "DELETE FROM users WHERE Email='" + usereml + "' AND Password='" + userpass + "'";
+                                String query1 = "DELETE FROM userresults WHERE IDUser="+id;
+                                String query2 = "DELETE FROM userfriends WHERE IDUser="+id;
+                                String query3 = "DELETE FROM users WHERE Email='" + usereml + "' AND Password='" + userpass + "'";
 
                                 Statement statement1 = connectDB.createStatement();
                                 statement1.executeUpdate(query1);
+                                statement1.executeUpdate(query2);
+                                statement1.executeUpdate(query3);
                                 isSuccess = true;
                             }else {
                                 isSuccess = false;
