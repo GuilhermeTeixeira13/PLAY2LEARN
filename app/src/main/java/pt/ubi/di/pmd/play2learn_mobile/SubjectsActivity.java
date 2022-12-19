@@ -3,6 +3,7 @@ package pt.ubi.di.pmd.play2learn_mobile;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -67,11 +68,10 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
         setTitle(getResources().getString(R.string.GameActivity));
 
         // Check flag and initialize objects
-        Intent intent = getIntent();
-        String checkFlag= intent.getStringExtra("flag");
-        if(checkFlag.equals("FROM_BASE")){
-            nameuserlogged = intent.getStringExtra("name");
-            System.out.println("name nos subjects --> "+nameuserlogged);
+        SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
+        if (sp.contains("uname")) {
+            //System.out.println("dei auto login pelas shp");
+            nameuserlogged = sp.getString("uname", "");
         }
 
         // Spinner
@@ -117,7 +117,7 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
     // BD LIGAÇÃO TEMAS SUBJECTS
     private class acessSubjects extends AsyncTask<String,String,String> {
         boolean isSuccess = false;
-        String z = "";
+        String exception = "";
         @Override
         protected String doInBackground(String... strings) {
             try {
@@ -127,12 +127,12 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
                 if (connectDB == null) {
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            final Toast toast = Toast.makeText(SubjectsActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT);
+                            final Toast toast = Toast.makeText(SubjectsActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
                             toast.show();
                         }
                     });
                 } else {
-                    String query = "select Name from subjects";
+                    String query = "SELECT Name FROM subjects";
 
                     Statement statement = connectDB.createStatement();
 
@@ -141,7 +141,7 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
                         list.add(rs.getString(1));
                     }
 
-                    String query1 = "select Id from subjects";
+                    String query1 = "SELECT Id FROM subjects";
                     ResultSet rs1 = statement.executeQuery(query1);
                     while (rs1.next()) {
                         listId.add(rs1.getString(1));
@@ -150,9 +150,9 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
                 System.out.println(list);
             } catch (SQLException e) {
                 isSuccess = false;
-                z = "Exceptions" + e;
+                exception = getResources().getString(R.string.Exceptions) + e;
             }
-            return z;
+            return exception;
         }
 
         @Override
@@ -166,22 +166,19 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
         if(temaEscolhido != "") {
             Intent goToGameActivity = new Intent(this, GameActivity.class);
             goToGameActivity.putExtra("flag", "FROM_SUBJECTS");
-            goToGameActivity.putExtra("name", nameuserlogged);
             goToGameActivity.putExtra("subject", temaEscolhidoId);
-            System.out.println("TEMA SUBJ: "+ temaEscolhidoId);
             goToGameActivity.putExtra("difficulty", escolhaDifUser);
             startActivity(goToGameActivity);
             overridePendingTransition(0, 0);
         }
         else {
-            Toast.makeText(getApplicationContext(), "Selecione um tema antes de começar a jogar", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.SelectTheme), Toast.LENGTH_SHORT).show();
         }
     }
 
     public void GoToBasePage(View v){
         Intent goToBaseActivity = new Intent(this, BaseActivity.class);
         goToBaseActivity.putExtra("flag", "FROM_SUBJECTS");
-        goToBaseActivity.putExtra("name", nameuserlogged);
         startActivity(goToBaseActivity);
     }
 

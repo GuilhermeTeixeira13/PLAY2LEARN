@@ -83,7 +83,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
     private class Showeml extends AsyncTask<String,String,String> {
         String eml;
-        String z = "";
+        String exception;
         boolean isSuccess = false;
 
         @Override
@@ -91,29 +91,29 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 try {
                     P2L_DbHelper connectNow = new P2L_DbHelper();
                     Connection connectDB = connectNow.getConnection();
-                    System.out.println(connectDB);
 
                     if (connectDB == null) {
-                        System.out.println("Please check your internet connection");
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                final Toast toast = Toast.makeText(BaseActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        });
                     } else {
-                        String query = "select * from users where Name='" + nameuserlogged + "'";
+                        String query = "SELECT * FROM users WHERE Name='" + nameuserlogged + "'";
 
                         Statement statement = connectDB.createStatement();
-
                         ResultSet rs = statement.executeQuery(query);
-                        System.out.println(rs);
 
                         while (rs.next()) {
                             eml = rs.getString(3);
                             isSuccess = true;
                         }
-
-
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-            return z;
+            return eml;
         }
 
         @Override
@@ -127,8 +127,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     public void GoToSubjectsPage(View v){
         Intent goToSubjectsActivity = new Intent(this, SubjectsActivity.class);
         goToSubjectsActivity.putExtra("flag", "FROM_BASE");
-        goToSubjectsActivity.putExtra("name", nameuserlogged);
-        System.out.println("name enviado para subjects --> "+nameuserlogged);
         startActivity(goToSubjectsActivity);
     }
 
@@ -184,10 +182,5 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-
-    public String getUserLogged(){
-        return this.nameuserlogged;
     }
 }

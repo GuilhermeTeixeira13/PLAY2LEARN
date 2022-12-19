@@ -52,7 +52,8 @@
         app:layout_constraintEnd_toStartOf="@+id/Email"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Password"></ImageView>
+        app:layout_constraintTop_toBottomOf="@+id/Password">
+    </ImageView>
 
     <EditText
         android:id="@+id/edTextPass"
@@ -86,7 +87,7 @@
         android:paddingStart="50dp"
         android:paddingEnd="50dp"
         android:textSize="17dp"
-        android:text="Update"
+        android:text="@string/Update"
         android:textColor="@color/white"
         android:background="@drawable/rounded_corners_black_buttons"
         app:layout_constraintEnd_toEndOf="parent"
@@ -102,7 +103,7 @@
         android:paddingStart="50dp"
         android:paddingEnd="50dp"
         android:textSize="17dp"
-        android:text="Delete User"
+        android:text="@string/DelUser"
         android:textColor="@color/black"
         android:background="@drawable/rounded_coners_red"
         app:layout_constraintEnd_toEndOf="parent"
@@ -174,8 +175,7 @@
         android:background="@drawable/pt"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/takeLook" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/changeENG"
@@ -190,7 +190,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.254"
-        app:layout_constraintStart_toEndOf="@+id/changePT"
-        app:layout_constraintTop_toBottomOf="@+id/takeLook" />
+        app:layout_constraintStart_toEndOf="@+id/changePT" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

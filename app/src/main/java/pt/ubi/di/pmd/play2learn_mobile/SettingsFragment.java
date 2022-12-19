@@ -1,11 +1,12 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -20,7 +21,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
-import java.io.ByteArrayOutputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,8 +37,6 @@ public class SettingsFragment extends Fragment {
     EditText pass;
 
     String username;
-
-    static boolean isInit = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,7 +55,9 @@ public class SettingsFragment extends Fragment {
         pass = view.findViewById(R.id.edTextPass);
 
         SharedPreferences sp = getContext().getSharedPreferences("userLogged", Context.MODE_PRIVATE);
-        username = sp.getString("uname", "");
+        if (sp.contains("uname")) {
+            username = sp.getString("uname", "");
+        }
 
         // Change toolbar title
         getActivity().setTitle(getResources().getString(R.string.app_name));
@@ -88,8 +88,19 @@ public class SettingsFragment extends Fragment {
         btnDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SettingsFragment.Deluser deluser = new SettingsFragment.Deluser();
-                deluser.execute();
+                new AlertDialog.Builder(getContext())
+                        .setTitle(getResources().getString(R.string.Alert))
+                        .setMessage(getResources().getString(R.string.Eliminate))
+                        .setPositiveButton(getResources().getString(R.string.YES), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                SettingsFragment.Deluser deluser = new SettingsFragment.Deluser();
+                                deluser.execute();
+                            }
+                        })
+
+                        .setNegativeButton(getResources().getString(R.string.NO), null)
+                        .show();
             }
         });
 
@@ -99,82 +110,102 @@ public class SettingsFragment extends Fragment {
     private class Updatedata extends AsyncTask<String,String,String>{
         String usereml = eml.getText().toString();
         String userpass = pass.getText().toString();
-        String z = "";
+        String exception = "";
         boolean isSuccess = false;
 
         @Override
         protected String doInBackground(String... strings) {
             if (usereml.isEmpty() || userpass.isEmpty()){
-                z="all fields required";
+                exception = getResources().getString(R.string.AllFieldsRequired);
             }else {
                 try {
                     P2L_DbHelper connectNow = new P2L_DbHelper();
                     Connection connectDB = connectNow.getConnection();
 
                     if (connectDB == null) {
-                        z="Please check your internet connection";
+                        exception = getResources().getString(R.string.InternetConnection);
                     } else {
-                        System.out.println("1");
-                        String query = "UPDATE users Set Email='" + usereml + "', Password ='"+userpass+"' where Name = '" + username + "'";
+                        String query = "UPDATE users SET Email='" + usereml + "', Password ='"+userpass+"' WHERE Name = '" + username + "'";
 
                         Statement statement = connectDB.createStatement();
                         statement.executeUpdate(query);
 
-                        z="Update is successfull";
+                        isSuccess = true;
+
                     }
                 } catch (Exception e) {
-                    z="error";
+                    exception = getResources().getString(R.string.Exceptions) + e;
                 }
             }
-            return z;
+            return exception;
         }
+
+        @Override
         protected void onPostExecute(String s) {
-            Toast.makeText(getContext(),""+z,Toast.LENGTH_LONG).show();
+            if(isSuccess){
+                Toast.makeText(getContext(), getResources().getString(R.string.UpdateSuccessfull), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     private class Deluser extends AsyncTask<String,String,String> {
         String ueml,pss;
+        Integer id;
         String usereml = eml.getText().toString();
         String userpass = pass.getText().toString();
-        String z = "";
+        String exception = "";
         boolean isSuccess = false;
 
         @Override
         protected String doInBackground(String... strings) {
             if (usereml.isEmpty() || userpass.isEmpty()){
-                z= "All fields Required";
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        final Toast toast = Toast.makeText(getContext(), getResources().getString(R.string.AllFieldsRequired), Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
             }else {
                 try {
                     P2L_DbHelper connectNow = new P2L_DbHelper();
                     Connection connectDB = connectNow.getConnection();
-                    System.out.println(connectDB);
 
                     if (connectDB== null){
-                        z = "Please check your internet connection";
+                        getActivity().runOnUiThread(new Runnable() {
+                            public void run() {
+                                final Toast toast = Toast.makeText(getContext(), getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        });
                     }else {
-                        String query = "select * from users where Email='"+usereml+"' and Name='"+username+"' and Password='"+userpass+"' ";
+                        String query = "SELECT * FROM users WHERE Email='"+usereml+"' AND Name='"+username+"' AND Password='"+userpass+"'";
 
                         Statement statement = connectDB.createStatement();
-
                         ResultSet rs = statement.executeQuery(query);
-                        System.out.println(rs);
 
                         while (rs.next()){
-                            System.out.println("entrei aqui1");
+                            id = rs.getInt(1);
                             ueml = rs.getString(3);
                             pss = rs.getString(4);
 
                             if((ueml.equals(usereml)) && pss.equals(userpass)){
-                                String query1 = "DELETE FROM users where Email='" + usereml + "' and Password='" + userpass + "'";
-
+                                String query1 = "DELETE FROM userresults WHERE IDUser="+id;
+                                String query2 = "DELETE FROM userfriends WHERE IDUser="+id;
+                                String query3 = "DELETE FROM users WHERE Email='" + usereml + "' AND Password='" + userpass + "'";
 
                                 Statement statement1 = connectDB.createStatement();
                                 statement1.executeUpdate(query1);
+                                statement1.executeUpdate(query2);
+                                statement1.executeUpdate(query3);
                                 isSuccess = true;
                             }else {
                                 isSuccess = false;
-                                z = "email or password does not exist";
+                                getActivity().runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        final Toast toast = Toast.makeText(getContext(), getResources().getString(R.string.EmailPassIncorrect), Toast.LENGTH_SHORT);
+                                        toast.show();
+                                    }
+                                });
                             }
                         }
 
@@ -182,28 +213,24 @@ public class SettingsFragment extends Fragment {
 
                 } catch (SQLException e) {
                     isSuccess = false;
-                    z = "Exceptions"+e;
+                    exception = getResources().getString(R.string.Exceptions) + e;
                 }catch (Exception e) {
                     isSuccess = false;
                     e.printStackTrace();
-                    z = "Exceptions"+e;
+                    exception = getResources().getString(R.string.Exceptions) + e;
                 }
 
             }
-            return z;
+            return exception;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            Toast.makeText(getContext(),""+z,Toast.LENGTH_LONG).show();
-            //System.out.println("cheguei aqui");
-
             if (isSuccess){
                 SharedPreferences sp = getActivity().getSharedPreferences("userLogged", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.remove("uname");
                 editor.apply();
-                System.out.println("removi o user da shp");
 
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 startActivity(intent);

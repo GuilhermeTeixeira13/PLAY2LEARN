@@ -45,6 +45,8 @@
     <string name="NextQuestion">NEXT QUESTION</string>
     <string name="YourScore">Your score:</string>
     <string name="CorrectAnswers">Correct answers:</string>
+    <string name="CorrectAnswers2">Correct answers</string>
+    <string name="WrongAnswers">Wrong answers</string>
     <string name="CompareWith">Compare with:</string>
     <string name="PlayAgain">PLAY AGAIN</string>
     <string name="difEasy">Easy</string>
@@ -61,6 +63,28 @@
     <string name="TimeToSubmit">Time to submit:</string>
     <string name="VerifyAnswers">Make sure you checked one and only one answer.</string>
     <string name="FinishGame">FINISH GAME</string>
+    <string name="InternetConnection">Please check your internet connection</string>
+    <string name="Points"> Points!</string>
+    <string name="CorrectAnswer">Correct answers: </string>
+    <string name="Exceptions">Exceptions</string>
+    <string name="AllFieldsRequired">All Fields are required</string>
+    <string name="LoginSuccessfull">User logged in successfull</string>
+    <string name="UserNotExist">User does not exist</string>
+    <string name="SpecFriendName">You need to specify your friend\'s name</string>
+    <string name="UserinFriendGroup">This user is already in the friend\'s group</string>
+    <string name="AddedSuccess">has been successfully added</string>
+    <string name="Alert">Alert!</string>
+    <string name="Eliminate">Do you really want to delete?</string>
+    <string name="UserUsed">User name already used</string>
+    <string name="RegisterSuccessfull">User registered successfull</string>
+    <string name="SelectTheme">Select a theme before you play</string>
+    <string name="UpdateSuccessfull">Update successfull</string>
+    <string name="EmailPassIncorrect">Email or password are incorrect</string>
+    <string name="MyLastTest">My Last Test</string>
+    <string name="TimeToSolve">Time to solve (s)</string>
+    <string name="FinalScore">Final score</string>
+    <string name="Update">UPDATE</string>
+    <string name="DelUser">DELETE USER</string>
     <string-array name="friendsResult">
         <item>One</item>
         <item>Two</item>

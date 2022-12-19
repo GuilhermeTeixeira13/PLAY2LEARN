@@ -33,7 +33,6 @@ public class LogoutFragment extends Fragment {
             SharedPreferences.Editor editor = sp.edit();
             editor.remove("uname");
             editor.apply();
-            System.out.println("removi o user da shp");
 
             Intent intent = new Intent(view.getContext(), MainActivity.class);
             startActivity(intent);

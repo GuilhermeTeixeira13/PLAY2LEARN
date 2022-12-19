@@ -46,6 +46,8 @@
     <string name="NextQuestion">PRÓXIMA PERGUNTA</string>
     <string name="YourScore">A sua pontuação:</string>
     <string name="CorrectAnswers">Respostas corretas: </string>
+    <string name="CorrectAnswers2">Respostas corretas</string>
+    <string name="WrongAnswers">Respostas erradas</string>
     <string name="CompareWith">Comparar com:</string>
     <string name="PlayAgain">JOGAR OUTRA VEZ</string>
     <string name="difEasy">Fácil</string>
@@ -62,6 +64,28 @@
     <string name="TimeToSubmit">Tempo para submeter:</string>
     <string name="VerifyAnswers">Certifique-se que selecionou uma e apenas uma resposta.</string>
     <string name="FinishGame">FINALIZAR JOGO</string>
+    <string name="InternetConnection">Por favor verifique a sua conexão à internet</string>
+    <string name="Points"> Pontos!</string>
+    <string name="CorrectAnswer">Respostas corretas: </string>
+    <string name="Exceptions">Exceções</string>
+    <string name="AllFieldsRequired">Todos os campos são necessários</string>
+    <string name="LoginSuccessfull">Login feito com sucesso</string>
+    <string name="UserNotExist">O utilizador não existe</string>
+    <string name="SpecFriendName">Precisa expecificar o nome do seu amigo</string>
+    <string name="UserinFriendGroup">Este utilizador já está no grupo de amigos</string>
+    <string name="AddedSuccess">foi adicionado com sucesso</string>
+    <string name="Alert">Alerta!</string>
+    <string name="Eliminate">Deseja mesmo eliminar?</string>
+    <string name="UserUsed">O nome de utilizador já foi utilizado</string>
+    <string name="RegisterSuccessfull">Utilizador registado com sucesso</string>
+    <string name="SelectTheme">Selecione um tema antes de jogar</string>
+    <string name="UpdateSuccessfull">Atualização feita com sucesso</string>
+    <string name="EmailPassIncorrect">O email ou a palavra-passe está incorreta</string>
+    <string name="MyLastTest">O meu ultímo teste</string>
+    <string name="TimeToSolve">Tempo para resolver (s)</string>
+    <string name="FinalScore">Resultado Final</string>
+    <string name="Update">ATUALIZAR</string>
+    <string name="DelUser">ELIMINAR UTILIZADOR</string>
     <string-array name="friendsResult">
         <item>One</item>
         <item>Two</item>

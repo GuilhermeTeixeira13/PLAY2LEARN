@@ -1,6 +1,7 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -60,6 +61,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     TextView finalScoreO;
 
     TextView otherFriend;
+    TextView txtViewMe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +82,6 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
 
         SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
         if (sp.contains("uname")) {
-            //System.out.println("dei auto login pelas shp");
             nameuserlogged = sp.getString("uname", "");
         }
 
@@ -92,8 +93,6 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
             temaID = (String) intent.getSerializableExtra("temaID");
             difEsc = (int) intent.getSerializableExtra("dif");
         }
-
-        System.out.println("USER LOGADO: "+ nameuserlogged + "  DIF: "+ difEsc + "TemaID: " + temaID);
 
         ResultsActivity.friendsAssTest friendsTest = new ResultsActivity.friendsAssTest();
         friendsTest.execute();
@@ -120,6 +119,8 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         finalScoreO = findViewById(R.id.finalScoreOther);
 
         otherFriend = findViewById(R.id.otherFriendID);
+        txtViewMe = findViewById(R.id.txtViewMe);
+
     }
 
     public void GoToBasePage(View v){
@@ -149,8 +150,6 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                 startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.Share2)));
                 break;
             case R.id.homeButton:
-                // Mostrar aviso
-
                 GoToBasePage(getWindow().getDecorView());
                 break;
         }
@@ -159,7 +158,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        if(adapterView.getSelectedItem().equals("My last test") || adapterView.getSelectedItem().equals("Último teste")) {
+        if(adapterView.getSelectedItem().equals(getResources().getString(R.string.MyLastTest))) {
             friendSelected = -1;
             ResultsActivity.currentTestByUser currentTest = new ResultsActivity.currentTestByUser();
             currentTest.execute();
@@ -179,7 +178,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
 
     private  class yourscore extends AsyncTask<String,String,String> {
         boolean isSuccess = false;
-        String msg = "";
+        String exception = "";
         String idUserLogged;
         String correctAns;
         String score;
@@ -192,9 +191,14 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(ResultsActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            final Toast toast = Toast.makeText(ResultsActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    });
                 } else {
-                    String query1 = "SELECT id From users where users.Name='" + nameuserlogged + "'";
+                    String query1 = "SELECT id FROM users WHERE users.Name='" + nameuserlogged + "'";
                     Statement statement = connectDB.createStatement();
                     ResultSet rs1 = statement.executeQuery(query1);
 
@@ -202,7 +206,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                         idUserLogged = rs1.getString(1);
                     }
 
-                    String query3 = "SELECT * FROM userresults WHERE IDUser = " + idUserLogged + " and IDSubject = " + temaID + " and Difficulty = " + difEsc + " Order by ID DESC";
+                    String query3 = "SELECT * FROM userresults WHERE IDUser = " + idUserLogged + " AND IDSubject = " + temaID + " AND Difficulty = " + difEsc + " ORDER BY ID DESC";
                     ResultSet rs3 = statement.executeQuery(query3);
 
                     while (rs3.next()) {
@@ -210,22 +214,18 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                         score = rs3.getString(4);;
                         break;
                     }
-
-
                 }
             } catch (SQLException e) {
                 isSuccess = false;
-                msg = "Exceptions" + e;
+                exception = getResources().getString(R.string.Exceptions) + e;
             }
-            return msg;
+            return exception;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            points.setText(score + " points!");
-            correctAnswers.setText("Corret answers: "+correctAns+"\\10");
-
-
+            points.setText(score + getResources().getString(R.string.Points));
+            correctAnswers.setText(getResources().getString(R.string.CorrectAnswer)+correctAns+"\\10");
         }
     }
 
@@ -233,7 +233,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     // BD LIGAÇÃO FRIENDS ASSOCIATED WITH TEST ID
     private class friendsAssTest extends AsyncTask<String,String,String> {
         boolean isSuccess = false;
-        String z = "";
+        String exception = "";
         String idUserLogged;
         ArrayList<String> friendsID = new ArrayList<>();
         ArrayList<String> testID = new ArrayList<>();
@@ -245,16 +245,20 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(ResultsActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            final Toast toast = Toast.makeText(ResultsActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    });
                 } else {
-                    String query1 = "SELECT id From users where users.Name='" + nameuserlogged + "'";
+                    String query1 = "SELECT id FROM users WHERE users.Name='" + nameuserlogged + "'";
                     Statement statement = connectDB.createStatement();
                     ResultSet rs1 = statement.executeQuery(query1);
 
                     while (rs1.next()) {
                         idUserLogged = rs1.getString(1);
                     }
-                    System.out.println("USER LOGGED: " + idUserLogged);
 
                     String query2 = "SELECT IDFriend FROM userfriends WHERE IDUser = " + idUserLogged;
                     ResultSet rs2 = statement.executeQuery(query2);
@@ -262,17 +266,15 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                     while (rs2.next()) {
                         friendsID.add(rs2.getString(1));
                     }
-                    System.out.println("FRIENDS ID: " + friendsID);
 
                     for(int i = 0; i < friendsID.size(); i++) {
-                        String query3 = "SELECT id FROM userresults WHERE IDUser =" + friendsID.get(i) + " and IDSubject =" + temaID + " and Difficulty = " + difEsc;
+                        String query3 = "SELECT id FROM userresults WHERE IDUser =" + friendsID.get(i) + " AND IDSubject =" + temaID + " AND Difficulty = " + difEsc;
                         ResultSet rs3 = statement.executeQuery(query3);
 
                         while (rs3.next()) {
                             testID.add(rs3.getString(1));
                         }
                     }
-                    System.out.println("TEST FRIENDS ID: " + testID);
 
                     for(int i = 0; i < testID.size(); i++) {
                         String query4 = "SELECT idUser FROM userresults WHERE id = " + testID.get(i);
@@ -282,8 +284,6 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                             friendsIdSameTest.add(rs4.getString(1));
                         }
                     }
-
-                    System.out.println("SAME TEST FRIENDS ID: " + friendsID);
 
                     for(int i = 0; i < friendsIdSameTest.size(); i++) {
                         String query5 = "SELECT Name FROM users WHERE id = " + friendsIdSameTest.get(i);
@@ -296,24 +296,21 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                         }
                     }
 
-                    System.out.println("SAME TEST FRIENDS NAME: " + friendsID);
-
                     for(int i = 0; i < friendsNameSameTest.size(); i++) {
                         friendsName.add(friendsNameSameTest.get(i));
                     }
-                    System.out.println("FRIENDS ID: "+ friendsName);
                 }
             } catch (SQLException e) {
                 isSuccess = false;
-                z = "Exceptions" + e;
+                exception = getResources().getString(R.string.Exceptions) + e;
             }
-            return z;
+            return exception;
         }
 
         @Override
         protected void onPostExecute(String s) {
             ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, friendsName);
-            friendsName.add("My last test");
+            friendsName.add(getResources().getString(R.string.MyLastTest));
             spinnerFriends.setAdapter(spinnerAdapter);
         }
     }
@@ -321,7 +318,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     // BD LIGAÇÃO Search Current Test by User
     private class currentTestByUser extends AsyncTask<String,String,String> {
         boolean isSuccess = false;
-        String z = "";
+        String exception = "";
         String idUserLogged;
         String correctAns;
         String wrongAns;
@@ -339,9 +336,14 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(ResultsActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            final Toast toast = Toast.makeText(ResultsActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    });
                 } else {
-                    String query1 = "SELECT id From users where users.Name='" + nameuserlogged + "'";
+                    String query1 = "SELECT id FROM users WHERE users.Name='" + nameuserlogged + "'";
                     Statement statement = connectDB.createStatement();
                     ResultSet rs1 = statement.executeQuery(query1);
 
@@ -349,7 +351,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                         idUserLogged = rs1.getString(1);
                     }
 
-                    String query3 = "SELECT * FROM userresults WHERE IDUser = " + idUserLogged + " and IDSubject = " + temaID + " and Difficulty = " + difEsc + " Order by ID DESC";
+                    String query3 = "SELECT * FROM userresults WHERE IDUser = " + idUserLogged + " AND IDSubject = " + temaID + " AND Difficulty = " + difEsc + " ORDER BY ID DESC";
                     ResultSet rs3 = statement.executeQuery(query3);
 
                     while (rs3.next()) {
@@ -362,7 +364,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
 
                     if(friendSelected == -1) {
                         int count = 0;
-                        String query4 = "SELECT * FROM userresults WHERE IDUser = " + idUserLogged + " and IDSubject = " + temaID + " and Difficulty = " + difEsc + " Order by ID DESC";
+                        String query4 = "SELECT * FROM userresults WHERE IDUser = " + idUserLogged + " AND IDSubject = " + temaID + " AND Difficulty = " + difEsc + " ORDER BY ID DESC";
                         ResultSet rs4 = statement.executeQuery(query4);
 
                         while (rs4.next()) {
@@ -376,7 +378,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                         }
                     }
                     else {
-                        String query4 = "SELECT * FROM userresults WHERE IDUser = " + friendsIdSameTest.get(friendSelected) + " and IDSubject = " + temaID + " and Difficulty = " + difEsc + " Order by ID DESC";
+                        String query4 = "SELECT * FROM userresults WHERE IDUser = " + friendsIdSameTest.get(friendSelected) + " AND IDSubject = " + temaID + " AND Difficulty = " + difEsc + " ORDER BY ID DESC";
                         ResultSet rs4 = statement.executeQuery(query4);
 
                         while (rs4.next()) {
@@ -390,9 +392,9 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                 }
             } catch (SQLException e) {
                 isSuccess = false;
-                z = "Exceptions" + e;
+                exception = getResources().getString(R.string.Exceptions) + e;
             }
-            return z;
+            return exception;
         }
 
         @Override
@@ -407,8 +409,63 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
             timeToSolveAnsO.setText(timeOther);
             finalScoreO.setText(scoreOther);
 
+
+            // Compare Corret Answers
+            if(Integer.compare((Integer.parseInt(correctAnsMe.getText().toString())),(Integer.parseInt(correctAnsO.getText().toString()))) > 0) {
+                correctAnsMe.setTypeface(correctAnsMe.getTypeface(), Typeface.BOLD_ITALIC);
+                correctAnsO.setTypeface(correctAnsO.getTypeface(), Typeface.NORMAL);
+            } else if(Integer.compare((Integer.parseInt(correctAnsMe.getText().toString())),(Integer.parseInt(correctAnsO.getText().toString()))) == 0) {
+                correctAnsMe.setTypeface(correctAnsMe.getTypeface(), Typeface.NORMAL);
+                correctAnsO.setTypeface(correctAnsO.getTypeface(), Typeface.NORMAL);
+            } else {
+                correctAnsO.setTypeface(correctAnsO.getTypeface(), Typeface.BOLD_ITALIC);
+                correctAnsMe.setTypeface(correctAnsMe.getTypeface(), Typeface.NORMAL);
+            }
+
+            // Compare Wrong Answers
+            if(Integer.compare((Integer.parseInt(wrongAnsMe.getText().toString())),(Integer.parseInt(wrongAnsO.getText().toString()))) < 0) {
+                wrongAnsMe.setTypeface(wrongAnsMe.getTypeface(), Typeface.BOLD_ITALIC);
+                wrongAnsO.setTypeface(wrongAnsO.getTypeface(), Typeface.NORMAL);
+            } else if(Integer.compare((Integer.parseInt(wrongAnsMe.getText().toString())),(Integer.parseInt(wrongAnsO.getText().toString()))) == 0) {
+                wrongAnsMe.setTypeface(wrongAnsMe.getTypeface(), Typeface.NORMAL);
+                wrongAnsO.setTypeface(wrongAnsO.getTypeface(), Typeface.NORMAL);
+            } else {
+                wrongAnsO.setTypeface(wrongAnsO.getTypeface(), Typeface.BOLD_ITALIC);
+                wrongAnsMe.setTypeface(wrongAnsMe.getTypeface(), Typeface.NORMAL);
+            }
+
+            // Compare Time_To_Solve
+            if(Integer.compare((Integer.parseInt(timeToSolveAnsMe.getText().toString())),(Integer.parseInt(timeToSolveAnsO.getText().toString()))) < 0) {
+                timeToSolveAnsMe.setTypeface(timeToSolveAnsMe.getTypeface(), Typeface.BOLD_ITALIC);
+                timeToSolveAnsO.setTypeface(timeToSolveAnsO.getTypeface(), Typeface.NORMAL);
+            } else if(Integer.compare((Integer.parseInt(timeToSolveAnsMe.getText().toString())),(Integer.parseInt(timeToSolveAnsO.getText().toString()))) == 0) {
+                timeToSolveAnsMe.setTypeface(timeToSolveAnsMe.getTypeface(), Typeface.NORMAL);
+                timeToSolveAnsO.setTypeface(timeToSolveAnsO.getTypeface(), Typeface.NORMAL);
+            } else {
+                timeToSolveAnsMe.setTypeface(timeToSolveAnsMe.getTypeface(), Typeface.NORMAL);
+                timeToSolveAnsO.setTypeface(timeToSolveAnsO.getTypeface(), Typeface.BOLD_ITALIC);
+            }
+
+            // Compare Final Score
+            if(Integer.compare((Integer.parseInt(finalScoreMe.getText().toString())),(Integer.parseInt(finalScoreO.getText().toString()))) > 0) {
+                finalScoreMe.setTypeface(finalScoreMe.getTypeface(), Typeface.BOLD_ITALIC);
+                finalScoreO.setTypeface(finalScoreO.getTypeface(), Typeface.NORMAL);
+                txtViewMe.setTypeface(txtViewMe.getTypeface(), Typeface.BOLD_ITALIC);
+                otherFriend.setTypeface(otherFriend.getTypeface(), Typeface.NORMAL);
+            } else if(Integer.compare((Integer.parseInt(finalScoreMe.getText().toString())),(Integer.parseInt(finalScoreO.getText().toString()))) == 0){
+                finalScoreMe.setTypeface(finalScoreMe.getTypeface(), Typeface.NORMAL);
+                txtViewMe.setTypeface(txtViewMe.getTypeface(), Typeface.NORMAL);
+                finalScoreO.setTypeface(finalScoreO.getTypeface(), Typeface.NORMAL);
+                otherFriend.setTypeface(otherFriend.getTypeface(), Typeface.NORMAL);
+            } else {
+                finalScoreO.setTypeface(finalScoreO.getTypeface(), Typeface.BOLD_ITALIC);
+                finalScoreMe.setTypeface(finalScoreMe.getTypeface(), Typeface.NORMAL);
+                otherFriend.setTypeface(otherFriend.getTypeface(), Typeface.BOLD_ITALIC);
+                txtViewMe.setTypeface(txtViewMe.getTypeface(), Typeface.NORMAL);
+            }
+
             if (friendSelected == -1) {
-                otherFriend.setText("My last test");
+                otherFriend.setText(getResources().getString(R.string.MyLastTest));
             } else {
                 otherFriend.setText(friendsName.get(friendSelected));
             }

@@ -34,8 +34,6 @@ public class RegisterActivity extends AppCompatActivity {
     EditText pass;
     P2L_DbHelper connectionhelper;
 
-    String AES = "AES";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -78,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         }
 
-        String z = "";
+        String exception = "";
         boolean isSuccess = false;
         boolean userexists = false;
         int countu = 0;
@@ -88,28 +86,40 @@ public class RegisterActivity extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             //                                       encryptPass
             if (user.isEmpty() || email.isEmpty() || password.isEmpty()){
-                z= "All fields Required";
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        final Toast toast = Toast.makeText(RegisterActivity.this, getResources().getString(R.string.AllFieldsRequired), Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
             }else {
                 try {
                     P2L_DbHelper connectNow = new P2L_DbHelper();
                     Connection connectDB = connectNow.getConnection();
 
                     if (connectDB == null){
-                        z = "Please check your internet connection";
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                final Toast toast = Toast.makeText(RegisterActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        });
                     }else {
-                        String query1 = "select * from users";
+                        String query1 = "SELECT * FROM users";
 
                         Statement statement = connectDB.createStatement();
-
                         ResultSet rs = statement.executeQuery(query1);
-                        System.out.println(rs);
 
                         while (rs.next()) {
-                            System.out.println("entrei aqui1");
                             nm = rs.getString(2);
 
                             if (nm.equals(user) && countu == 0){
-                                z = "User Already used";
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        final Toast toast = Toast.makeText(RegisterActivity.this, getResources().getString(R.string.UserUsed), Toast.LENGTH_SHORT);
+                                        toast.show();
+                                    }
+                                });
                                 userexists = true;
                                 countu += 1;
 
@@ -119,28 +129,28 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                         if (!userexists) {
                             //String query = "INSERT INTO users values (NULL,'"+user+"','"+email+"','"+encryptPass+"',NULL,NULL)";
-                            String query = "INSERT INTO users values (NULL,'" + user + "','" + email + "','" + password + "',NULL,NULL)";
+                            String query = "INSERT INTO users VALUES (NULL,'" + user + "','" + email + "','" + password + "',NULL,NULL)";
 
                             Statement statement2 = connectDB.createStatement();
                             statement2.executeUpdate(query);
 
-                            z = "Register successfull";
+                            exception = getResources().getString(R.string.RegisterSuccessfull);
                             isSuccess = true;
                         }
 
                     }
                 } catch (Exception e) {
                     isSuccess = false;
-                    z = "Exceptions"+e;
+                    exception = getResources().getString(R.string.Exceptions) + e;
                 }
             }
-            return z;
+            return exception;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            Toast.makeText(getBaseContext(),""+z,Toast.LENGTH_LONG).show();
             if (isSuccess){
+                Toast.makeText(getBaseContext(), s, Toast.LENGTH_SHORT).show();
                 SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("uname", user);
@@ -148,7 +158,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                 Intent goToBaseActivity = new Intent(RegisterActivity.this, BaseActivity.class);
                 goToBaseActivity.putExtra("flag", "FROM_REGISTER");
-                goToBaseActivity.putExtra("name", user);
                 startActivity(goToBaseActivity);
             }
         }

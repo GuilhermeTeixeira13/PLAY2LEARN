@@ -54,13 +54,10 @@ public class MainActivity extends AppCompatActivity {
         //auto-login
         SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
         if (sp.contains("uname")){
-            //System.out.println("dei auto login pelas shp");
             autolog = sp.getString("uname", "");
 
             Intent goToBaseActivity = new Intent(this, BaseActivity.class);
             goToBaseActivity.putExtra("flag", "FROM_MAIN");
-            goToBaseActivity.putExtra("name", autolog);
-            System.out.println("Da main para Base 0 --> "+autolog);
             startActivity(goToBaseActivity);
         }
 
@@ -77,37 +74,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class Dologin extends AsyncTask<String,String,String>{
-        String nm, eml,pss, dpss;
+        String nm, eml,pss, dpss, exception;
         String user = usr.getText().toString();
         String pass = password.getText().toString();
-        String z = "";
         boolean isSuccess = false;
 
         @Override
         protected String doInBackground(String... strings) {
             if (user.isEmpty() || pass.isEmpty()){
-                z= "All fields Required";
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        final Toast toast = Toast.makeText(MainActivity.this, getResources().getString(R.string.AllFieldsRequired), Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
             }else {
                 try {
                     P2L_DbHelper connectNow = new P2L_DbHelper();
                     Connection connectDB = connectNow.getConnection();
-                    System.out.println(connectDB);
 
                     if (connectDB== null){
-                        z = "Please check your internet connection";
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                final Toast toast = Toast.makeText(MainActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        });
                     }else {
-                        String query = "select * from users where Name='"+user+"' or Email='"+user+"' and Password='"+pass+"' ";
+                        String query = "SELECT * FROM users WHERE Name='"+user+"' OR Email='"+user+"' AND Password='"+pass+"'";
 
                         Statement statement = connectDB.createStatement();
-
                         ResultSet rs = statement.executeQuery(query);
-                        System.out.println(rs);
 
                         while (rs.next()){
-                            System.out.println("entrei aqui1");
                             nm = rs.getString(2);
                             eml = rs.getString(3);
-                            System.out.println(nm);
                             pss = rs.getString(4);
                             //obter pass desencriptada
                             //dpss = Security.decrypt(pss);
@@ -116,12 +117,15 @@ public class MainActivity extends AppCompatActivity {
 
                             if((nm.equals(user) || eml.equals(user)) && pss.equals(pass)){
                                 isSuccess = true;
-                                z = "Login successfull";
-                                System.out.println("Login successfull");
+                                exception = getResources().getString(R.string.LoginSuccessfull);
                             }else {
                                 isSuccess = false;
-                                z = "user does not exist";
-                                System.out.println("Login NOT successfull");
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        final Toast toast = Toast.makeText(MainActivity.this, getResources().getString(R.string.UserNotExist), Toast.LENGTH_SHORT);
+                                        toast.show();
+                                    }
+                                });
                             }
                         }
 
@@ -129,23 +133,21 @@ public class MainActivity extends AppCompatActivity {
 
                 } catch (SQLException e) {
                     isSuccess = false;
-                    z = "Exceptions"+e;
+                    exception = getResources().getString(R.string.Exceptions) + e;
                 }catch (Exception e) {
                     isSuccess = false;
                     e.printStackTrace();
-                    z = "Exceptions"+e;
+                    exception = getResources().getString(R.string.Exceptions) + e;
                 }
 
             }
-            return z;
+            return exception;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            Toast.makeText(getBaseContext(),""+z,Toast.LENGTH_LONG).show();
-            //System.out.println("cheguei aqui");
-
             if (isSuccess){
+                Toast.makeText(getBaseContext(), s, Toast.LENGTH_SHORT).show();
                 SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("uname", nm);
@@ -153,8 +155,6 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent goToBaseActivity = new Intent(MainActivity.this, BaseActivity.class);
                 goToBaseActivity.putExtra("flag", "FROM_MAIN");
-                System.out.println("Da main para Base 1 --> "+user);
-                goToBaseActivity.putExtra("name", user);
                 startActivity(goToBaseActivity);
             }
         }
@@ -163,8 +163,6 @@ public class MainActivity extends AppCompatActivity {
     public void GoToBasePage(View v){
         Intent goToBaseActivity = new Intent(this, BaseActivity.class);
         goToBaseActivity.putExtra("flag", "FROM_MAIN");
-        System.out.println("Da main para Base 2 --> "+usr.getText());
-        goToBaseActivity.putExtra("name", usr.getText());
         startActivity(goToBaseActivity);
     }
 

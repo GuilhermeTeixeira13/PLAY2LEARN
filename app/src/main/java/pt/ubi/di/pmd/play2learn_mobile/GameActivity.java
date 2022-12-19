@@ -77,17 +77,14 @@ public class GameActivity extends AppCompatActivity {
         setTitle(getResources().getString(R.string.SubjectsActivity));
 
         // Check flag and initialize objects
-
         SharedPreferences sp = getSharedPreferences("userLogged", MODE_PRIVATE);
         if (sp.contains("uname")) {
             user_name = sp.getString("uname", "");
         }
         Intent intent = getIntent();
         id_subject = intent.getStringExtra("subject");
-        System.out.println("ID SUBJECT ONCREATE GAME: " + id_subject);
         String checkFlag= intent.getStringExtra("flag");
         if(checkFlag.equals("FROM_SUBJECTS")){
-            //user_name = (String) intent.getSerializableExtra("name");
             game_subject = (String) intent.getSerializableExtra("subject");
             game_difficulty = (int) intent.getSerializableExtra("difficulty");
         }
@@ -123,8 +120,7 @@ public class GameActivity extends AppCompatActivity {
 
     // Build game flow
     private class BuildGame extends AsyncTask<String,String,String> {
-        boolean isSuccess = false;
-        String exeption = "";
+        String exception = "";
 
         @Override
         protected String doInBackground(String... strings) {
@@ -133,7 +129,12 @@ public class GameActivity extends AppCompatActivity {
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(GameActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            final Toast toast = Toast.makeText(GameActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    });
                 } else {
                     ArrayList<Question> all_questions = getQuestions(connectDB, game_subject);
 
@@ -145,17 +146,15 @@ public class GameActivity extends AppCompatActivity {
                     game(selected_questions);
                 }
             } catch (SQLException e) {
-                isSuccess = false;
-                exeption = "Exceptions" + e;
+                exception = getResources().getString(R.string.Exceptions) + e;
             }
-            return exeption;
+            return exception;
         }
     }
 
     // Save Results
     private class SaveResults extends AsyncTask<String,String,String> {
-        boolean isSuccess = false;
-        String exeption = "";
+        String exception = "";
 
         @Override
         protected String doInBackground(String... strings) {
@@ -164,7 +163,12 @@ public class GameActivity extends AppCompatActivity {
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(GameActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            final Toast toast = Toast.makeText(GameActivity.this, getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    });
                 } else {
                     final_score = ((num_right_answers / num_of_questions) * 500) + ((6000-test_time)/12);
 
@@ -175,15 +179,14 @@ public class GameActivity extends AppCompatActivity {
                     statement.executeUpdate(query);
                 }
             } catch (SQLException e) {
-                isSuccess = false;
-                exeption = "Exceptions" + e;
+                exception = getResources().getString(R.string.Exceptions) + e;
             }
-            return exeption;
+            return exception;
         }
     }
 
     public String getUserID(Connection connectDB) throws SQLException {
-        String query = "SELECT id from users WHERE name= '"+user_name+"'";
+        String query = "SELECT id FROM users WHERE name= '"+user_name+"'";
         Statement statement = connectDB.createStatement();
         ResultSet rs = statement.executeQuery(query);
         String id_user = "";
@@ -466,7 +469,6 @@ public class GameActivity extends AppCompatActivity {
     public void GoToResultsPage(View v){
         Intent goToResultsActivity = new Intent(this, ResultsActivity.class);
         goToResultsActivity.putExtra("flag", "FROM_GAME");
-        goToResultsActivity.putExtra("ulogged", user_name);
         goToResultsActivity.putExtra("dif", game_difficulty);
         goToResultsActivity.putExtra("temaID", id_subject);
         startActivity(goToResultsActivity);
@@ -475,7 +477,6 @@ public class GameActivity extends AppCompatActivity {
     public void GoToBasePage(View v){
         Intent goToBaseActivity = new Intent(this, BaseActivity.class);
         goToBaseActivity.putExtra("flag", "FROM_GAME");
-        goToBaseActivity.putExtra("name", user_name);
         startActivity(goToBaseActivity);
     }
 }

@@ -1,6 +1,8 @@
 package pt.ubi.di.pmd.play2learn_mobile;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -35,10 +37,11 @@ public class MyGroupFragment extends Fragment {
     String userLogged = "";
     List<String> listaAmigos;
     String itemSelecionadoName = "";
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        View view = inflater.inflate(R.layout.fragment_mygroup, container, false);
+        view = inflater.inflate(R.layout.fragment_mygroup, container, false);
 
         btnAddFriend = view.findViewById(R.id.btn_add_player);
         edittxtNameFriend = view.findViewById(R.id.add_player_name);
@@ -52,7 +55,7 @@ public class MyGroupFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (edittxtNameFriend.getText().toString().isEmpty()) {
-                    Toast.makeText(getActivity(), "You need to specify your friend's name", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.SpecFriendName), Toast.LENGTH_SHORT).show();
                 }
                 else {
                     MyGroupFragment.AddFriendToGroup addingFriends = new MyGroupFragment.AddFriendToGroup();
@@ -71,11 +74,29 @@ public class MyGroupFragment extends Fragment {
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                itemSelecionadoName = listView.getItemAtPosition(i).toString();
-                System.out.println("ITEM SELECIONADO :" + itemSelecionadoName);
-                deleteFriend delF = new deleteFriend();
-                delF.execute();
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int il, long l) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
+
+                // Title
+                alertDialogBuilder.setTitle(getResources().getString(R.string.Alert));
+
+                alertDialogBuilder.setMessage(getResources().getString(R.string.Eliminate))
+                        .setCancelable(false)
+                        .setPositiveButton(getResources().getString(R.string.YES), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent iResult = new Intent();
+                                itemSelecionadoName = listView.getItemAtPosition(il).toString();
+                                deleteFriend delF = new deleteFriend();
+                                delF.execute();
+                            }
+                        }).setNegativeButton(getResources().getString(R.string.NO), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+                alertDialogBuilder.show();
                 return false;
             }
         });
@@ -101,7 +122,7 @@ public class MyGroupFragment extends Fragment {
         String idUserLogged;
         String nomefriend = edittxtNameFriend.getText().toString();
         String idUserAdicionar = "-1";
-        String z = "";
+        String exception = "";
         boolean isSuccess = false;
 
 
@@ -112,13 +133,12 @@ public class MyGroupFragment extends Fragment {
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    z = "Please check your internet connection";
+                    exception = getResources().getString(R.string.InternetConnection);
                 } else {
                     // Verifica se o nome escrito pertence à BD
-                    String query = "SELECT id From users where users.Name='" + nomefriend + "'";
+                    String query = "SELECT id FROM users WHERE users.Name='" + nomefriend + "'";
 
                     Statement statement = connectDB.createStatement();
-
                     ResultSet rs = statement.executeQuery(query);
 
                     while (rs.next()) {
@@ -128,13 +148,12 @@ public class MyGroupFragment extends Fragment {
 
                     // Não existe -> Finalização da Thread , Contrário -> Continuação da Pesquisa
                     if(idUserAdicionar.equals("-1")) {
-                        z = "Não existe nenhum user com esse nome!";
-                        System.out.println("NÃO EXISTE NENHUM USER COM ESSE NOME");
-                        return z;
+                        exception = getResources().getString(R.string.UserNotExist);
+                        return exception;
                     }
                     else {
                         // Obter lista (Name) de amigos do user logado e se o nomefriend já lhe pertence
-                        String query1 = "SELECT id From users where users.Name='" + userLogged + "'";
+                        String query1 = "SELECT id FROM users WHERE users.Name='" + userLogged + "'";
 
                         ResultSet rs1 = statement.executeQuery(query1);
 
@@ -160,15 +179,14 @@ public class MyGroupFragment extends Fragment {
                             }
                         }
 
-
                         if (friendsName.contains(nomefriend)) {
-                            z = "Esse user já está no grupo de amigos do user";
-                            return z;
+                            exception = getResources().getString(R.string.UserinFriendGroup);
+                            return exception;
                         }
                         else {
                             isSuccess = true;
                             // Inserir na BD
-                            String query5 = "insert into userfriends (IDUser, IDFriend) values(" + idUserLogged + ", " + idUserAdicionar + ")";
+                            String query5 = "INSERT INTO userfriends (IDUser, IDFriend) VALUES(" + idUserLogged + ", " + idUserAdicionar + ")";
                             statement.executeUpdate(query5);
                         }
                     }
@@ -176,15 +194,15 @@ public class MyGroupFragment extends Fragment {
 
             } catch (SQLException e) {
                 isSuccess = false;
-                z = "Exceptions" + e;
+                exception = getResources().getString(R.string.Exceptions) + e;
             }
-            return z;
+            return exception;
         }
 
         @Override
         protected void onPostExecute(String s) {
             if (isSuccess){
-                s = "O user " + nomefriend + " foi adicionado com sucesso";
+                s = nomefriend + getResources().getString(R.string.AddedSuccess);
                 Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
                 onRefreshList();
             }
@@ -198,7 +216,7 @@ public class MyGroupFragment extends Fragment {
     // Consultar na BD a lista de amigos do UserLogado
     private class acessListFriends extends AsyncTask<String,String,String> {
         boolean isSuccess = false;
-        String z = "";
+        String exception = "";
         ArrayList<String> friendsID = new ArrayList<>();
         String idUserLogged;
         @Override
@@ -208,9 +226,9 @@ public class MyGroupFragment extends Fragment {
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(getActivity(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                    exception = getResources().getString(R.string.InternetConnection);
                 } else {
-                    String query1 = "SELECT id From users where users.Name='" + userLogged + "'";
+                    String query1 = "SELECT id FROM users WHERE users.Name='" + userLogged + "'";
                     Statement statement = connectDB.createStatement();
                     ResultSet rs1 = statement.executeQuery(query1);
 
@@ -218,7 +236,6 @@ public class MyGroupFragment extends Fragment {
                         idUserLogged = rs1.getString(1);
                         break;
                     }
-
 
                     String query2 = "SELECT IDFriend FROM userfriends WHERE IDUser = " + idUserLogged;
                     ResultSet rs2 = statement.executeQuery(query2);
@@ -240,9 +257,9 @@ public class MyGroupFragment extends Fragment {
                 }
             } catch (SQLException e) {
                 isSuccess = false;
-                z = "Exceptions" + e;
+                exception = getResources().getString(R.string.Exceptions) + e;
             }
-            return z;
+            return exception;
         }
 
         @Override
@@ -255,7 +272,7 @@ public class MyGroupFragment extends Fragment {
     // Eliminar determinado amigo da Lista de Amigos
     private class deleteFriend extends AsyncTask<String,String,String> {
         boolean isSuccess = false;
-        String z = "";
+        String exception = "";
         String friendToRemoveID = "";
         String idUserLogged;
         @Override
@@ -265,9 +282,9 @@ public class MyGroupFragment extends Fragment {
                 Connection connectDB = connectNow.getConnection();
 
                 if (connectDB == null) {
-                    Toast.makeText(getActivity(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                    exception = getResources().getString(R.string.InternetConnection);
                 } else {
-                    String query1 = "SELECT id From users where users.Name='" + userLogged + "'";
+                    String query1 = "SELECT id FROM users WHERE users.Name='" + userLogged + "'";
                     Statement statement = connectDB.createStatement();
                     ResultSet rs1 = statement.executeQuery(query1);
 
@@ -275,24 +292,22 @@ public class MyGroupFragment extends Fragment {
                         idUserLogged = rs1.getString(1);
                     }
 
-                    String query2 = "Select id from users where Name = '" + itemSelecionadoName + "'";
+                    String query2 = "SELECT id FROM users WHERE Name = '" + itemSelecionadoName + "'";
                     ResultSet rs2 = statement.executeQuery(query2);
 
                     while (rs2.next()) {
                         friendToRemoveID = rs2.getString(1);
                     }
 
-                    String query3 = "DELETE FROM userfriends where IDFriend = " + friendToRemoveID;
+                    String query3 = "DELETE FROM userfriends WHERE IDFriend = " + friendToRemoveID;
                     statement.executeUpdate(query3);
-
-                    System.out.println("NAME USER LOGGED:" + userLogged + " com ID: " + idUserLogged + " ");
 
                 }
             } catch (SQLException e) {
                 isSuccess = false;
-                z = "Exceptions" + e;
+                exception = getResources().getString(R.string.Exceptions) + e;
             }
-            return z;
+            return exception;
         }
 
         @Override
