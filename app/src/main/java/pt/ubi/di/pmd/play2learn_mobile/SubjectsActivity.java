@@ -141,7 +141,7 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
                         query = "SELECT Name FROM subjectspt";
                     }
                     else {
-                        query = "SELECT Name FROM subjectsen";
+                        query = "SELECT Name FROM subjectseng";
                     }
 
                     Statement statement = connectDB.createStatement();
@@ -151,13 +151,13 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
                         list.add(rs.getString(1));
                     }
 
-                    String query1 = "SELECT Id FROM subjects";
+                    String query1 = "SELECT Id FROM subjectspt";
                     ResultSet rs1 = statement.executeQuery(query1);
                     while (rs1.next()) {
                         listId.add(rs1.getString(1));
                     }
                 }
-                System.out.println(list);
+                System.out.println("list:"+list);
             } catch (SQLException e) {
                 isSuccess = false;
                 exception = getResources().getString(R.string.Exceptions) + e;

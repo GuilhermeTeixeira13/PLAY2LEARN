@@ -15,11 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -82,6 +85,10 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 SettingsFragment.Updatedata updatedata = new SettingsFragment.Updatedata();
                 updatedata.execute();
+
+                NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
+                TextView txtView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.NavUserEmail);
+                txtView.setText(eml.getText().toString());
             }
         });
 
