@@ -86,9 +86,6 @@ public class SettingsFragment extends Fragment {
                 SettingsFragment.Updatedata updatedata = new SettingsFragment.Updatedata();
                 updatedata.execute();
 
-                NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
-                TextView txtView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.NavUserEmail);
-                txtView.setText(eml.getText().toString());
             }
         });
 
@@ -151,6 +148,9 @@ public class SettingsFragment extends Fragment {
         protected void onPostExecute(String s) {
             if(isSuccess){
                 Toast.makeText(getContext(), getResources().getString(R.string.UpdateSuccessfull), Toast.LENGTH_SHORT).show();
+                NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
+                TextView txtView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.NavUserEmail);
+                txtView.setText(eml.getText().toString());
             }
         }
     }
