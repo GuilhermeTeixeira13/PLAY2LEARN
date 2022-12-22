@@ -53,6 +53,7 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
     private List<String> listId;
 
     String nameuserlogged;
+    String language;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,9 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
             //System.out.println("dei auto login pelas shp");
             nameuserlogged = sp.getString("uname", "");
         }
+        String langPref = "Language";
+        SharedPreferences prefs = getSharedPreferences("CommonPrefs", MODE_PRIVATE);
+        language = prefs.getString(langPref, "");
 
         // Spinner
         spinner_dif = findViewById(R.id.spinnerDifficulty);
@@ -132,7 +136,13 @@ public class SubjectsActivity extends AppCompatActivity implements AdapterView.O
                         }
                     });
                 } else {
-                    String query = "SELECT Name FROM subjects";
+                    String query = "";
+                    if(language.equals("pt")) {
+                        query = "SELECT Name FROM subjectspt";
+                    }
+                    else {
+                        query = "SELECT Name FROM subjectsen";
+                    }
 
                     Statement statement = connectDB.createStatement();
 
