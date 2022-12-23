@@ -115,21 +115,41 @@ public class SettingsFragment extends Fragment {
         String usereml = eml.getText().toString();
         String userpass = pass.getText().toString();
         String exception = "";
+        String encryptPass;
         boolean isSuccess = false;
+
+        {
+            try {
+                //encripta a pass
+                encryptPass = Security.encrypt(userpass);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         @Override
         protected String doInBackground(String... strings) {
             if (usereml.isEmpty() || userpass.isEmpty()){
-                exception = getResources().getString(R.string.AllFieldsRequired);
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        final Toast toast = Toast.makeText(getContext(), getResources().getString(R.string.AllFieldsRequired), Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
             }else {
                 try {
                     P2L_DbHelper connectNow = new P2L_DbHelper();
                     Connection connectDB = connectNow.getConnection();
 
                     if (connectDB == null) {
-                        exception = getResources().getString(R.string.InternetConnection);
+                        getActivity().runOnUiThread(new Runnable() {
+                            public void run() {
+                                final Toast toast = Toast.makeText(getContext(), getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        });
                     } else {
-                        String query = "UPDATE users SET Email='" + usereml + "', Password ='"+userpass+"' WHERE Name = '" + username + "'";
+                        String query = "UPDATE users SET Email='" + usereml + "', Password ='"+encryptPass+"' WHERE Name = '" + username + "'";
 
                         Statement statement = connectDB.createStatement();
                         statement.executeUpdate(query);
@@ -156,7 +176,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private class Deluser extends AsyncTask<String,String,String> {
-        String ueml,pss;
+        String ueml,pss,dpss;
         Integer id;
         String usereml = eml.getText().toString();
         String userpass = pass.getText().toString();
@@ -195,10 +215,12 @@ public class SettingsFragment extends Fragment {
                             ueml = rs.getString(3);
                             pss = rs.getString(4);
 
-                            if((ueml.equals(usereml)) && pss.equals(userpass)){
+                            dpss = Security.decrypt(pss);
+
+                            if((ueml.equals(usereml)) && dpss.equals(userpass)){
                                 String query1 = "DELETE FROM userresults WHERE IDUser="+id;
                                 String query2 = "DELETE FROM userfriends WHERE IDUser="+id;
-                                String query3 = "DELETE FROM users WHERE Email='" + usereml + "' AND Password='" + userpass + "'";
+                                String query3 = "DELETE FROM users WHERE IDUser="+id;
 
                                 Statement statement1 = connectDB.createStatement();
                                 statement1.executeUpdate(query1);
