@@ -15,11 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -82,6 +85,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 SettingsFragment.Updatedata updatedata = new SettingsFragment.Updatedata();
                 updatedata.execute();
+
             }
         });
 
@@ -111,21 +115,41 @@ public class SettingsFragment extends Fragment {
         String usereml = eml.getText().toString();
         String userpass = pass.getText().toString();
         String exception = "";
+        String encryptPass;
         boolean isSuccess = false;
+
+        {
+            try {
+                //encripta a pass
+                encryptPass = Security.encrypt(userpass);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         @Override
         protected String doInBackground(String... strings) {
             if (usereml.isEmpty() || userpass.isEmpty()){
-                exception = getResources().getString(R.string.AllFieldsRequired);
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        final Toast toast = Toast.makeText(getContext(), getResources().getString(R.string.AllFieldsRequired), Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
             }else {
                 try {
                     P2L_DbHelper connectNow = new P2L_DbHelper();
                     Connection connectDB = connectNow.getConnection();
 
                     if (connectDB == null) {
-                        exception = getResources().getString(R.string.InternetConnection);
+                        getActivity().runOnUiThread(new Runnable() {
+                            public void run() {
+                                final Toast toast = Toast.makeText(getContext(), getResources().getString(R.string.InternetConnection), Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        });
                     } else {
-                        String query = "UPDATE users SET Email='" + usereml + "', Password ='"+userpass+"' WHERE Name = '" + username + "'";
+                        String query = "UPDATE users SET Email='" + usereml + "', Password ='"+encryptPass+"' WHERE Name = '" + username + "'";
 
                         Statement statement = connectDB.createStatement();
                         statement.executeUpdate(query);
@@ -144,12 +168,15 @@ public class SettingsFragment extends Fragment {
         protected void onPostExecute(String s) {
             if(isSuccess){
                 Toast.makeText(getContext(), getResources().getString(R.string.UpdateSuccessfull), Toast.LENGTH_SHORT).show();
+                NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
+                TextView txtView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.NavUserEmail);
+                txtView.setText(eml.getText().toString());
             }
         }
     }
 
     private class Deluser extends AsyncTask<String,String,String> {
-        String ueml,pss;
+        String ueml,pss,dpss;
         Integer id;
         String usereml = eml.getText().toString();
         String userpass = pass.getText().toString();
@@ -178,7 +205,7 @@ public class SettingsFragment extends Fragment {
                             }
                         });
                     }else {
-                        String query = "SELECT * FROM users WHERE Email='"+usereml+"' AND Name='"+username+"' AND Password='"+userpass+"'";
+                        String query = "SELECT * FROM users WHERE Email='"+usereml+"' AND Name='"+username+"'";
 
                         Statement statement = connectDB.createStatement();
                         ResultSet rs = statement.executeQuery(query);
@@ -188,10 +215,12 @@ public class SettingsFragment extends Fragment {
                             ueml = rs.getString(3);
                             pss = rs.getString(4);
 
-                            if((ueml.equals(usereml)) && pss.equals(userpass)){
+                            dpss = Security.decrypt(pss);
+
+                            if((ueml.equals(usereml)) && dpss.equals(userpass)){
                                 String query1 = "DELETE FROM userresults WHERE IDUser="+id;
                                 String query2 = "DELETE FROM userfriends WHERE IDUser="+id;
-                                String query3 = "DELETE FROM users WHERE Email='" + usereml + "' AND Password='" + userpass + "'";
+                                String query3 = "DELETE FROM users WHERE id="+id;
 
                                 Statement statement1 = connectDB.createStatement();
                                 statement1.executeUpdate(query1);

@@ -1,6 +1,7 @@
  -- Insert SUBJECT and QUESTIONS -> PLANETS
 
-INSERT INTO `subjects` (`id`, `Name`, `Image`) VALUES (NULL, 'Planets', NULL); 
+INSERT INTO `subjectseng` (`id`, `Name`, `Image`) VALUES (NULL, 'Planets', NULL); 
+INSERT INTO `subjectspt` (`id`, `Name`, `Image`) VALUES (NULL, 'Planetas', NULL); 
 
 -- PT QUESTIONS
 
@@ -86,7 +87,8 @@ INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `Right
 
 -- Insert SUBJECT and QUESTIONS -> HUMAN BODY
 
-INSERT INTO `subjects` (`id`, `Name`, `Image`) VALUES (NULL, 'Human Body', NULL);
+INSERT INTO `subjectseng` (`id`, `Name`, `Image`) VALUES (NULL, 'Human Body', NULL);
+INSERT INTO `subjectspt` (`id`, `Name`, `Image`) VALUES (NULL, 'Corpo Humano', NULL); 
 
 -- PT QUESTIONS
 
@@ -133,38 +135,38 @@ INSERT INTO `questions_pt` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightA
 
 -- Easy
 
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'How many layers does our skin have?', 1, '2', '3', '4', '5')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'What is the largest organ in the human body?', 1, 'skin', 'femur', 'small intestine', 'large intestine')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'What do you call the "little holes" in our skin?', 1, 'pores', 'ears', 'hair', 'nostrils')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'In case of fracture what should we do?', 1, 'immobilize the fractured zone', 'make rubbing movements', 'press fractured zone', 'run and jump')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'They produce the saliva that is released inside the mouth.', 1, 'salivary glands', 'mouth', 'liver', 'stomach')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'It consists of the lips, teeth and tongue.', 1, 'mouth', 'pancreas', 'pharynx', 'salivary glands')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Tube about 6 meters long that connects the stomach to the large intestine.', 1, 'small intestine', 'anus', 'esophagus', 'pharynx')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'It produces bile, a juice that is stored in the gallbladder.', 1, 'liver', 'pancreas', 'stomach', 'large intestine')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'It stores the bile that is released into the small intestine.', 1, 'gallbladder', 'liver', 'straight', 'pharynx')
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'How many layers does our skin have?', 1, '2', '3', '4', '5');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'What is the largest organ in the human body?', 1, 'skin', 'femur', 'small intestine', 'large intestine');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'What do you call the "little holes" in our skin?', 1, 'pores', 'ears', 'hair', 'nostrils');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'In case of fracture what should we do?', 1, 'immobilize the fractured zone', 'make rubbing movements', 'press fractured zone', 'run and jump');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'They produce the saliva that is released inside the mouth.', 1, 'salivary glands', 'mouth', 'liver', 'stomach');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'It consists of the lips, teeth and tongue.', 1, 'mouth', 'pancreas', 'pharynx', 'salivary glands');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Tube about 6 meters long that connects the stomach to the large intestine.', 1, 'small intestine', 'anus', 'esophagus', 'pharynx');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'It produces bile, a juice that is stored in the gallbladder.', 1, 'liver', 'pancreas', 'stomach', 'large intestine');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'It stores the bile that is released into the small intestine.', 1, 'gallbladder', 'liver', 'straight', 'pharynx');
 
 -- Medium
 
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'What is the skeleton?', 2, 'a group of bones', 'a group of organs', 'a group of cells', 'a group of pores')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'How are the bones connected together?', 2, 'through the joints', 'through the spine', 'through the veins', 'by the shoulder blade')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Which of these muscles are involuntary?', 2, 'heart muscles', 'mouth muscles', 'leg muscles', 'arm muscles')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'How many bones does the human skeleton have', 2, '206', '222', '450', '999')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Tube of about 25 cm that extends from the pharynx to the stomach', 2, 'esophagus', 'gallbladder', 'straight', 'stomach')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Hole through which feces are expelled from the body.', 2, 'anus', 'mouth', 'large intestine', 'gallbladder')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'It is part of the respiratory system.', 2, 'the lungs', 'the stomach', 'the blood', 'the heart')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Where the food bolus is transformed.', 2, 'the stomach', 'the blood', 'the heart', 'the lungs')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'We managed to move thanks to...', 2, 'bones and muscles', 'muscles', 'stacks', 'bones')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'The brain is protected by...', 2, 'skull', 'heart', 'hair', 'hat')
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'What is the skeleton?', 2, 'a group of bones', 'a group of organs', 'a group of cells', 'a group of pores');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'How are the bones connected together?', 2, 'through the joints', 'through the spine', 'through the veins', 'by the shoulder blade');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Which of these muscles are involuntary?', 2, 'heart muscles', 'mouth muscles', 'leg muscles', 'arm muscles');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'How many bones does the human skeleton have', 2, '206', '222', '450', '999');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Tube of about 25 cm that extends from the pharynx to the stomach', 2, 'esophagus', 'gallbladder', 'straight', 'stomach');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Hole through which feces are expelled from the body.', 2, 'anus', 'mouth', 'large intestine', 'gallbladder');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'It is part of the respiratory system.', 2, 'the lungs', 'the stomach', 'the blood', 'the heart');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Where the food bolus is transformed.', 2, 'the stomach', 'the blood', 'the heart', 'the lungs');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'We managed to move thanks to...', 2, 'bones and muscles', 'muscles', 'stacks', 'bones');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'The brain is protected by...', 2, 'skull', 'heart', 'hair', 'hat');
 
 -- Hard
 
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'What is the name of the bone on our forehead?', 3, 'front', 'temporal', 'parietal', 'occipital')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'How many vertebrae does the spine have?', 3, '33', '36', '39', '30')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'What is the name of the arm bone', 3, 'humerus', 'radius bone', 'carpus', 'cubit')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Organ that produces gastric juice that is released into the small intestine', 3, 'pancreas', 'stomach', 'anus', 'large intestine')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Final part of the large intestine where feces are stored before being expelled', 3, 'straight', 'pharynx', 'large intestine', 'stomach')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Organ that stores bile that is released into the small intestine?', 3, 'gallbladder', 'pharynx', 'liver', 'straight')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Canal that connects the nasal passages to the larynx and between the mouth and esophagus', 3, 'pharynx', 'pancreas', 'small intestine', 'stomach')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Bag-shaped organ with muscular and elastic walls that contain gastric juice?', 3, 'stomach', 'mouth', 'large intestine', 'salivary glands')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'It carries food and oxygen to all cells.', 3, 'the blood', 'the stomach', 'the heart', 'the lungs')
-INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'It circulates the blood.', 3, 'the heart', 'the stomach', 'the blood', 'the lungs')
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'What is the name of the bone on our forehead?', 3, 'front', 'temporal', 'parietal', 'occipital');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'How many vertebrae does the spine have?', 3, '33', '36', '39', '30');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'What is the name of the arm bone', 3, 'humerus', 'radius bone', 'carpus', 'cubit');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Organ that produces gastric juice that is released into the small intestine', 3, 'pancreas', 'stomach', 'anus', 'large intestine');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Final part of the large intestine where feces are stored before being expelled', 3, 'straight', 'pharynx', 'large intestine', 'stomach');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Organ that stores bile that is released into the small intestine?', 3, 'gallbladder', 'pharynx', 'liver', 'straight');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Canal that connects the nasal passages to the larynx and between the mouth and esophagus', 3, 'pharynx', 'pancreas', 'small intestine', 'stomach');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'Bag-shaped organ with muscular and elastic walls that contain gastric juice?', 3, 'stomach', 'mouth', 'large intestine', 'salivary glands');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'It carries food and oxygen to all cells.', 3, 'the blood', 'the stomach', 'the heart', 'the lungs');
+INSERT INTO `questions_eng` (`id`, `IDSubject`, `Question`, `Difficulty`, `RightAnswer`, `Wrong1`, `Wrong2`, `Wrong3`) VALUES (NULL, '2', 'It circulates the blood.', 3, 'the heart', 'the stomach', 'the blood', 'the lungs');

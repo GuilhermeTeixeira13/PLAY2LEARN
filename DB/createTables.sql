@@ -7,7 +7,13 @@ CREATE TABLE users (
   Biblio NVARCHAR(255)
 );
 
-CREATE TABLE subjects (
+CREATE TABLE subjectspt (
+  id INTEGER PRIMARY KEY AUTO_INCREMENT, 
+  Name NVARCHAR(255),
+  Image BLOB
+);
+
+CREATE TABLE subjectseng (
   id INTEGER PRIMARY KEY AUTO_INCREMENT, 
   Name NVARCHAR(255),
   Image BLOB
@@ -22,7 +28,7 @@ CREATE TABLE questions_pt (
   Wrong1 NVARCHAR(255),
   Wrong2 NVARCHAR(255),
   Wrong3 NVARCHAR(255),
-  CONSTRAINT fk_questSubj FOREIGN KEY (IDSubject) REFERENCES subjects (id)
+  CONSTRAINT fk_questSubj FOREIGN KEY (IDSubject) REFERENCES subjectspt (id)
 );
 
 CREATE TABLE questions_eng (
@@ -34,7 +40,7 @@ CREATE TABLE questions_eng (
   Wrong1 NVARCHAR(255),
   Wrong2 NVARCHAR(255),
   Wrong3 NVARCHAR(255),
-  CONSTRAINT fk_questSubjEng FOREIGN KEY (IDSubject) REFERENCES subjects (id)
+  CONSTRAINT fk_questSubjEng FOREIGN KEY (IDSubject) REFERENCES subjectseng (id)
 );
 
 CREATE TABLE userresults (
@@ -46,7 +52,7 @@ CREATE TABLE userresults (
   NumWrongAns INTEGER, 
   TimeToSolve TEXT, 
   Difficulty INTEGER,
-  CONSTRAINT fk_resultSubj FOREIGN KEY (IDSubject) REFERENCES subjects (id), CONSTRAINT fk_resultUser FOREIGN KEY (IDUser) REFERENCES users (id)
+  CONSTRAINT fk_resultSubj FOREIGN KEY (IDSubject) REFERENCES subjectspt (id), CONSTRAINT fk_resultUser FOREIGN KEY (IDUser) REFERENCES users (id)
 );
 
 

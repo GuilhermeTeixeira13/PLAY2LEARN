@@ -70,7 +70,7 @@ public class RegisterActivity extends AppCompatActivity {
         {
             try {
                 //encripta a pass
-                //encryptPass = Security.encrypt(password);
+                encryptPass = Security.encrypt(password);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -84,7 +84,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            //                                       encryptPass
             if (user.isEmpty() || email.isEmpty() || password.isEmpty()){
                 runOnUiThread(new Runnable() {
                     public void run() {
@@ -128,8 +127,8 @@ public class RegisterActivity extends AppCompatActivity {
                             }
                         }
                         if (!userexists) {
-                            //String query = "INSERT INTO users values (NULL,'"+user+"','"+email+"','"+encryptPass+"',NULL,NULL)";
-                            String query = "INSERT INTO users VALUES (NULL,'" + user + "','" + email + "','" + password + "',NULL,NULL)";
+                            String query = "INSERT INTO users values (NULL,'"+user+"','"+email+"','"+encryptPass+"',NULL,NULL)";
+                            //String query = "INSERT INTO users VALUES (NULL,'" + user + "','" + email + "','" + password + "',NULL,NULL)";
 
                             Statement statement2 = connectDB.createStatement();
                             statement2.executeUpdate(query);

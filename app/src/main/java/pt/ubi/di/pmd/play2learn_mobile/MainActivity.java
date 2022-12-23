@@ -111,11 +111,9 @@ public class MainActivity extends AppCompatActivity {
                             eml = rs.getString(3);
                             pss = rs.getString(4);
                             //obter pass desencriptada
-                            //dpss = Security.decrypt(pss);
+                            dpss = Security.decrypt(pss);
 
-                            //System.out.println(dpss);
-
-                            if((nm.equals(user) || eml.equals(user)) && pss.equals(pass)){
+                            if((nm.equals(user) || eml.equals(user)) && dpss.equals(pass)){
                                 isSuccess = true;
                                 exception = getResources().getString(R.string.LoginSuccessfull);
                             }else {
