@@ -135,7 +135,6 @@ public class SettingsFragment extends Fragment {
                         statement.executeUpdate(query);
 
                         isSuccess = true;
-
                     }
                 } catch (Exception e) {
                     exception = getResources().getString(R.string.Exceptions) + e;

@@ -23,6 +23,7 @@
     />
 
     <ImageView
+        android:id="@+id/changePhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/camera_icon"
@@ -31,49 +32,12 @@
     </ImageView>
 
     <ImageView
-        android:id="@+id/personIcon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/person_icon"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="60dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/name"
-        app:layout_constraintTop_toBottomOf="@+id/name">
-    </ImageView>
-
-    <EditText
-        android:id="@+id/edTextName"
-        android:layout_width="210dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        app:layout_constraintStart_toEndOf="@+id/personIcon"
-        app:layout_constraintTop_toBottomOf="@+id/name">
-    </EditText>
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Name"
-        android:layout_marginTop="50dp"
-        android:layout_marginStart="20dp"
-        android:textSize="20dp"
-        android:textColor="@color/black"
-        android:fontFamily="@font/roboto_black"
-        app:layout_constraintStart_toEndOf="@+id/personIcon"
-        app:layout_constraintTop_toBottomOf="@+id/profilePic">
-    </TextView>
-
-    <ImageView
         android:id="@+id/infoIcon"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
         android:layout_marginStart="60dp"
         android:background="@drawable/info_icon"
-        app:layout_constraintEnd_toStartOf="@+id/name"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bibio"></ImageView>
@@ -93,13 +57,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Biography"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="100dp"
         android:layout_marginStart="20dp"
         android:textSize="20dp"
         android:textColor="@color/black"
         android:fontFamily="@font/roboto_black"
-        app:layout_constraintStart_toEndOf="@+id/personIcon"
-        app:layout_constraintTop_toBottomOf="@+id/edTextName">
+        app:layout_constraintStart_toEndOf="@+id/infoIcon"
+        app:layout_constraintTop_toBottomOf="@+id/profilePic">
     </TextView>
 
     <androidx.appcompat.widget.AppCompatButton
