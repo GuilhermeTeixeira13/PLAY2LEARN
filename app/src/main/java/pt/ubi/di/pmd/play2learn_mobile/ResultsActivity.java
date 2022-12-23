@@ -224,8 +224,8 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
 
         @Override
         protected void onPostExecute(String s) {
-            points.setText(score + getResources().getString(R.string.Points));
-            correctAnswers.setText(getResources().getString(R.string.CorrectAnswer)+correctAns+"\\10");
+            points.setText(score + " " + getResources().getString(R.string.Points));
+            correctAnswers.setText(getResources().getString(R.string.CorrectAnswer)+" "+correctAns+"\\10");
         }
     }
 
@@ -319,16 +319,16 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     private class currentTestByUser extends AsyncTask<String,String,String> {
         boolean isSuccess = false;
         String exception = "";
-        String idUserLogged;
-        String correctAns;
-        String wrongAns;
-        String time;
-        String score;
+        String idUserLogged = "";
+        String correctAns = "";
+        String wrongAns = "";
+        String time = "";
+        String score = "";
 
-        String correctAnsOther;
-        String wrongAnsOther;
-        String timeOther;
-        String scoreOther;
+        String correctAnsOther = "";
+        String wrongAnsOther = "";
+        String timeOther = "";
+        String scoreOther = "";
         @Override
         protected String doInBackground(String... strings) {
             try {
