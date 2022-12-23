@@ -205,7 +205,7 @@ public class SettingsFragment extends Fragment {
                             }
                         });
                     }else {
-                        String query = "SELECT * FROM users WHERE Email='"+usereml+"' AND Name='"+username+"' AND Password='"+userpass+"'";
+                        String query = "SELECT * FROM users WHERE Email='"+usereml+"' AND Name='"+username+"'";
 
                         Statement statement = connectDB.createStatement();
                         ResultSet rs = statement.executeQuery(query);
@@ -220,7 +220,7 @@ public class SettingsFragment extends Fragment {
                             if((ueml.equals(usereml)) && dpss.equals(userpass)){
                                 String query1 = "DELETE FROM userresults WHERE IDUser="+id;
                                 String query2 = "DELETE FROM userfriends WHERE IDUser="+id;
-                                String query3 = "DELETE FROM users WHERE IDUser="+id;
+                                String query3 = "DELETE FROM users WHERE id="+id;
 
                                 Statement statement1 = connectDB.createStatement();
                                 statement1.executeUpdate(query1);
