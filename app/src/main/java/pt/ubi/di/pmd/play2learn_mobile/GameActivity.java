@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 public class GameActivity extends AppCompatActivity {
     TextView TxtViewGameDifficulty;
@@ -51,7 +52,7 @@ public class GameActivity extends AppCompatActivity {
     String id_subject;
 
     private ArrayList<Question> selected_questions;
-    int num_of_questions = 3;
+    int num_of_questions = 10;
     private static final Random RANDOM = new Random();
     private String[] difs;
     private ArrayList<Answer> answers;
@@ -81,9 +82,10 @@ public class GameActivity extends AppCompatActivity {
         if (sp.contains("uname")) {
             user_name = sp.getString("uname", "");
         }
+
         Intent intent = getIntent();
-        id_subject = intent.getStringExtra("subject");
         String checkFlag= intent.getStringExtra("flag");
+
         if(checkFlag.equals("FROM_SUBJECTS")){
             game_subject = (String) intent.getSerializableExtra("subject");
             game_difficulty = (int) intent.getSerializableExtra("difficulty");
@@ -138,10 +140,19 @@ public class GameActivity extends AppCompatActivity {
                 } else {
                     ArrayList<Question> all_questions = getQuestions(connectDB, game_subject);
 
+                    System.out.println("all_questions -> "+all_questions);
+
                     List<Integer> random_selection = new ArrayList<Integer>(pickRandom(num_of_questions, all_questions.size()));
-                    for(int i = 0 ; i < random_selection.size(); i++)
+
+
+                    System.out.println(random_selection);
+
+                    for(int i = 0 ; i < random_selection.size(); i++){
                         selected_questions.add(all_questions.get(random_selection.get(i)));
+                    }
                     Collections.shuffle(selected_questions);
+
+                    System.out.println("selected_questions -> "+selected_questions);
 
                     game(selected_questions);
                 }
@@ -470,7 +481,7 @@ public class GameActivity extends AppCompatActivity {
         Intent goToResultsActivity = new Intent(this, ResultsActivity.class);
         goToResultsActivity.putExtra("flag", "FROM_GAME");
         goToResultsActivity.putExtra("dif", game_difficulty);
-        goToResultsActivity.putExtra("temaID", id_subject);
+        goToResultsActivity.putExtra("temaID", game_subject);
         startActivity(goToResultsActivity);
     }
 
